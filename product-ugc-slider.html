@@ -1,7 +1,7 @@
-<div style="width:100%;max-width:1216px;margin:0 auto;padding:32px 20px;box-sizing:border-box;font-family:inherit;" data-ugc-slider>
+<div style="display:block;width:100%;max-width:1216px;margin:0 auto;padding:32px 20px;box-sizing:border-box;font-family:inherit;contain:layout paint style;isolation:isolate;position:relative;overflow:hidden;" data-ugc-slider>
 
   <div style="position:relative;">
-    <div data-ugc-track style="display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
+    <div data-ugc-track style="display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior:contain;touch-action:pan-x;">
 
       <div style="flex:0 0 calc((100% - 16px) / 2.5);scroll-snap-align:start;">
         <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#000;cursor:pointer;" data-ugc-card>
@@ -125,7 +125,7 @@
     buildDots();
   }
   function initAll(){Array.prototype.forEach.call(document.querySelectorAll('[data-ugc-slider]'),init);}
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initAll);}else{initAll();}
-  document.addEventListener('shopify:section:load',initAll);
+  try{if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initAll);}else{initAll();}}catch(_){}
+  document.addEventListener('shopify:section:load',function(e){try{if(e&&e.target&&e.target.querySelector&&e.target.querySelector('[data-ugc-slider]'))initAll();}catch(_){}});
 })();
 </script>
