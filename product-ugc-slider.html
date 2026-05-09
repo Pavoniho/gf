@@ -1,22 +1,20 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-
 <style>
-  .product01-snippet,
-  .product01-snippet *,
-  .product01-snippet *::before,
-  .product01-snippet *::after {
+  .ugc-slider,
+  .ugc-slider *,
+  .ugc-slider *::before,
+  .ugc-slider *::after {
     box-sizing: border-box;
   }
 
-  .product01-snippet {
+  .ugc-slider {
     width: 100%;
     max-width: 1216px;
     margin: 0 auto;
     padding: 40px 20px;
+    font-family: inherit;
   }
 
-  .product01-ugc-title {
+  .ugc-slider__title {
     font-size: clamp(22px, 3vw, 32px);
     font-weight: 700;
     line-height: 1.2;
@@ -25,20 +23,33 @@
     color: inherit;
   }
 
-  .product01-ugc-carousel {
+  .ugc-slider__viewport {
     position: relative;
   }
 
-  .product01-ugc-swiper {
-    overflow: hidden;
+  .ugc-slider__track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
   }
 
-  .product01-ugc-swiper .swiper-slide {
+  .ugc-slider__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ugc-slider__slide {
+    flex: 0 0 auto;
     width: 240px;
-    height: auto;
+    scroll-snap-align: start;
   }
 
-  .product01-ugc-card {
+  .ugc-slider__card {
     position: relative;
     width: 100%;
     aspect-ratio: 9 / 16;
@@ -48,14 +59,14 @@
     cursor: pointer;
   }
 
-  .product01-ugc-card video {
+  .ugc-slider__card video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  .product01-ugc-play-btn {
+  .ugc-slider__play {
     position: absolute;
     bottom: 12px;
     right: 12px;
@@ -69,21 +80,21 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
     padding: 0;
+    transition: background 0.2s ease, transform 0.2s ease;
   }
 
-  .product01-ugc-play-btn:hover {
+  .ugc-slider__play:hover {
     background: #fff;
     transform: scale(1.05);
   }
 
-  .product01-ugc-play-btn svg {
+  .ugc-slider__play svg {
     width: 18px;
     height: 18px;
   }
 
-  .product01-ugc-nav {
+  .ugc-slider__nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -91,14 +102,15 @@
     gap: 16px;
   }
 
-  .product01-ugc-dots {
+  .ugc-slider__dots {
     display: flex;
     gap: 6px;
     flex: 1;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
-  .product01-ugc-dot {
+  .ugc-slider__dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -109,17 +121,17 @@
     transition: background 0.2s ease, transform 0.2s ease;
   }
 
-  .product01-ugc-dot.active {
+  .ugc-slider__dot.is-active {
     background: #000;
     transform: scale(1.2);
   }
 
-  .product01-ugc-arrows {
+  .ugc-slider__arrows {
     display: flex;
     gap: 8px;
   }
 
-  .product01-ugc-arrow {
+  .ugc-slider__arrow {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -130,88 +142,84 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease, opacity 0.2s ease;
     padding: 0;
+    transition: background 0.2s ease, opacity 0.2s ease;
   }
 
-  .product01-ugc-arrow:hover:not(:disabled) {
+  .ugc-slider__arrow:hover:not(:disabled) {
     background: #f5f5f5;
   }
 
-  .product01-ugc-arrow:disabled {
+  .ugc-slider__arrow:disabled {
     opacity: 0.35;
     cursor: not-allowed;
   }
 
   @media (max-width: 640px) {
-    .product01-ugc-swiper .swiper-slide {
+    .ugc-slider__slide {
       width: 200px;
     }
-    .product01-ugc-arrows {
+    .ugc-slider__arrows {
       display: none;
     }
   }
 </style>
 
-<div class="product01-snippet product01-snippet-15" id="product01-ugc-{{ section.id }}{{ block.id }}">
-  <div class="product01-ugc">
-    <h3 class="product01-ugc-title">Give Her a Gift That Speaks to Her Heart</h3>
+<div class="ugc-slider" data-ugc-slider>
+  <h3 class="ugc-slider__title">Give Her a Gift That Speaks to Her Heart</h3>
 
-    <div class="product01-ugc-carousel">
-      <div class="swiper product01-ugc-swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="product01-ugc-card" data-ecomwize-video>
-              <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/adLEprSJSOR5iz8X.mp4" loop muted playsinline preload="metadata"></video>
-              <button class="product01-ugc-play-btn" type="button" aria-label="Play video">
-                <svg class="ecomwize-play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-                <svg class="ecomwize-pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product01-ugc-card" data-ecomwize-video>
-              <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/yDUtsmQ8yyMykr8D.mp4" loop muted playsinline preload="metadata"></video>
-              <button class="product01-ugc-play-btn" type="button" aria-label="Play video">
-                <svg class="ecomwize-play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-                <svg class="ecomwize-pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product01-ugc-card" data-ecomwize-video>
-              <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/upNHJ2D_LXDVBZMR.mp4" loop muted playsinline preload="metadata"></video>
-              <button class="product01-ugc-play-btn" type="button" aria-label="Play video">
-                <svg class="ecomwize-play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-                <svg class="ecomwize-pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product01-ugc-card" data-ecomwize-video>
-              <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/nVdn2oOEoncHokqC.mp4" loop muted playsinline preload="metadata"></video>
-              <button class="product01-ugc-play-btn" type="button" aria-label="Play video">
-                <svg class="ecomwize-play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-                <svg class="ecomwize-pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
-              </button>
-            </div>
-          </div>
+  <div class="ugc-slider__viewport">
+    <div class="ugc-slider__track" data-ugc-track>
+      <div class="ugc-slider__slide">
+        <div class="ugc-slider__card">
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/adLEprSJSOR5iz8X.mp4" loop muted playsinline preload="metadata"></video>
+          <button class="ugc-slider__play" type="button" aria-label="Play video">
+            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          </button>
         </div>
       </div>
 
-      <div class="product01-ugc-nav">
-        <div class="product01-ugc-dots"></div>
-        <div class="product01-ugc-arrows">
-          <button class="product01-ugc-arrow product01-ugc-prev" type="button" aria-label="Previous slide">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg>
-          </button>
-          <button class="product01-ugc-arrow product01-ugc-next" type="button" aria-label="Next slide">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,0,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></svg>
+      <div class="ugc-slider__slide">
+        <div class="ugc-slider__card">
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/yDUtsmQ8yyMykr8D.mp4" loop muted playsinline preload="metadata"></video>
+          <button class="ugc-slider__play" type="button" aria-label="Play video">
+            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
           </button>
         </div>
+      </div>
+
+      <div class="ugc-slider__slide">
+        <div class="ugc-slider__card">
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/upNHJ2D_LXDVBZMR.mp4" loop muted playsinline preload="metadata"></video>
+          <button class="ugc-slider__play" type="button" aria-label="Play video">
+            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="ugc-slider__slide">
+        <div class="ugc-slider__card">
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/nVdn2oOEoncHokqC.mp4" loop muted playsinline preload="metadata"></video>
+          <button class="ugc-slider__play" type="button" aria-label="Play video">
+            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ugc-slider__nav">
+      <div class="ugc-slider__dots" data-ugc-dots></div>
+      <div class="ugc-slider__arrows">
+        <button class="ugc-slider__arrow" type="button" data-ugc-prev aria-label="Previous slide">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg>
+        </button>
+        <button class="ugc-slider__arrow" type="button" data-ugc-next aria-label="Next slide">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,0,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -219,71 +227,99 @@
 
 <script>
 (function() {
-  var rootId = 'product01-ugc-{{ section.id }}{{ block.id }}';
-
-  function initUGCSwiper() {
-    var root = document.getElementById(rootId);
-    if (!root) return;
+  function init(root) {
     if (root.dataset.ugcInit === '1') return;
+    root.dataset.ugcInit = '1';
 
-    if (typeof Swiper === 'undefined') {
-      setTimeout(initUGCSwiper, 100);
-      return;
+    var track = root.querySelector('[data-ugc-track]');
+    var dotsContainer = root.querySelector('[data-ugc-dots]');
+    var prevBtn = root.querySelector('[data-ugc-prev]');
+    var nextBtn = root.querySelector('[data-ugc-next]');
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.ugc-slider__slide'));
+
+    function getStep() {
+      if (!slides.length) return track.clientWidth;
+      var rect = slides[0].getBoundingClientRect();
+      var style = window.getComputedStyle(track);
+      var gap = parseFloat(style.columnGap || style.gap) || 0;
+      return rect.width + gap;
     }
 
-    var container = root.querySelector('.product01-ugc-swiper');
-    var dotsContainer = root.querySelector('.product01-ugc-dots');
-    var prevBtn = root.querySelector('.product01-ugc-prev');
-    var nextBtn = root.querySelector('.product01-ugc-next');
+    function getCurrentIndex() {
+      var step = getStep();
+      if (step <= 0) return 0;
+      return Math.round(track.scrollLeft / step);
+    }
 
-    var swiper = new Swiper(container, {
-      slidesPerView: 'auto',
-      spaceBetween: 12,
-      navigation: { prevEl: prevBtn, nextEl: nextBtn },
-      on: {
-        init: function() { renderDots(this); updateNav(this); },
-        slideChange: function() { syncDots(this); updateNav(this); },
-        resize: function() { renderDots(this); }
-      }
-    });
+    function getMaxIndex() {
+      var step = getStep();
+      if (step <= 0) return 0;
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      return Math.max(0, Math.round(maxScroll / step));
+    }
 
-    function renderDots(swiper) {
+    function buildDots() {
       if (!dotsContainer) return;
-      var snapCount = (swiper.snapGrid && swiper.snapGrid.length) || 1;
+      var count = getMaxIndex() + 1;
       dotsContainer.innerHTML = '';
-      for (var i = 0; i < snapCount; i++) {
+      for (var i = 0; i < count; i++) {
         var dot = document.createElement('button');
         dot.type = 'button';
-        dot.className = 'product01-ugc-dot' + (i === (swiper.snapIndex || 0) ? ' active' : '');
+        dot.className = 'ugc-slider__dot';
         dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
         (function(idx) {
-          dot.addEventListener('click', function() { swiper.slideTo(idx); });
+          dot.addEventListener('click', function() {
+            track.scrollTo({ left: idx * getStep(), behavior: 'smooth' });
+          });
         })(i);
         dotsContainer.appendChild(dot);
       }
+      updateState();
     }
 
-    function syncDots(swiper) {
-      if (!dotsContainer) return;
-      var dots = dotsContainer.querySelectorAll('.product01-ugc-dot');
-      var idx = swiper.snapIndex || 0;
-      dots.forEach(function(d, i) {
-        d.classList.toggle('active', i === idx);
+    function updateState() {
+      var idx = getCurrentIndex();
+      var max = getMaxIndex();
+      if (dotsContainer) {
+        var dots = dotsContainer.querySelectorAll('.ugc-slider__dot');
+        dots.forEach(function(d, i) {
+          d.classList.toggle('is-active', i === idx);
+        });
+      }
+      if (prevBtn) prevBtn.disabled = idx <= 0;
+      if (nextBtn) nextBtn.disabled = idx >= max;
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        track.scrollBy({ left: getStep(), behavior: 'smooth' });
       });
     }
 
-    function updateNav(swiper) {
-      if (prevBtn) prevBtn.disabled = swiper.isBeginning;
-      if (nextBtn) nextBtn.disabled = swiper.isEnd;
-    }
+    var scrollTimer;
+    track.addEventListener('scroll', function() {
+      if (scrollTimer) cancelAnimationFrame(scrollTimer);
+      scrollTimer = requestAnimationFrame(updateState);
+    });
 
-    root.querySelectorAll('[data-ecomwize-video]').forEach(function(card) {
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildDots, 150);
+    });
+
+    root.querySelectorAll('.ugc-slider__card').forEach(function(card) {
       var video = card.querySelector('video');
-      var btn = card.querySelector('.product01-ugc-play-btn');
+      var btn = card.querySelector('.ugc-slider__play');
       if (!video || !btn) return;
 
-      var playIcon = btn.querySelector('.ecomwize-play-icon');
-      var pauseIcon = btn.querySelector('.ecomwize-pause-icon');
+      var playIcon = btn.querySelector('.ugc-slider__icon-play');
+      var pauseIcon = btn.querySelector('.ugc-slider__icon-pause');
 
       function setPlaying(isPlaying) {
         if (playIcon) playIcon.style.display = isPlaying ? 'none' : 'block';
@@ -311,19 +347,19 @@
       video.addEventListener('ended', function() { setPlaying(false); });
     });
 
-    root.dataset.ugcInit = '1';
+    buildDots();
+  }
+
+  function initAll() {
+    document.querySelectorAll('[data-ugc-slider]').forEach(init);
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUGCSwiper);
+    document.addEventListener('DOMContentLoaded', initAll);
   } else {
-    initUGCSwiper();
+    initAll();
   }
 
-  document.addEventListener('shopify:section:load', function(e) {
-    if (e.target && e.target.querySelector('#' + rootId)) {
-      setTimeout(initUGCSwiper, 50);
-    }
-  });
+  document.addEventListener('shopify:section:load', initAll);
 })();
 </script>
