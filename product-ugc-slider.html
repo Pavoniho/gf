@@ -1,237 +1,59 @@
-<style>
-  .ugc-slider,
-  .ugc-slider *,
-  .ugc-slider *::before,
-  .ugc-slider *::after {
-    box-sizing: border-box;
-  }
+<div style="width:100%;max-width:1216px;margin:0 auto;padding:32px 20px;box-sizing:border-box;font-family:inherit;" data-ugc-slider>
 
-  .ugc-slider {
-    --ugc-accent: #8B1E2D;
-    --ugc-gap: 12px;
-    --ugc-per-view: 3;
-    width: 100%;
-    max-width: 1216px;
-    margin: 0 auto;
-    padding: 32px 20px;
-    font-family: inherit;
-  }
+  <h3 style="font-family:Georgia,'Times New Roman',serif;font-size:clamp(22px,3vw,32px);font-weight:600;line-height:1.2;text-align:center;margin:0 0 24px;color:#8B1E2D;">Give Her a Gift That Speaks to Her Heart</h3>
 
-  .ugc-slider__title {
-    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    margin: 0 0 24px;
-    color: var(--ugc-accent);
-  }
+  <div style="position:relative;">
+    <div data-ugc-track style="display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;">
 
-  .ugc-slider__viewport {
-    position: relative;
-  }
-
-  .ugc-slider__track {
-    display: flex;
-    gap: var(--ugc-gap);
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .ugc-slider__track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .ugc-slider__slide {
-    flex: 0 0 calc((100% - (var(--ugc-gap) * (var(--ugc-per-view) - 1))) / var(--ugc-per-view));
-    scroll-snap-align: start;
-  }
-
-  .ugc-slider__card {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    border-radius: 16px;
-    overflow: hidden;
-    background: #000;
-    cursor: pointer;
-  }
-
-  .ugc-slider__card video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .ugc-slider__play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.9);
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-
-  .ugc-slider__play:hover {
-    background: #fff;
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-
-  .ugc-slider__play svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .ugc-slider__nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 16px;
-  }
-
-  .ugc-slider__dots {
-    display: flex;
-    gap: 6px;
-  }
-
-  .ugc-slider__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-
-  .ugc-slider__dot.is-active {
-    background: var(--ugc-accent);
-    transform: scale(1.2);
-  }
-
-  .ugc-slider__arrows {
-    display: flex;
-    gap: 8px;
-  }
-
-  .ugc-slider__arrow {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background: #fff;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-  }
-
-  .ugc-slider__arrow:not(:disabled):hover {
-    background: var(--ugc-accent);
-    border-color: var(--ugc-accent);
-    color: #fff;
-  }
-
-  .ugc-slider__arrow--next:not(:disabled) {
-    background: var(--ugc-accent);
-    border-color: var(--ugc-accent);
-    color: #fff;
-  }
-
-  .ugc-slider__arrow:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  @media (max-width: 768px) {
-    .ugc-slider {
-      --ugc-per-view: 2.2;
-    }
-    .ugc-slider__arrows {
-      display: none;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .ugc-slider {
-      --ugc-per-view: 1.5;
-    }
-  }
-</style>
-
-<div class="ugc-slider" data-ugc-slider>
-  <h3 class="ugc-slider__title">Give Her a Gift That Speaks to Her Heart</h3>
-
-  <div class="ugc-slider__viewport">
-    <div class="ugc-slider__track" data-ugc-track>
-      <div class="ugc-slider__slide">
-        <div class="ugc-slider__card">
-          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/adLEprSJSOR5iz8X.mp4" loop muted playsinline preload="metadata"></video>
-          <button class="ugc-slider__play" type="button" aria-label="Play video">
-            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+      <div style="flex:0 0 calc((100% - 24px) / 3);scroll-snap-align:start;">
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000;cursor:pointer;" data-ugc-card>
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/adLEprSJSOR5iz8X.mp4" loop muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <button type="button" aria-label="Play video" data-ugc-play style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+            <svg data-icon="play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style="display:none;"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
           </button>
         </div>
       </div>
 
-      <div class="ugc-slider__slide">
-        <div class="ugc-slider__card">
-          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/yDUtsmQ8yyMykr8D.mp4" loop muted playsinline preload="metadata"></video>
-          <button class="ugc-slider__play" type="button" aria-label="Play video">
-            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+      <div style="flex:0 0 calc((100% - 24px) / 3);scroll-snap-align:start;">
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000;cursor:pointer;" data-ugc-card>
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/yDUtsmQ8yyMykr8D.mp4" loop muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <button type="button" aria-label="Play video" data-ugc-play style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+            <svg data-icon="play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style="display:none;"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
           </button>
         </div>
       </div>
 
-      <div class="ugc-slider__slide">
-        <div class="ugc-slider__card">
-          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/upNHJ2D_LXDVBZMR.mp4" loop muted playsinline preload="metadata"></video>
-          <button class="ugc-slider__play" type="button" aria-label="Play video">
-            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+      <div style="flex:0 0 calc((100% - 24px) / 3);scroll-snap-align:start;">
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000;cursor:pointer;" data-ugc-card>
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/upNHJ2D_LXDVBZMR.mp4" loop muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <button type="button" aria-label="Play video" data-ugc-play style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+            <svg data-icon="play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style="display:none;"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
           </button>
         </div>
       </div>
 
-      <div class="ugc-slider__slide">
-        <div class="ugc-slider__card">
-          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/nVdn2oOEoncHokqC.mp4" loop muted playsinline preload="metadata"></video>
-          <button class="ugc-slider__play" type="button" aria-label="Play video">
-            <svg class="ugc-slider__icon-play" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
-            <svg class="ugc-slider__icon-pause" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" style="display:none"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
+      <div style="flex:0 0 calc((100% - 24px) / 3);scroll-snap-align:start;">
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#000;cursor:pointer;" data-ugc-card>
+          <video src="https://cdn.ecomwize.io/95356217-5974-4e87-9868-276329172582/nVdn2oOEoncHokqC.mp4" loop muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+          <button type="button" aria-label="Play video" data-ugc-play style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
+            <svg data-icon="play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+            <svg data-icon="pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style="display:none;"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg>
           </button>
         </div>
       </div>
+
     </div>
 
-    <div class="ugc-slider__nav">
-      <div class="ugc-slider__dots" data-ugc-dots></div>
-      <div class="ugc-slider__arrows">
-        <button class="ugc-slider__arrow ugc-slider__arrow--prev" type="button" data-ugc-prev aria-label="Previous slide">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:16px;">
+      <div data-ugc-dots style="display:flex;gap:6px;"></div>
+      <div style="display:flex;gap:8px;">
+        <button type="button" data-ugc-prev aria-label="Previous slide" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);background:#fff;color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg>
         </button>
-        <button class="ugc-slider__arrow ugc-slider__arrow--next" type="button" data-ugc-next aria-label="Next slide">
+        <button type="button" data-ugc-next aria-label="Next slide" style="width:36px;height:36px;border-radius:50%;border:1px solid #8B1E2D;background:#8B1E2D;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,0,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></svg>
         </button>
       </div>
@@ -240,140 +62,72 @@
 </div>
 
 <script>
-(function() {
-  function init(root) {
-    if (root.dataset.ugcInit === '1') return;
-    root.dataset.ugcInit = '1';
+(function(){
+  function init(root){
+    if(root.dataset.ugcInit==='1')return;root.dataset.ugcInit='1';
+    var track=root.querySelector('[data-ugc-track]');
+    var dotsContainer=root.querySelector('[data-ugc-dots]');
+    var prevBtn=root.querySelector('[data-ugc-prev]');
+    var nextBtn=root.querySelector('[data-ugc-next]');
+    var slides=track.children;
+    if(track){track.style.msOverflowStyle='none';}
 
-    var track = root.querySelector('[data-ugc-track]');
-    var dotsContainer = root.querySelector('[data-ugc-dots]');
-    var prevBtn = root.querySelector('[data-ugc-prev]');
-    var nextBtn = root.querySelector('[data-ugc-next]');
-    var slides = Array.prototype.slice.call(track.querySelectorAll('.ugc-slider__slide'));
-
-    function getStep() {
-      if (!slides.length) return track.clientWidth;
-      var rect = slides[0].getBoundingClientRect();
-      var style = window.getComputedStyle(track);
-      var gap = parseFloat(style.columnGap || style.gap) || 0;
-      return rect.width + gap;
+    function getStep(){
+      if(!slides.length)return track.clientWidth;
+      var rect=slides[0].getBoundingClientRect();
+      var cs=getComputedStyle(track);
+      var gap=parseFloat(cs.columnGap||cs.gap)||0;
+      return rect.width+gap;
     }
+    function getIdx(){var s=getStep();return s>0?Math.round(track.scrollLeft/s):0;}
+    function getMax(){var s=getStep();if(s<=0)return 0;return Math.max(0,Math.round((track.scrollWidth-track.clientWidth)/s));}
 
-    function getCurrentIndex() {
-      var step = getStep();
-      if (step <= 0) return 0;
-      return Math.round(track.scrollLeft / step);
-    }
-
-    function getMaxIndex() {
-      var step = getStep();
-      if (step <= 0) return 0;
-      var maxScroll = track.scrollWidth - track.clientWidth;
-      return Math.max(0, Math.round(maxScroll / step));
-    }
-
-    function buildDots() {
-      if (!dotsContainer) return;
-      var count = getMaxIndex() + 1;
-      dotsContainer.innerHTML = '';
-      for (var i = 0; i < count; i++) {
-        var dot = document.createElement('button');
-        dot.type = 'button';
-        dot.className = 'ugc-slider__dot';
-        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        (function(idx) {
-          dot.addEventListener('click', function() {
-            track.scrollTo({ left: idx * getStep(), behavior: 'smooth' });
-          });
-        })(i);
-        dotsContainer.appendChild(dot);
+    function buildDots(){
+      if(!dotsContainer)return;
+      var n=getMax()+1;dotsContainer.innerHTML='';
+      for(var i=0;i<n;i++){
+        var d=document.createElement('button');
+        d.type='button';
+        d.setAttribute('aria-label','Slide '+(i+1));
+        d.style.cssText='width:8px;height:8px;border-radius:50%;border:none;background:rgba(0,0,0,0.2);padding:0;cursor:pointer;transition:background .2s,transform .2s;';
+        (function(idx){d.addEventListener('click',function(){track.scrollTo({left:idx*getStep(),behavior:'smooth'});});})(i);
+        dotsContainer.appendChild(d);
       }
-      updateState();
+      update();
     }
-
-    function updateState() {
-      var idx = getCurrentIndex();
-      var max = getMaxIndex();
-      if (dotsContainer) {
-        var dots = dotsContainer.querySelectorAll('.ugc-slider__dot');
-        dots.forEach(function(d, i) {
-          d.classList.toggle('is-active', i === idx);
+    function update(){
+      var idx=getIdx(),max=getMax();
+      if(dotsContainer){
+        Array.prototype.forEach.call(dotsContainer.children,function(d,i){
+          var active=i===idx;
+          d.style.background=active?'#8B1E2D':'rgba(0,0,0,0.2)';
+          d.style.transform=active?'scale(1.2)':'scale(1)';
         });
       }
-      if (prevBtn) prevBtn.disabled = idx <= 0;
-      if (nextBtn) nextBtn.disabled = idx >= max;
+      if(prevBtn){prevBtn.disabled=idx<=0;prevBtn.style.opacity=idx<=0?'0.4':'1';}
+      if(nextBtn){nextBtn.disabled=idx>=max;nextBtn.style.opacity=idx>=max?'0.4':'1';}
     }
+    if(prevBtn)prevBtn.addEventListener('click',function(){track.scrollBy({left:-getStep(),behavior:'smooth'});});
+    if(nextBtn)nextBtn.addEventListener('click',function(){track.scrollBy({left:getStep(),behavior:'smooth'});});
+    var t;track.addEventListener('scroll',function(){if(t)cancelAnimationFrame(t);t=requestAnimationFrame(update);});
+    var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(buildDots,150);});
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', function() {
-        track.scrollBy({ left: -getStep(), behavior: 'smooth' });
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener('click', function() {
-        track.scrollBy({ left: getStep(), behavior: 'smooth' });
-      });
-    }
-
-    var scrollTimer;
-    track.addEventListener('scroll', function() {
-      if (scrollTimer) cancelAnimationFrame(scrollTimer);
-      scrollTimer = requestAnimationFrame(updateState);
-    });
-
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(buildDots, 150);
-    });
-
-    root.querySelectorAll('.ugc-slider__card').forEach(function(card) {
-      var video = card.querySelector('video');
-      var btn = card.querySelector('.ugc-slider__play');
-      if (!video || !btn) return;
-
-      var playIcon = btn.querySelector('.ugc-slider__icon-play');
-      var pauseIcon = btn.querySelector('.ugc-slider__icon-pause');
-
-      function setPlaying(isPlaying) {
-        if (playIcon) playIcon.style.display = isPlaying ? 'none' : 'block';
-        if (pauseIcon) pauseIcon.style.display = isPlaying ? 'block' : 'none';
-        btn.setAttribute('aria-label', isPlaying ? 'Pause video' : 'Play video');
-      }
-
-      function toggle(e) {
-        e.stopPropagation();
-        if (video.paused) {
-          root.querySelectorAll('video').forEach(function(v) {
-            if (v !== video && !v.paused) v.pause();
-          });
-          var p = video.play();
-          if (p && typeof p.catch === 'function') p.catch(function() {});
-        } else {
-          video.pause();
-        }
-      }
-
-      btn.addEventListener('click', toggle);
-      card.addEventListener('click', toggle);
-      video.addEventListener('play', function() { setPlaying(true); });
-      video.addEventListener('pause', function() { setPlaying(false); });
-      video.addEventListener('ended', function() { setPlaying(false); });
+    Array.prototype.forEach.call(root.querySelectorAll('[data-ugc-card]'),function(card){
+      var v=card.querySelector('video');var b=card.querySelector('[data-ugc-play]');
+      if(!v||!b)return;
+      var pi=b.querySelector('[data-icon="play"]'),pa=b.querySelector('[data-icon="pause"]');
+      function set(p){if(pi)pi.style.display=p?'none':'block';if(pa)pa.style.display=p?'block':'none';}
+      function tog(e){e.stopPropagation();if(v.paused){Array.prototype.forEach.call(root.querySelectorAll('video'),function(o){if(o!==v&&!o.paused)o.pause();});var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}else{v.pause();}}
+      b.addEventListener('click',tog);card.addEventListener('click',tog);
+      v.addEventListener('play',function(){set(true);});
+      v.addEventListener('pause',function(){set(false);});
+      v.addEventListener('ended',function(){set(false);});
     });
 
     buildDots();
   }
-
-  function initAll() {
-    document.querySelectorAll('[data-ugc-slider]').forEach(init);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
-
-  document.addEventListener('shopify:section:load', initAll);
+  function initAll(){Array.prototype.forEach.call(document.querySelectorAll('[data-ugc-slider]'),init);}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initAll);}else{initAll();}
+  document.addEventListener('shopify:section:load',initAll);
 })();
 </script>
