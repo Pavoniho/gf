@@ -1,5 +1,9 @@
 <style>
-  .sg-trigger {
+  .sg-root {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .sg-root .sg-trigger {
     display: inline-block;
     font-size: 14px;
     font-weight: 600;
@@ -9,30 +13,34 @@
     background: none;
     border: none;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: inherit;
   }
 
-  .sg-trigger:hover {
+  .sg-root .sg-trigger:hover {
     color: #000;
   }
 
   /* Overlay */
-  .sg-overlay {
+  .sg-root .sg-overlay {
     display: none;
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
+    z-index: 99999;
     align-items: center;
     justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
-  .sg-overlay.is-open {
+  .sg-root .sg-overlay.is-open {
     display: flex;
   }
 
-  /* Modal container */
-  .sg-modal {
+  /* Modal */
+  .sg-root .sg-modal {
     position: relative;
     background: #ffffff;
     color: #232323;
@@ -40,15 +48,22 @@
     width: 70%;
     height: 70%;
     max-width: 900px;
+    max-height: 90vh;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 14px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
   }
 
-  .sg-modal__header {
+  .sg-root .sg-modal *,
+  .sg-root .sg-modal *::before,
+  .sg-root .sg-modal *::after {
+    box-sizing: border-box;
+  }
+
+  .sg-root .sg-modal__header {
     padding: 16px 20px;
     font-weight: 700;
     font-size: 16px;
@@ -56,7 +71,7 @@
     flex-shrink: 0;
   }
 
-  .sg-modal__close {
+  .sg-root .sg-modal__close {
     position: absolute;
     top: 10px;
     right: 12px;
@@ -69,18 +84,17 @@
     padding: 6px 10px;
   }
 
-  .sg-modal__close:hover {
+  .sg-root .sg-modal__close:hover {
     color: #000;
   }
 
-  .sg-modal__content {
+  .sg-root .sg-modal__content {
     padding: 16px;
     overflow-y: auto;
     flex: 1;
   }
 
-  /* Title */
-  .sg-title {
+  .sg-root .sg-title {
     text-align: center;
     font-size: 30px;
     margin: 8px 0 20px;
@@ -88,8 +102,7 @@
     font-weight: 400;
   }
 
-  /* Unit toggle */
-  .sg-unit-toggle {
+  .sg-root .sg-unit-toggle {
     width: fit-content;
     display: flex;
     align-items: center;
@@ -100,7 +113,7 @@
     color: #616161;
   }
 
-  .sg-unit-btn {
+  .sg-root .sg-unit-btn {
     flex: 1;
     font-weight: 600;
     text-align: center;
@@ -114,23 +127,23 @@
     background-color: transparent;
     border: none;
     transition: all 0.2s ease;
+    font-family: inherit;
   }
 
-  .sg-unit-btn.is-active {
+  .sg-root .sg-unit-btn.is-active {
     color: #303030;
     background-color: #ffffff;
     border: 0.859px solid #e3e3e3;
     font-weight: 700;
   }
 
-  /* Table */
-  .sg-table-wrap {
+  .sg-root .sg-table-wrap {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 20px;
   }
 
-  .sg-table {
+  .sg-root .sg-table {
     width: auto;
     min-width: 100%;
     table-layout: auto;
@@ -138,7 +151,7 @@
     color: #232323;
   }
 
-  .sg-table th {
+  .sg-root .sg-table th {
     text-align: center;
     background-color: #e7e7e8;
     padding: 6px;
@@ -149,7 +162,7 @@
     font-size: 14px;
   }
 
-  .sg-table td {
+  .sg-root .sg-table td {
     vertical-align: middle;
     text-align: center;
     padding: 4px;
@@ -159,120 +172,109 @@
     font-weight: normal;
   }
 
-  .sg-table tr:nth-child(even) td {
+  .sg-root .sg-table tr:nth-child(even) td {
     background-color: #e7e7e8;
   }
 
-  .sg-table tr:nth-child(odd) td {
+  .sg-root .sg-table tr:nth-child(odd) td {
     background-color: #fbfbfb;
   }
 
-  .sg-table td.sg-size {
+  .sg-root .sg-table td.sg-size {
     font-weight: 600;
   }
 
-  /* Body image */
-  .sg-image {
+  .sg-root .sg-image {
     text-align: center;
     margin: 0 auto 20px;
     width: 50%;
   }
 
-  .sg-image img {
+  .sg-root .sg-image img {
     max-width: 100%;
     height: auto;
     display: block;
     margin: 0 auto;
   }
 
-  /* Fit notes */
-  .sg-notes-title {
+  .sg-root .sg-notes-title {
     font-style: normal;
     font-weight: 650;
     line-height: 20px;
-    margin-bottom: 6px;
+    margin: 0 0 6px;
   }
 
-  .sg-notes ul {
+  .sg-root .sg-notes ul {
     margin: 0;
     padding-left: 20px;
   }
 
-  .sg-notes li {
+  .sg-root .sg-notes li {
     line-height: 1.6;
   }
 
-  /* Mobile */
   @media (max-width: 767px) {
-    .sg-modal {
+    .sg-root .sg-modal {
       width: 92%;
       height: 85%;
     }
-
-    .sg-title {
+    .sg-root .sg-title {
       font-size: 22px;
     }
-
-    .sg-image {
+    .sg-root .sg-image {
       width: 80%;
     }
   }
 </style>
 
-<!-- Clickable Size guide trigger -->
-<button type="button" class="sg-trigger" data-sg-open>Size guide</button>
+<div class="sg-root">
+  <button type="button" class="sg-trigger" data-sg-open>Size guide</button>
 
-<!-- Modal -->
-<div class="sg-overlay" data-sg-overlay role="dialog" aria-modal="true" aria-labelledby="sg-modal-title">
-  <div class="sg-modal">
-    <header class="sg-modal__header" id="sg-modal-title">Size guides</header>
-    <button type="button" class="sg-modal__close" data-sg-close title="Close (Esc)" aria-label="Close">✕</button>
+  <div class="sg-overlay" data-sg-overlay role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sg-modal">
+      <header class="sg-modal__header">Size guides</header>
+      <button type="button" class="sg-modal__close" data-sg-close title="Close (Esc)" aria-label="Close">&#10005;</button>
 
-    <div class="sg-modal__content">
-      <h2 class="sg-title">SILIX 3D Leggings&nbsp;Size Chart</h2>
+      <div class="sg-modal__content">
+        <h2 class="sg-title">SILIX 3D Leggings&nbsp;Size Chart</h2>
 
-      <!-- IN / CM toggle -->
-      <div class="sg-unit-toggle" role="tablist">
-        <button type="button" class="sg-unit-btn is-active" data-unit="in" role="tab" aria-selected="true">IN</button>
-        <button type="button" class="sg-unit-btn" data-unit="cm" role="tab" aria-selected="false">CM</button>
-      </div>
+        <div class="sg-unit-toggle" role="tablist">
+          <button type="button" class="sg-unit-btn is-active" data-sg-unit="in" role="tab" aria-selected="true">IN</button>
+          <button type="button" class="sg-unit-btn" data-sg-unit="cm" role="tab" aria-selected="false">CM</button>
+        </div>
 
-      <!-- Size table -->
-      <div class="sg-table-wrap">
-        <table class="sg-table">
-          <thead>
-            <tr>
-              <th>Size</th>
-              <th>Recommended Hips</th>
-              <th>Recommended Waist</th>
-              <th>UK/AU/NZ</th>
-              <th>US</th>
-              <th>Reference Weight (LBS)</th>
-              <th>Reference Height</th>
-            </tr>
-          </thead>
-          <tbody data-sg-tbody>
-            <!-- Rows injected by JS based on unit -->
-          </tbody>
-        </table>
-      </div>
+        <div class="sg-table-wrap">
+          <table class="sg-table">
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Recommended Hips</th>
+                <th>Recommended Waist</th>
+                <th>UK/AU/NZ</th>
+                <th>US</th>
+                <th>Reference Weight (LBS)</th>
+                <th>Reference Height</th>
+              </tr>
+            </thead>
+            <tbody data-sg-tbody></tbody>
+          </table>
+        </div>
 
-      <!-- Body shape image -->
-      <div class="sg-image">
-        <img src="https://storage.googleapis.com/avada-size-chart.appspot.com/charts_content/nAXGUV7tXbWbYJlLt7Wo/1760692922722-img_v3_02r5_4095ecc7-5fab-4d85-b3b9-f2045344580g.jpg" alt="Body measurement guide">
-      </div>
+        <div class="sg-image">
+          <img src="https://storage.googleapis.com/avada-size-chart.appspot.com/charts_content/nAXGUV7tXbWbYJlLt7Wo/1760692922722-img_v3_02r5_4095ecc7-5fab-4d85-b3b9-f2045344580g.jpg" alt="Body measurement guide" loading="lazy">
+        </div>
 
-      <!-- Fit notes -->
-      <div class="sg-notes">
-        <p class="sg-notes-title">Fit Notes Based on Body Shape</p>
-        <ul>
-          <li>Note: Manual measurement error is between 0.4-0.8 inches</li>
-          <li>Pear-shaped: Go by hip size, adjust waist with a belt</li>
-          <li>Apple-shaped: Choose high-waisted for tummy support</li>
-          <li>Hourglass: Stretch fabrics or contoured waistbands</li>
-          <li>Petite (&lt;63inch): Cropped or short inseams recommended</li>
-          <li>Tall (&gt;68.9inch): Look for tall or long-fit bottom styles</li>
-        </ul>
+        <div class="sg-notes">
+          <p class="sg-notes-title">Fit Notes Based on Body Shape</p>
+          <ul>
+            <li>Note: Manual measurement error is between 0.4-0.8 inches</li>
+            <li>Pear-shaped: Go by hip size, adjust waist with a belt</li>
+            <li>Apple-shaped: Choose high-waisted for tummy support</li>
+            <li>Hourglass: Stretch fabrics or contoured waistbands</li>
+            <li>Petite (&lt;63inch): Cropped or short inseams recommended</li>
+            <li>Tall (&gt;68.9inch): Look for tall or long-fit bottom styles</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -280,85 +282,121 @@
 
 <script>
   (function () {
-    var data = {
-      in: [
-        ['S',    '32 – 36', '23 – 26', '8-10',  '4-6',   '99-121',  '61 - 66'],
-        ['M',    '36 – 39', '26 – 29', '10-12', '6-8',   '121-137', '63 - 67'],
-        ['L',    '39 – 43', '29 – 32', '12-14', '8-10',  '137-148', '63 - 69'],
-        ['XL',   '43 – 46', '32 – 35', '14-16', '10-12', '148-159', '63 - 71'],
-        ['XXL',  '46 – 49', '35 – 39', '16-18', '12-14', '159-176', '63 - 71'],
-        ['XXXL', '49 - 53', '39 - 43', '18-20', '14-16', '176-196', '63 - 71']
-      ],
-      cm: [
-        ['S',    '81 – 91',   '58 – 66',  '8-10',  '4-6',   '99-121',  '155 - 168'],
-        ['M',    '91 – 99',   '66 – 74',  '10-12', '6-8',   '121-137', '160 - 170'],
-        ['L',    '99 – 109',  '74 – 81',  '12-14', '8-10',  '137-148', '160 - 175'],
-        ['XL',   '109 – 117', '81 – 89',  '14-16', '10-12', '148-159', '160 - 180'],
-        ['XXL',  '117 – 124', '89 – 99',  '16-18', '12-14', '159-176', '160 - 180'],
-        ['XXXL', '124 - 135', '99 - 109', '18-20', '14-16', '176-196', '160 - 180']
-      ]
-    };
+    try {
+      var data = {
+        in: [
+          ['S',    '32 – 36', '23 – 26', '8-10',  '4-6',   '99-121',  '61 - 66'],
+          ['M',    '36 – 39', '26 – 29', '10-12', '6-8',   '121-137', '63 - 67'],
+          ['L',    '39 – 43', '29 – 32', '12-14', '8-10',  '137-148', '63 - 69'],
+          ['XL',   '43 – 46', '32 – 35', '14-16', '10-12', '148-159', '63 - 71'],
+          ['XXL',  '46 – 49', '35 – 39', '16-18', '12-14', '159-176', '63 - 71'],
+          ['XXXL', '49 - 53',      '39 - 43',      '18-20', '14-16', '176-196', '63 - 71']
+        ],
+        cm: [
+          ['S',    '81 – 91',   '58 – 66',  '8-10',  '4-6',   '99-121',  '155 - 168'],
+          ['M',    '91 – 99',   '66 – 74',  '10-12', '6-8',   '121-137', '160 - 170'],
+          ['L',    '99 – 109',  '74 – 81',  '12-14', '8-10',  '137-148', '160 - 175'],
+          ['XL',   '109 – 117', '81 – 89',  '14-16', '10-12', '148-159', '160 - 180'],
+          ['XXL',  '117 – 124', '89 – 99',  '16-18', '12-14', '159-176', '160 - 180'],
+          ['XXXL', '124 - 135',      '99 - 109',      '18-20', '14-16', '176-196', '160 - 180']
+        ]
+      };
 
-    var overlay = document.querySelector('[data-sg-overlay]');
-    var tbody = document.querySelector('[data-sg-tbody]');
-    var openBtn = document.querySelector('[data-sg-open]');
-    var closeBtn = document.querySelector('[data-sg-close]');
-    var unitBtns = document.querySelectorAll('.sg-unit-btn');
+      function init(root) {
+        if (!root || root.dataset.sgInit === '1') return;
+        root.dataset.sgInit = '1';
 
-    function renderRows(unit) {
-      var rows = data[unit] || data.in;
-      var html = '';
-      for (var i = 0; i < rows.length; i++) {
-        var r = rows[i];
-        html += '<tr>' +
-          '<td class="sg-size">' + r[0] + '</td>' +
-          '<td>' + r[1] + '</td>' +
-          '<td>' + r[2] + '</td>' +
-          '<td>' + r[3] + '</td>' +
-          '<td>' + r[4] + '</td>' +
-          '<td>' + r[5] + '</td>' +
-          '<td>' + r[6] + '</td>' +
-        '</tr>';
+        var overlay  = root.querySelector('[data-sg-overlay]');
+        var tbody    = root.querySelector('[data-sg-tbody]');
+        var openBtn  = root.querySelector('[data-sg-open]');
+        var closeBtn = root.querySelector('[data-sg-close]');
+        var unitBtns = root.querySelectorAll('[data-sg-unit]');
+
+        if (!overlay || !tbody || !openBtn || !closeBtn) return;
+
+        function esc(s) {
+          return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+          });
+        }
+
+        function renderRows(unit) {
+          var rows = data[unit] || data.in;
+          var html = '';
+          for (var i = 0; i < rows.length; i++) {
+            var r = rows[i];
+            html += '<tr>' +
+              '<td class="sg-size">' + esc(r[0]) + '</td>' +
+              '<td>' + esc(r[1]) + '</td>' +
+              '<td>' + esc(r[2]) + '</td>' +
+              '<td>' + esc(r[3]) + '</td>' +
+              '<td>' + esc(r[4]) + '</td>' +
+              '<td>' + esc(r[5]) + '</td>' +
+              '<td>' + esc(r[6]) + '</td>' +
+            '</tr>';
+          }
+          tbody.innerHTML = html;
+        }
+
+        function setUnit(unit) {
+          for (var i = 0; i < unitBtns.length; i++) {
+            var btn = unitBtns[i];
+            var active = btn.getAttribute('data-sg-unit') === unit;
+            if (active) btn.classList.add('is-active'); else btn.classList.remove('is-active');
+            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          }
+          renderRows(unit);
+        }
+
+        function openModal(e) {
+          if (e) e.preventDefault();
+          overlay.classList.add('is-open');
+          overlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeModal() {
+          overlay.classList.remove('is-open');
+          overlay.setAttribute('aria-hidden', 'true');
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        overlay.addEventListener('click', function (e) {
+          if (e.target === overlay) closeModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+        });
+
+        for (var j = 0; j < unitBtns.length; j++) {
+          (function (b) {
+            b.addEventListener('click', function () {
+              setUnit(b.getAttribute('data-sg-unit'));
+            });
+          })(unitBtns[j]);
+        }
+
+        setUnit('in');
       }
-      tbody.innerHTML = html;
-    }
 
-    function setUnit(unit) {
-      unitBtns.forEach(function (btn) {
-        var active = btn.getAttribute('data-unit') === unit;
-        btn.classList.toggle('is-active', active);
-        btn.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-      renderRows(unit);
-    }
+      function initAll() {
+        try {
+          var roots = document.querySelectorAll('.sg-root');
+          for (var i = 0; i < roots.length; i++) init(roots[i]);
+        } catch (err) { /* silent */ }
+      }
 
-    function openModal() {
-      overlay.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+      } else {
+        initAll();
+      }
 
-    function closeModal() {
-      overlay.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeModal();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
-    });
-
-    unitBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        setUnit(btn.getAttribute('data-unit'));
-      });
-    });
-
-    setUnit('in');
+      if (window.Shopify && Shopify.designMode) {
+        document.addEventListener('shopify:section:load', initAll);
+      }
+    } catch (err) { /* silent: never break the host page */ }
   })();
 </script>
