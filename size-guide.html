@@ -1,9 +1,5 @@
 <style>
-  .sg-root {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-
-  .sg-root .sg-trigger {
+  .sg-trigger {
     display: inline-block;
     font-size: 14px;
     font-weight: 600;
@@ -13,67 +9,51 @@
     background: none;
     border: none;
     padding: 0;
-    font-family: inherit;
-  }
-
-  .sg-root .sg-trigger:hover {
-    color: #000;
-  }
-
-  /* Overlay */
-  .sg-root .sg-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 99999;
-    align-items: center;
-    justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
-  .sg-root .sg-overlay.is-open {
-    display: flex;
-  }
+  .sg-trigger:hover { color: #000; }
 
-  /* Modal */
-  .sg-root .sg-modal {
-    position: relative;
+  dialog.sg-dialog {
+    width: 70%;
+    max-width: 900px;
+    height: 70%;
+    max-height: 90vh;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
     background: #ffffff;
     color: #232323;
-    border-radius: 10px;
-    width: 70%;
-    height: 70%;
-    max-width: 900px;
-    max-height: 90vh;
-    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 14px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  }
+
+  dialog.sg-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .sg-dialog * { box-sizing: border-box; }
+
+  .sg-dialog .sg-inner {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    height: 100%;
   }
 
-  .sg-root .sg-modal *,
-  .sg-root .sg-modal *::before,
-  .sg-root .sg-modal *::after {
-    box-sizing: border-box;
-  }
-
-  .sg-root .sg-modal__header {
+  .sg-dialog .sg-header {
     padding: 16px 20px;
     font-weight: 700;
     font-size: 16px;
     border-bottom: 1px solid #eee;
     flex-shrink: 0;
+    position: relative;
   }
 
-  .sg-root .sg-modal__close {
+  .sg-dialog .sg-close {
     position: absolute;
-    top: 10px;
+    top: 8px;
     right: 12px;
     background: none;
     border: none;
@@ -84,17 +64,13 @@
     padding: 6px 10px;
   }
 
-  .sg-root .sg-modal__close:hover {
-    color: #000;
-  }
-
-  .sg-root .sg-modal__content {
+  .sg-dialog .sg-content {
     padding: 16px;
     overflow-y: auto;
     flex: 1;
   }
 
-  .sg-root .sg-title {
+  .sg-dialog .sg-title {
     text-align: center;
     font-size: 30px;
     margin: 8px 0 20px;
@@ -102,301 +78,180 @@
     font-weight: 400;
   }
 
-  .sg-root .sg-unit-toggle {
+  .sg-dialog .sg-unit-toggle {
     width: fit-content;
     display: flex;
     align-items: center;
-    justify-content: center;
     margin: 8px auto 16px;
     border-radius: 20px;
     background-color: #f7f7f7;
-    color: #616161;
   }
 
-  .sg-root .sg-unit-btn {
-    flex: 1;
+  .sg-dialog .sg-unit-btn {
     font-weight: 600;
-    text-align: center;
     color: #616161;
-    white-space: nowrap;
     font-size: 14px;
     line-height: 20px;
     padding: 8px 20px;
     cursor: pointer;
     border-radius: 20px;
-    background-color: transparent;
+    background: transparent;
     border: none;
-    transition: all 0.2s ease;
     font-family: inherit;
   }
 
-  .sg-root .sg-unit-btn.is-active {
+  .sg-dialog .sg-unit-btn.is-active {
     color: #303030;
     background-color: #ffffff;
-    border: 0.859px solid #e3e3e3;
+    border: 1px solid #e3e3e3;
     font-weight: 700;
   }
 
-  .sg-root .sg-table-wrap {
+  .sg-dialog .sg-table-wrap {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 20px;
   }
 
-  .sg-root .sg-table {
-    width: auto;
-    min-width: 100%;
-    table-layout: auto;
+  .sg-dialog table.sg-table {
+    width: 100%;
     border-collapse: collapse;
     color: #232323;
   }
 
-  .sg-root .sg-table th {
+  .sg-dialog .sg-table th {
     text-align: center;
     background-color: #e7e7e8;
     padding: 6px;
-    height: 28px;
-    min-width: 60px;
     border: 2px solid #fbfbfb;
     font-weight: 600;
     font-size: 14px;
   }
 
-  .sg-root .sg-table td {
-    vertical-align: middle;
+  .sg-dialog .sg-table td {
     text-align: center;
     padding: 4px;
-    height: 20px;
     border: 1px solid #fbfbfb;
     font-size: 14px;
-    font-weight: normal;
   }
 
-  .sg-root .sg-table tr:nth-child(even) td {
-    background-color: #e7e7e8;
-  }
+  .sg-dialog .sg-table tr:nth-child(odd) td  { background:#fbfbfb; }
+  .sg-dialog .sg-table tr:nth-child(even) td { background:#e7e7e8; }
+  .sg-dialog .sg-table td.sg-size { font-weight: 600; }
 
-  .sg-root .sg-table tr:nth-child(odd) td {
-    background-color: #fbfbfb;
-  }
-
-  .sg-root .sg-table td.sg-size {
-    font-weight: 600;
-  }
-
-  .sg-root .sg-image {
+  .sg-dialog .sg-image {
     text-align: center;
     margin: 0 auto 20px;
     width: 50%;
   }
 
-  .sg-root .sg-image img {
+  .sg-dialog .sg-image img {
     max-width: 100%;
     height: auto;
     display: block;
     margin: 0 auto;
   }
 
-  .sg-root .sg-notes-title {
-    font-style: normal;
-    font-weight: 650;
-    line-height: 20px;
+  .sg-dialog .sg-notes-title {
+    font-weight: 700;
     margin: 0 0 6px;
   }
 
-  .sg-root .sg-notes ul {
+  .sg-dialog .sg-notes ul {
     margin: 0;
     padding-left: 20px;
   }
 
-  .sg-root .sg-notes li {
-    line-height: 1.6;
-  }
+  .sg-dialog .sg-notes li { line-height: 1.6; }
 
   @media (max-width: 767px) {
-    .sg-root .sg-modal {
-      width: 92%;
-      height: 85%;
-    }
-    .sg-root .sg-title {
-      font-size: 22px;
-    }
-    .sg-root .sg-image {
-      width: 80%;
-    }
+    dialog.sg-dialog { width: 92%; height: 85%; }
+    .sg-dialog .sg-title { font-size: 22px; }
+    .sg-dialog .sg-image { width: 80%; }
   }
 </style>
 
-<div class="sg-root">
-  <button type="button" class="sg-trigger" data-sg-open>Size guide</button>
+<button type="button" class="sg-trigger" onclick="document.getElementById('sg-dialog-silix').showModal()">Size guide</button>
 
-  <div class="sg-overlay" data-sg-overlay role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="sg-modal">
-      <header class="sg-modal__header">Size guides</header>
-      <button type="button" class="sg-modal__close" data-sg-close title="Close (Esc)" aria-label="Close">&#10005;</button>
+<dialog id="sg-dialog-silix" class="sg-dialog">
+  <div class="sg-inner">
+    <div class="sg-header">
+      Size guides
+      <button type="button" class="sg-close" onclick="document.getElementById('sg-dialog-silix').close()" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="sg-content">
+      <h2 class="sg-title">SILIX 3D Leggings&nbsp;Size Chart</h2>
 
-      <div class="sg-modal__content">
-        <h2 class="sg-title">SILIX 3D Leggings&nbsp;Size Chart</h2>
+      <div class="sg-unit-toggle">
+        <button type="button" class="sg-unit-btn is-active" data-sg-unit="in">IN</button>
+        <button type="button" class="sg-unit-btn" data-sg-unit="cm">CM</button>
+      </div>
 
-        <div class="sg-unit-toggle" role="tablist">
-          <button type="button" class="sg-unit-btn is-active" data-sg-unit="in" role="tab" aria-selected="true">IN</button>
-          <button type="button" class="sg-unit-btn" data-sg-unit="cm" role="tab" aria-selected="false">CM</button>
-        </div>
+      <div class="sg-table-wrap">
+        <table class="sg-table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Recommended Hips</th>
+              <th>Recommended Waist</th>
+              <th>UK/AU/NZ</th>
+              <th>US</th>
+              <th>Reference Weight (LBS)</th>
+              <th>Reference Height</th>
+            </tr>
+          </thead>
+          <tbody data-sg-rows-in>
+            <tr><td class="sg-size">S</td>   <td>32 – 36</td><td>23 – 26</td><td>8-10</td> <td>4-6</td>  <td>99-121</td> <td>61 - 66</td></tr>
+            <tr><td class="sg-size">M</td>   <td>36 – 39</td><td>26 – 29</td><td>10-12</td><td>6-8</td>  <td>121-137</td><td>63 - 67</td></tr>
+            <tr><td class="sg-size">L</td>   <td>39 – 43</td><td>29 – 32</td><td>12-14</td><td>8-10</td> <td>137-148</td><td>63 - 69</td></tr>
+            <tr><td class="sg-size">XL</td>  <td>43 – 46</td><td>32 – 35</td><td>14-16</td><td>10-12</td><td>148-159</td><td>63 - 71</td></tr>
+            <tr><td class="sg-size">XXL</td> <td>46 – 49</td><td>35 – 39</td><td>16-18</td><td>12-14</td><td>159-176</td><td>63 - 71</td></tr>
+            <tr><td class="sg-size">XXXL</td><td>49 - 53</td><td>39 - 43</td><td>18-20</td><td>14-16</td><td>176-196</td><td>63 - 71</td></tr>
+          </tbody>
+          <tbody data-sg-rows-cm style="display:none">
+            <tr><td class="sg-size">S</td>   <td>81 – 91</td>  <td>58 – 66</td> <td>8-10</td> <td>4-6</td>  <td>99-121</td> <td>155 - 168</td></tr>
+            <tr><td class="sg-size">M</td>   <td>91 – 99</td>  <td>66 – 74</td> <td>10-12</td><td>6-8</td>  <td>121-137</td><td>160 - 170</td></tr>
+            <tr><td class="sg-size">L</td>   <td>99 – 109</td> <td>74 – 81</td> <td>12-14</td><td>8-10</td> <td>137-148</td><td>160 - 175</td></tr>
+            <tr><td class="sg-size">XL</td>  <td>109 – 117</td><td>81 – 89</td> <td>14-16</td><td>10-12</td><td>148-159</td><td>160 - 180</td></tr>
+            <tr><td class="sg-size">XXL</td> <td>117 – 124</td><td>89 – 99</td> <td>16-18</td><td>12-14</td><td>159-176</td><td>160 - 180</td></tr>
+            <tr><td class="sg-size">XXXL</td><td>124 - 135</td><td>99 - 109</td><td>18-20</td><td>14-16</td><td>176-196</td><td>160 - 180</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-        <div class="sg-table-wrap">
-          <table class="sg-table">
-            <thead>
-              <tr>
-                <th>Size</th>
-                <th>Recommended Hips</th>
-                <th>Recommended Waist</th>
-                <th>UK/AU/NZ</th>
-                <th>US</th>
-                <th>Reference Weight (LBS)</th>
-                <th>Reference Height</th>
-              </tr>
-            </thead>
-            <tbody data-sg-tbody></tbody>
-          </table>
-        </div>
+      <div class="sg-image">
+        <img src="https://storage.googleapis.com/avada-size-chart.appspot.com/charts_content/nAXGUV7tXbWbYJlLt7Wo/1760692922722-img_v3_02r5_4095ecc7-5fab-4d85-b3b9-f2045344580g.jpg" alt="Body measurement guide" loading="lazy">
+      </div>
 
-        <div class="sg-image">
-          <img src="https://storage.googleapis.com/avada-size-chart.appspot.com/charts_content/nAXGUV7tXbWbYJlLt7Wo/1760692922722-img_v3_02r5_4095ecc7-5fab-4d85-b3b9-f2045344580g.jpg" alt="Body measurement guide" loading="lazy">
-        </div>
-
-        <div class="sg-notes">
-          <p class="sg-notes-title">Fit Notes Based on Body Shape</p>
-          <ul>
-            <li>Note: Manual measurement error is between 0.4-0.8 inches</li>
-            <li>Pear-shaped: Go by hip size, adjust waist with a belt</li>
-            <li>Apple-shaped: Choose high-waisted for tummy support</li>
-            <li>Hourglass: Stretch fabrics or contoured waistbands</li>
-            <li>Petite (&lt;63inch): Cropped or short inseams recommended</li>
-            <li>Tall (&gt;68.9inch): Look for tall or long-fit bottom styles</li>
-          </ul>
-        </div>
+      <div class="sg-notes">
+        <p class="sg-notes-title">Fit Notes Based on Body Shape</p>
+        <ul>
+          <li>Note: Manual measurement error is between 0.4-0.8 inches</li>
+          <li>Pear-shaped: Go by hip size, adjust waist with a belt</li>
+          <li>Apple-shaped: Choose high-waisted for tummy support</li>
+          <li>Hourglass: Stretch fabrics or contoured waistbands</li>
+          <li>Petite (&lt;63inch): Cropped or short inseams recommended</li>
+          <li>Tall (&gt;68.9inch): Look for tall or long-fit bottom styles</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</dialog>
 
 <script>
   (function () {
-    try {
-      var data = {
-        in: [
-          ['S',    '32 – 36', '23 – 26', '8-10',  '4-6',   '99-121',  '61 - 66'],
-          ['M',    '36 – 39', '26 – 29', '10-12', '6-8',   '121-137', '63 - 67'],
-          ['L',    '39 – 43', '29 – 32', '12-14', '8-10',  '137-148', '63 - 69'],
-          ['XL',   '43 – 46', '32 – 35', '14-16', '10-12', '148-159', '63 - 71'],
-          ['XXL',  '46 – 49', '35 – 39', '16-18', '12-14', '159-176', '63 - 71'],
-          ['XXXL', '49 - 53',      '39 - 43',      '18-20', '14-16', '176-196', '63 - 71']
-        ],
-        cm: [
-          ['S',    '81 – 91',   '58 – 66',  '8-10',  '4-6',   '99-121',  '155 - 168'],
-          ['M',    '91 – 99',   '66 – 74',  '10-12', '6-8',   '121-137', '160 - 170'],
-          ['L',    '99 – 109',  '74 – 81',  '12-14', '8-10',  '137-148', '160 - 175'],
-          ['XL',   '109 – 117', '81 – 89',  '14-16', '10-12', '148-159', '160 - 180'],
-          ['XXL',  '117 – 124', '89 – 99',  '16-18', '12-14', '159-176', '160 - 180'],
-          ['XXXL', '124 - 135',      '99 - 109',      '18-20', '14-16', '176-196', '160 - 180']
-        ]
-      };
-
-      function init(root) {
-        if (!root || root.dataset.sgInit === '1') return;
-        root.dataset.sgInit = '1';
-
-        var overlay  = root.querySelector('[data-sg-overlay]');
-        var tbody    = root.querySelector('[data-sg-tbody]');
-        var openBtn  = root.querySelector('[data-sg-open]');
-        var closeBtn = root.querySelector('[data-sg-close]');
-        var unitBtns = root.querySelectorAll('[data-sg-unit]');
-
-        if (!overlay || !tbody || !openBtn || !closeBtn) return;
-
-        function esc(s) {
-          return String(s).replace(/[&<>"']/g, function (c) {
-            return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-          });
-        }
-
-        function renderRows(unit) {
-          var rows = data[unit] || data.in;
-          var html = '';
-          for (var i = 0; i < rows.length; i++) {
-            var r = rows[i];
-            html += '<tr>' +
-              '<td class="sg-size">' + esc(r[0]) + '</td>' +
-              '<td>' + esc(r[1]) + '</td>' +
-              '<td>' + esc(r[2]) + '</td>' +
-              '<td>' + esc(r[3]) + '</td>' +
-              '<td>' + esc(r[4]) + '</td>' +
-              '<td>' + esc(r[5]) + '</td>' +
-              '<td>' + esc(r[6]) + '</td>' +
-            '</tr>';
-          }
-          tbody.innerHTML = html;
-        }
-
-        function setUnit(unit) {
-          for (var i = 0; i < unitBtns.length; i++) {
-            var btn = unitBtns[i];
-            var active = btn.getAttribute('data-sg-unit') === unit;
-            if (active) btn.classList.add('is-active'); else btn.classList.remove('is-active');
-            btn.setAttribute('aria-selected', active ? 'true' : 'false');
-          }
-          renderRows(unit);
-        }
-
-        function openModal(e) {
-          if (e) e.preventDefault();
-          overlay.classList.add('is-open');
-          overlay.setAttribute('aria-hidden', 'false');
-        }
-
-        function closeModal() {
-          overlay.classList.remove('is-open');
-          overlay.setAttribute('aria-hidden', 'true');
-        }
-
-        openBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-
-        overlay.addEventListener('click', function (e) {
-          if (e.target === overlay) closeModal();
-        });
-
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
-        });
-
-        for (var j = 0; j < unitBtns.length; j++) {
-          (function (b) {
-            b.addEventListener('click', function () {
-              setUnit(b.getAttribute('data-sg-unit'));
-            });
-          })(unitBtns[j]);
-        }
-
-        setUnit('in');
-      }
-
-      function initAll() {
-        try {
-          var roots = document.querySelectorAll('.sg-root');
-          for (var i = 0; i < roots.length; i++) init(roots[i]);
-        } catch (err) { /* silent */ }
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAll);
-      } else {
-        initAll();
-      }
-
-      if (window.Shopify && Shopify.designMode) {
-        document.addEventListener('shopify:section:load', initAll);
-      }
-    } catch (err) { /* silent: never break the host page */ }
+    var dlg = document.getElementById('sg-dialog-silix');
+    if (!dlg) return;
+    var btns   = dlg.querySelectorAll('[data-sg-unit]');
+    var rowsIn = dlg.querySelector('[data-sg-rows-in]');
+    var rowsCm = dlg.querySelector('[data-sg-rows-cm]');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var unit = b.getAttribute('data-sg-unit');
+        btns.forEach(function (x) { x.classList.toggle('is-active', x === b); });
+        rowsIn.style.display = unit === 'in' ? '' : 'none';
+        rowsCm.style.display = unit === 'cm' ? '' : 'none';
+      });
+    });
   })();
 </script>
