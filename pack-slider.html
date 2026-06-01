@@ -1,0 +1,182 @@
+<style>
+  .aq-packs *,
+  .aq-packs *::before,
+  .aq-packs *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .aq-packs {
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 12px 4px 4px;
+  }
+
+  /* Slider track + labels */
+  .aq-packs__slider {
+    position: relative;
+    padding: 0 4px;
+  }
+
+  .aq-packs__row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .aq-packs__name,
+  .aq-packs__save {
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .aq-packs__name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin-bottom: 18px;
+  }
+
+  .aq-packs__save {
+    font-size: 16px;
+    font-weight: 500;
+    color: #3a3a3a;
+    margin-top: 18px;
+  }
+
+  /* The track line */
+  .aq-packs__track {
+    position: relative;
+    height: 6px;
+    margin: 0 calc(12.5% - 7px);
+  }
+
+  .aq-packs__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 6px;
+    transform: translateY(-50%);
+    background-color: #cfe8d8;
+    border-radius: 999px;
+  }
+
+  /* Dots */
+  .aq-packs__dots {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .aq-packs__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #a4d4ba;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .aq-packs__dot:hover {
+    transform: scale(1.15);
+  }
+
+  /* Selected state */
+  .aq-packs__dot.is-active {
+    background-color: #6fb892;
+    box-shadow: 0 0 0 4px rgba(111, 184, 146, 0.25);
+    transform: scale(1.25);
+  }
+
+  .aq-packs__name.is-active {
+    color: #000000;
+  }
+
+  .aq-packs__save.is-active {
+    color: #2b2b2b;
+    font-weight: 700;
+  }
+
+  @media (max-width: 480px) {
+    .aq-packs__name { font-size: 15px; }
+    .aq-packs__save { font-size: 14px; }
+  }
+</style>
+
+<div class="aq-packs" data-aq-packs>
+
+  <!-- Top labels: pack names -->
+  <div class="aq-packs__slider">
+    <div class="aq-packs__row">
+      <div class="aq-packs__name" data-index="0">3 Pack</div>
+      <div class="aq-packs__name" data-index="1">6 Pack</div>
+      <div class="aq-packs__name" data-index="2">9 Pack</div>
+      <div class="aq-packs__name" data-index="3">12 Pack</div>
+    </div>
+
+    <!-- Track + dots -->
+    <div class="aq-packs__track">
+      <div class="aq-packs__line"></div>
+      <div class="aq-packs__dots">
+        <button class="aq-packs__dot" type="button" data-index="0" aria-label="3 Pack"></button>
+        <button class="aq-packs__dot" type="button" data-index="1" aria-label="6 Pack"></button>
+        <button class="aq-packs__dot" type="button" data-index="2" aria-label="9 Pack"></button>
+        <button class="aq-packs__dot" type="button" data-index="3" aria-label="12 Pack"></button>
+      </div>
+    </div>
+
+    <!-- Bottom labels: savings -->
+    <div class="aq-packs__row">
+      <div class="aq-packs__save" data-index="0">Save 25%</div>
+      <div class="aq-packs__save" data-index="1">Save 30%</div>
+      <div class="aq-packs__save" data-index="2">Save 40%</div>
+      <div class="aq-packs__save" data-index="3">Save 50%</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || !root.hasAttribute('data-aq-packs')) {
+      root = document.querySelector('[data-aq-packs]');
+    }
+    if (!root) return;
+
+    var dots = root.querySelectorAll('.aq-packs__dot');
+    var names = root.querySelectorAll('.aq-packs__name');
+    var saves = root.querySelectorAll('.aq-packs__save');
+
+    function select(index) {
+      [dots, names, saves].forEach(function (group) {
+        group.forEach(function (el) {
+          el.classList.toggle('is-active', parseInt(el.getAttribute('data-index'), 10) === index);
+        });
+      });
+      // Expose the selected pack so other scripts can hook in (e.g. variant change)
+      root.setAttribute('data-selected', index);
+      root.dispatchEvent(new CustomEvent('aq:pack-change', { detail: { index: index } }));
+    }
+
+    [dots, names, saves].forEach(function (group) {
+      group.forEach(function (el) {
+        el.addEventListener('click', function () {
+          select(parseInt(el.getAttribute('data-index'), 10));
+        });
+      });
+    });
+
+    // Default selection: first pack (3 Pack)
+    select(0);
+  })();
+</script>
