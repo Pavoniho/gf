@@ -45,37 +45,24 @@
     margin-top: 18px;
   }
 
-  /* The track line */
+  /* The visible connecting line: spans center-to-center of the columns */
   .aq-packs__track {
     position: relative;
     height: 6px;
-    margin: 0 calc(12.5% - 7px);
-  }
-
-  .aq-packs__line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 6px;
-    transform: translateY(-50%);
+    margin: 0 12.5%;
     background-color: #cfe8d8;
     border-radius: 999px;
   }
 
-  /* Dots */
+  /* Dots layer sits on top of the line */
   .aq-packs__dots {
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    inset: 0;
   }
 
   .aq-packs__dot {
+    position: absolute;
+    top: 50%;
     width: 14px;
     height: 14px;
     border-radius: 50%;
@@ -83,18 +70,20 @@
     cursor: pointer;
     border: none;
     padding: 0;
-    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    transform: translate(-50%, -50%);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .aq-packs__dot:hover {
-    transform: scale(1.15);
-  }
+  /* Evenly placed on the line, centered on each end/point */
+  .aq-packs__dot[data-index="0"] { left: 0; }
+  .aq-packs__dot[data-index="1"] { left: 33.333%; }
+  .aq-packs__dot[data-index="2"] { left: 66.666%; }
+  .aq-packs__dot[data-index="3"] { left: 100%; }
 
   /* Selected state */
   .aq-packs__dot.is-active {
     background-color: #6fb892;
     box-shadow: 0 0 0 4px rgba(111, 184, 146, 0.25);
-    transform: scale(1.25);
   }
 
   .aq-packs__name.is-active {
@@ -125,7 +114,6 @@
 
     <!-- Track + dots -->
     <div class="aq-packs__track">
-      <div class="aq-packs__line"></div>
       <div class="aq-packs__dots">
         <button class="aq-packs__dot" type="button" data-index="0" aria-label="3 Pack"></button>
         <button class="aq-packs__dot" type="button" data-index="1" aria-label="6 Pack"></button>
