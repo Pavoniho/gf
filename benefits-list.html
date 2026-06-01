@@ -1,0 +1,102 @@
+<style>
+  .aq-benefits *,
+  .aq-benefits *::before,
+  .aq-benefits *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .aq-benefits {
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 8px 4px;
+  }
+
+  .aq-benefits__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .aq-benefits__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .aq-benefits__icon {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    color: #429669;
+  }
+
+  .aq-benefits__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .aq-benefits__text {
+    font-size: 19px;
+    font-weight: 500;
+    color: #2b2b2b;
+    line-height: 1.3;
+  }
+
+  /* Mobile-first: most visitors are on mobile */
+  @media (max-width: 480px) {
+    .aq-benefits__list { gap: 14px; }
+    .aq-benefits__item { gap: 11px; }
+    .aq-benefits__icon { width: 22px; height: 22px; }
+    .aq-benefits__text { font-size: 16px; }
+  }
+</style>
+
+<div class="aq-benefits">
+  <ul class="aq-benefits__list">
+
+    <li class="aq-benefits__item">
+      <span class="aq-benefits__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M7.5 12.2L10.5 15L16.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="aq-benefits__text">Chemical free</span>
+    </li>
+
+    <li class="aq-benefits__item">
+      <span class="aq-benefits__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M7.5 12.2L10.5 15L16.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="aq-benefits__text">12x more effective than gums</span>
+    </li>
+
+    <li class="aq-benefits__item">
+      <span class="aq-benefits__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M7.5 12.2L10.5 15L16.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="aq-benefits__text">Stop cravings at the source</span>
+    </li>
+
+    <li class="aq-benefits__item">
+      <span class="aq-benefits__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M7.5 12.2L10.5 15L16.5 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="aq-benefits__text">Delicious natural taste</span>
+    </li>
+
+  </ul>
+</div>
