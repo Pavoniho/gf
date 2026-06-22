@@ -12,9 +12,9 @@
   ================================================================
 {%- endcomment -%}
 
-{%- assign img1 = 'client-1.jpg' | file_url -%}
-{%- assign img2 = 'client-2.jpg' | file_url -%}
-{%- assign img3 = 'client-3.jpg' | file_url -%}
+{%- assign img1 = 'https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159972065.webp?v=1782160014' -%}
+{%- assign img2 = 'https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159981779.webp?v=1782160014' -%}
+{%- assign img3 = 'https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159972065.webp?v=1782160014' -%}
 
 {%- assign pos1 = 'center 16%' -%}
 {%- assign pos2 = 'center 20%' -%}
@@ -31,17 +31,11 @@
 
   .ac-sp {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     width: 100%;
-  }
-
-  /* ROW 1 — avatars + buyer name */
-  .ac-sp__row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
   }
 
   .ac-sp__avatars {
@@ -51,108 +45,62 @@
   }
 
   .ac-sp__avatar {
-    width: 52px;
-    height: 52px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     object-fit: cover;          /* fill the circle, no distortion */
     object-position: center 20%; /* crop centered on the head */
-    border: 3px solid #ffffff;
+    border: 2px solid #ffffff;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
     display: block;
   }
 
   .ac-sp__avatar + .ac-sp__avatar {
-    margin-left: -16px;          /* overlap the bubbles */
+    margin-left: -9px;           /* overlap the bubbles */
   }
 
   .ac-sp__buyer {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    font-size: clamp(18px, 2.4vw, 26px);
+    gap: 4px;
+    font-size: 14px;
     line-height: 1.2;
     color: #111111;
+    white-space: nowrap;
   }
 
   .ac-sp__name {
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .ac-sp__badge {
     flex-shrink: 0;
-    width: 22px;
-    height: 22px;
+    width: 14px;
+    height: 14px;
   }
 
   .ac-sp__others {
     font-weight: 400;
     color: #111111;
   }
-
-  /* ROW 2 — stars + rating */
-  .ac-sp__rating {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .ac-sp__stars {
-    display: inline-flex;
-    gap: 2px;
-  }
-
-  .ac-sp__stars svg {
-    width: 30px;
-    height: 30px;
-    display: block;
-  }
-
-  .ac-sp__score {
-    font-size: clamp(18px, 2.4vw, 26px);
-    font-weight: 500;
-    color: #111111;
-  }
-
-  @media (max-width: 600px) {
-    .ac-sp__avatar { width: 44px; height: 44px; }
-    .ac-sp__avatar + .ac-sp__avatar { margin-left: -14px; }
-    .ac-sp__stars svg { width: 24px; height: 24px; }
-  }
 </style>
 
 <div class="ac-sp">
 
-  <!-- ROW 1: avatars + buyer -->
-  <div class="ac-sp__row">
-    <div class="ac-sp__avatars">
-      <img class="ac-sp__avatar" src="{{ img1 }}" alt="Verified buyer" style="object-position: {{ pos1 }};" loading="lazy">
-      <img class="ac-sp__avatar" src="{{ img2 }}" alt="Verified buyer" style="object-position: {{ pos2 }};" loading="lazy">
-      <img class="ac-sp__avatar" src="{{ img3 }}" alt="Verified buyer" style="object-position: {{ pos3 }};" loading="lazy">
-    </div>
-
-    <div class="ac-sp__buyer">
-      <span class="ac-sp__name">Hilda</span>
-      <!-- blue verified badge -->
-      <svg class="ac-sp__badge" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M12 1.5l2.45 1.78 3.02-.02 1.0 2.86 2.5 1.7-.94 2.88.94 2.88-2.5 1.7-1.0 2.86-3.02-.02L12 22.5l-2.45-1.78-3.02.02-1.0-2.86-2.5-1.7.94-2.88L3.03 8.5l2.5-1.7 1.0-2.86 3.02.02L12 1.5z" fill="#1D9BF0"/>
-        <path d="M8.5 12l2.4 2.4 4.6-4.8" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="ac-sp__others">and 20,000+ others purchased</span>
-    </div>
+  <div class="ac-sp__avatars">
+    <img class="ac-sp__avatar" src="{{ img1 }}" alt="Verified buyer" style="object-position: {{ pos1 }};" loading="lazy">
+    <img class="ac-sp__avatar" src="{{ img2 }}" alt="Verified buyer" style="object-position: {{ pos2 }};" loading="lazy">
+    <img class="ac-sp__avatar" src="{{ img3 }}" alt="Verified buyer" style="object-position: {{ pos3 }};" loading="lazy">
   </div>
 
-  <!-- ROW 2: stars + score -->
-  <div class="ac-sp__rating">
-    <span class="ac-sp__stars">
-      {%- for i in (1..5) -%}
-        <svg viewBox="0 0 24 24" fill="#F0568A" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2l2.9 6.26 6.86.72-5.12 4.62 1.46 6.74L12 17.9l-6.1 3.44 1.46-6.74L2.24 8.98l6.86-.72L12 2z"/>
-        </svg>
-      {%- endfor -%}
-    </span>
-    <span class="ac-sp__score">4.8/5 (51,837 reviews)</span>
-  </div>
+  <span class="ac-sp__buyer">
+    <span class="ac-sp__name">Hilda</span>
+    <!-- blue verified badge -->
+    <svg class="ac-sp__badge" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 1.5l2.45 1.78 3.02-.02 1.0 2.86 2.5 1.7-.94 2.88.94 2.88-2.5 1.7-1.0 2.86-3.02-.02L12 22.5l-2.45-1.78-3.02.02-1.0-2.86-2.5-1.7.94-2.88L3.03 8.5l2.5-1.7 1.0-2.86 3.02.02L12 1.5z" fill="#1D9BF0"/>
+      <path d="M8.5 12l2.4 2.4 4.6-4.8" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="ac-sp__others">and 20,000+ others purchased</span>
+  </span>
 
 </div>
