@@ -26,31 +26,17 @@
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center 18%; /* centered on the head */
+    object-fit: cover;
+    object-position: center 18%; /* centré sur la tête */
     border: 2px solid #ffffff;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+    display: block;
     flex-shrink: 0;
+    background: #eee;
   }
 
   .profile-image + .profile-image {
-    margin-left: -9px; /* overlap the bubbles */
-  }
-
-  .profile-image:nth-child(1) {
-    background-image: url('https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159972065.webp?v=1782160014');
-    background-position: center 16%;
-  }
-
-  .profile-image:nth-child(2) {
-    background-image: url('https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159981779.webp?v=1782160014');
-    background-position: center 20%;
-  }
-
-  .profile-image:nth-child(3) {
-    background-image: url('https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159977101.png?v=1782160015');
-    background-position: center 26%;
+    margin-left: -9px; /* chevauchement des bulles */
   }
 
   /* TEXT */
@@ -92,9 +78,9 @@
 
 <div class="social-proof-container">
   <div class="profile-images">
-    <div class="profile-image"></div>
-    <div class="profile-image"></div>
-    <div class="profile-image"></div>
+    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159972065.webp?v=1782160014" alt="Verified buyer" style="object-position: center 16%;" loading="lazy">
+    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159981779.webp?v=1782160014" alt="Verified buyer" style="object-position: center 20%;" loading="lazy">
+    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159977101.png?v=1782160015" alt="Verified buyer" style="object-position: center 26%;" loading="lazy">
   </div>
 
   <div class="text-content">
