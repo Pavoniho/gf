@@ -8,11 +8,12 @@
   .social-proof-container {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 8px 10px;
+    flex-wrap: nowrap;          /* tout reste sur une seule ligne */
+    gap: 8px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     width: 100%;
     margin: 0 0 6px;
+    white-space: nowrap;
   }
 
   /* AVATARS */
@@ -44,6 +45,7 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    min-width: 0;
     font-size: 14px;
     line-height: 1.2;
     color: #111111;
@@ -74,13 +76,22 @@
   .text-content .text2 {
     font-weight: 400;
   }
+
+  /* MOBILE : on réduit pour que tout tienne sur une ligne */
+  @media (max-width: 600px) {
+    .social-proof-container { gap: 6px; }
+    .profile-image { width: 22px; height: 22px; }
+    .profile-image + .profile-image { margin-left: -8px; }
+    .text-content { font-size: 12px; gap: 3px; }
+    .text-content .checkmark svg { width: 12px; height: 12px; }
+  }
 </style>
 
 <div class="social-proof-container">
   <div class="profile-images">
-    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159972065.webp?v=1782160014" alt="Verified buyer" style="object-position: center 16%;" loading="lazy">
-    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159981779.webp?v=1782160014" alt="Verified buyer" style="object-position: center 20%;" loading="lazy">
-    <img class="profile-image" src="https://cdn.shopify.com/s/files/1/0762/6702/8532/files/image-1782159977101.png?v=1782160015" alt="Verified buyer" style="object-position: center 26%;" loading="lazy">
+    <img class="profile-image" src="//smooche.com/cdn/shop/files/1_42bfe2c2-229b-43b9-83b2-b2d44c53f23d_1000x1000.png?v=1756874614" alt="Verified buyer" style="object-position: center 16%;" loading="lazy">
+    <img class="profile-image" src="//smooche.com/cdn/shop/files/2_51914231-02fc-4cf3-b29c-1627c2d6ed9a_1000x1000.png?v=1756874614" alt="Verified buyer" style="object-position: center 20%;" loading="lazy">
+    <img class="profile-image" src="//smooche.com/cdn/shop/files/3_99578868-68cd-4fd4-9230-90bcb8d72a8e_1000x1000.png?v=1756874616" alt="Verified buyer" style="object-position: center 26%;" loading="lazy">
   </div>
 
   <div class="text-content">
