@@ -1,0 +1,411 @@
+<!-- ===== ELEPLUS Interactive Size Guide (trigger + modal + calculator) ===== -->
+<div class="molde-sizechart">
+
+  <button type="button" class="msc-trigger" aria-haspopup="dialog" aria-controls="msc-modal">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 8.5l5.5-5.5 12.5 12.5-5.5 5.5L3 8.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M7 7l2 2M9.5 5.5l1.5 1.5M11.5 12.5l1.5 1.5M14 10l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span>Quelle est ma taille ?</span>
+  </button>
+
+  <div class="msc-overlay" id="msc-modal" role="dialog" aria-modal="true" aria-labelledby="msc-title" hidden>
+    <div class="msc-dialog" role="document">
+
+      <header class="msc-head">
+        <div>
+          <h2 id="msc-title" class="msc-h2">Eleplus — Lot de 3 soutiens-gorge sans armature</h2>
+          <p class="msc-sub">Trouvez votre taille idéale</p>
+        </div>
+        <button type="button" class="msc-close" aria-label="Fermer">&times;</button>
+      </header>
+
+      <div class="msc-body">
+
+        <!-- ============ CALCULATEUR ============ -->
+        <div class="msc-calc">
+          <div class="msc-calc-left">
+            <div class="msc-calc-intro">
+              <p>Entrez vos mensurations pour trouver votre taille idéale.</p>
+              <div class="msc-unit" role="group" aria-label="Unité de mesure">
+                <button type="button" class="msc-unit-btn" data-unit="in">IN</button>
+                <button type="button" class="msc-unit-btn is-active" data-unit="cm">CM</button>
+              </div>
+            </div>
+
+            <label class="msc-field">
+              <span class="msc-step">Étape 1</span>
+              <input type="number" inputmode="decimal" class="msc-input" id="msc-underbust"
+                     placeholder="Tour de dessous de poitrine (Ex 70)" min="0" step="0.1">
+            </label>
+
+            <label class="msc-field">
+              <span class="msc-step">Étape 2</span>
+              <input type="number" inputmode="decimal" class="msc-input" id="msc-bust"
+                     placeholder="Tour de poitrine (Ex 85)" min="0" step="0.1">
+            </label>
+
+            <button type="button" class="msc-go">OBTENEZ MA TAILLE</button>
+            <p class="msc-error" hidden>Veuillez entrer des mensurations valides.</p>
+          </div>
+
+          <div class="msc-calc-right">
+            <p class="msc-result-label">Votre taille Eleplus est :</p>
+            <div class="msc-result-badge" hidden></div>
+            <p class="msc-result-hint">Renseignez vos mesures puis cliquez sur « Obtenez ma taille ».</p>
+            <a href="#" class="msc-result-cta" hidden>Voir le produit</a>
+          </div>
+        </div>
+
+        <!-- ============ TABLEAU DES TAILLES ============ -->
+        <h3 class="msc-question">Tableau des tailles</h3>
+
+        <div class="msc-table-scroll">
+          <table class="msc-table">
+            <thead>
+              <tr>
+                <th scope="col">Taille</th>
+                <th scope="col">US</th>
+                <th scope="col">Tour sous poitrine (cm)</th>
+                <th scope="col">Tour de poitrine (cm)</th>
+                <th scope="col">Bonnet</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">30A</th><td>30A</td><td>63-67</td><td>72-76</td><td>A</td></tr>
+              <tr><th scope="row">30B</th><td>30B</td><td>63-67</td><td>74.5-78.5</td><td>B</td></tr>
+              <tr><th scope="row">32A</th><td>32A</td><td>68-72</td><td>77-81</td><td>A</td></tr>
+              <tr><th scope="row">32B</th><td>32B</td><td>68-72</td><td>79.5-83.5</td><td>B</td></tr>
+              <tr><th scope="row">32C</th><td>32C</td><td>68-72</td><td>82-86</td><td>C</td></tr>
+              <tr><th scope="row">34A</th><td>34A</td><td>73-77</td><td>82-86</td><td>A</td></tr>
+              <tr><th scope="row">34B</th><td>34B</td><td>73-77</td><td>84.5-88.5</td><td>B</td></tr>
+              <tr><th scope="row">34C</th><td>34C</td><td>73-77</td><td>87-91</td><td>C</td></tr>
+              <tr><th scope="row">36A</th><td>36A</td><td>78-82</td><td>87-91</td><td>A</td></tr>
+              <tr><th scope="row">36B</th><td>36B</td><td>78-82</td><td>89.5-93.5</td><td>B</td></tr>
+              <tr><th scope="row">36C</th><td>36C</td><td>78-82</td><td>92-96</td><td>C</td></tr>
+              <tr><th scope="row">38B</th><td>38B</td><td>83-87</td><td>94.5-98.5</td><td>B</td></tr>
+              <tr><th scope="row">38C</th><td>38C</td><td>83-87</td><td>97-101</td><td>C</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="msc-note"><strong>Mauvaise taille ? Pas de souci !</strong></p>
+        <p class="msc-note">Nous proposons des échanges gratuits et sans tracas pour une taille plus grande ou plus petite.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    .molde-sizechart {
+      --msc-rose: #c07b6c;        /* accent fort (cellule ciblée) */
+      --msc-rose-soft: #e8c0b7;   /* surbrillance ligne + colonne */
+      --msc-rose-bg: #fbeeec;     /* fond pâle du panneau calculateur */
+      --msc-lime: #d4e84a;        /* badge résultat (comme l'exemple) */
+      --msc-ink: #1a1a1a;
+      --msc-border: #e3e3e3;
+      font-family: inherit;
+      color: var(--msc-ink);
+    }
+    .molde-sizechart *, .molde-sizechart *::before, .molde-sizechart *::after { box-sizing: border-box; }
+
+    .msc-trigger {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: none; border: none; padding: 4px 0; margin: 0;
+      font-family: inherit; font-size: 15px; color: var(--msc-ink);
+      cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+    }
+    .msc-trigger svg { width: 17px; height: 17px; color: var(--msc-rose); flex: 0 0 auto; }
+    .msc-trigger:hover { color: var(--msc-rose); }
+
+    .msc-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(26,26,26,0.45);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .msc-overlay[hidden] { display: none; }
+
+    .msc-dialog {
+      background: #fff; width: 100%; max-width: 680px;
+      max-height: 90vh; overflow-y: auto;
+      border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      font-family: inherit;
+    }
+
+    .msc-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      padding: 18px 20px; border-bottom: 1px solid var(--msc-border);
+    }
+    .msc-h2 { margin: 0; font-family: inherit; font-size: 16px; font-weight: 600; line-height: 1.3; }
+    .msc-sub { margin: 3px 0 0; font-size: 13px; color: #6b6b6b; }
+    .msc-close {
+      background: none; border: none; font-size: 26px; line-height: 1;
+      color: var(--msc-ink); cursor: pointer; padding: 0 2px; flex: 0 0 auto;
+    }
+
+    .msc-body { padding: 18px 20px 22px; }
+
+    /* ---------- CALCULATEUR ---------- */
+    .msc-calc {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      background: var(--msc-rose-bg); border-radius: 14px;
+      padding: 18px; margin-bottom: 24px;
+    }
+    .msc-calc-left { flex: 1 1 320px; min-width: 260px; }
+    .msc-calc-right {
+      flex: 1 1 180px; min-width: 180px;
+      background: #fff; border-radius: 12px; padding: 18px;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    }
+
+    .msc-calc-intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+    .msc-calc-intro p { margin: 0; font-size: 14px; line-height: 1.4; }
+
+    .msc-unit {
+      display: inline-flex; flex: 0 0 auto;
+      background: #fff; border-radius: 999px; padding: 3px;
+    }
+    .msc-unit-btn {
+      border: none; background: none; cursor: pointer;
+      font-family: inherit; font-size: 13px; font-weight: 600; color: var(--msc-ink);
+      padding: 5px 12px; border-radius: 999px; transition: background-color .15s ease, color .15s ease;
+    }
+    .msc-unit-btn.is-active { background: var(--msc-ink); color: #fff; }
+
+    .msc-field { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .msc-step { flex: 0 0 58px; font-size: 14px; font-weight: 600; }
+    .msc-input {
+      flex: 1 1 auto; width: 100%;
+      border: none; border-radius: 8px; background: #fff;
+      padding: 14px 16px; font-family: inherit; font-size: 14px; color: var(--msc-ink);
+      box-shadow: inset 0 0 0 1px transparent;
+    }
+    .msc-input::placeholder { color: #9a9a9a; }
+    .msc-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--msc-rose); }
+
+    .msc-go {
+      margin-top: 6px; border: none; cursor: pointer;
+      background: #3a3a3a; color: #fff; border-radius: 10px;
+      padding: 16px 24px; font-family: inherit; font-size: 14px; font-weight: 700;
+      letter-spacing: .5px; transition: background-color .15s ease;
+    }
+    .msc-go:hover { background: #1a1a1a; }
+
+    .msc-error { margin: 10px 0 0; font-size: 13px; color: #b3261e; }
+
+    .msc-result-label { margin: 0 0 12px; font-size: 15px; line-height: 1.35; }
+    .msc-result-hint { margin: 0; font-size: 12.5px; color: #8a8a8a; line-height: 1.4; }
+    .msc-result-badge {
+      display: inline-block; background: var(--msc-lime); color: var(--msc-ink);
+      font-size: 30px; font-weight: 800; line-height: 1;
+      padding: 16px 26px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .msc-result-cta {
+      margin-top: 4px; font-size: 14px; font-weight: 600; color: var(--msc-ink);
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .msc-result-cta:hover { color: var(--msc-rose); }
+
+    /* ---------- TABLEAU ---------- */
+    .msc-question { margin: 0 0 14px; text-align: center; font-family: inherit; font-size: 15px; font-weight: 600; }
+
+    .msc-table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .msc-table {
+      width: 100%; border-collapse: collapse; table-layout: fixed;
+      font-family: inherit; font-size: 14px; text-align: center; background: #fff;
+    }
+    .msc-table th, .msc-table td {
+      border: 1px solid var(--msc-border);
+      padding: 11px 4px; background: #fff;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+    .msc-table thead th { font-weight: 600; }
+    .msc-table tbody th { font-weight: 600; }
+    .msc-table td { font-weight: 500; }
+
+    .msc-table .hl-col { background: var(--msc-rose-soft); }
+    .msc-table .hl-row td, .msc-table .hl-row th { background: var(--msc-rose-soft); }
+    .msc-table .hl-cell { background: var(--msc-rose); color: #fff; }
+    /* Ligne mise en avant par le calculateur */
+    .msc-table tr.msc-match td, .msc-table tr.msc-match th { background: var(--msc-rose); color: #fff; }
+
+    .msc-note { margin: 14px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--msc-ink); }
+    .msc-note strong { font-weight: 600; }
+
+    /* ---------- MOBILE ---------- */
+    @media (max-width: 480px) {
+      .msc-dialog { max-height: 92vh; border-radius: 12px; }
+      .msc-head { padding: 14px 14px; }
+      .msc-h2 { font-size: 14px; }
+      .msc-body { padding: 14px 12px 18px; }
+
+      .msc-calc { padding: 14px; }
+      .msc-calc-right { flex-basis: 100%; }
+      .msc-go { width: 100%; }
+
+      .msc-question { font-size: 14px; }
+      .msc-table { font-size: 12px; }
+      .msc-table th, .msc-table td { padding: 9px 2px; }
+      .msc-table th:first-child, .msc-table td:first-child {
+        position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--msc-border);
+      }
+      .msc-note { font-size: 12.5px; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      var root = document.currentScript.closest('.molde-sizechart');
+      if (!root) return;
+
+      /* ---- URL de la collection à acheter (à adapter si besoin) ---- */
+      var SHOP_URL = '/collections/all';
+
+      var trigger = root.querySelector('.msc-trigger');
+      var overlay = root.querySelector('.msc-overlay');
+      var closeBt = root.querySelector('.msc-close');
+      var table   = root.querySelector('.msc-table');
+
+      /* ===== Données des tailles (cm) ===== */
+      var SIZES = [
+        { size:'30A', ub:[63,67], bust:[72,76] },
+        { size:'30B', ub:[63,67], bust:[74.5,78.5] },
+        { size:'32A', ub:[68,72], bust:[77,81] },
+        { size:'32B', ub:[68,72], bust:[79.5,83.5] },
+        { size:'32C', ub:[68,72], bust:[82,86] },
+        { size:'34A', ub:[73,77], bust:[82,86] },
+        { size:'34B', ub:[73,77], bust:[84.5,88.5] },
+        { size:'34C', ub:[73,77], bust:[87,91] },
+        { size:'36A', ub:[78,82], bust:[87,91] },
+        { size:'36B', ub:[78,82], bust:[89.5,93.5] },
+        { size:'36C', ub:[78,82], bust:[92,96] },
+        { size:'38B', ub:[83,87], bust:[94.5,98.5] },
+        { size:'38C', ub:[83,87], bust:[97,101] }
+      ];
+
+      /* ===== Modale ouverture / fermeture ===== */
+      function open()  { overlay.hidden = false; document.body.style.overflow = 'hidden'; }
+      function close() { overlay.hidden = true;  document.body.style.overflow = ''; clearHL(); }
+
+      trigger.addEventListener('click', open);
+      closeBt.addEventListener('click', close);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) close(); });
+
+      /* ===== Surbrillance croisée du tableau ===== */
+      function clearHL() {
+        table.querySelectorAll('.hl-col, .hl-row, .hl-cell').forEach(function (el) {
+          el.classList.remove('hl-col', 'hl-row', 'hl-cell');
+        });
+      }
+      function setHL(cell) {
+        clearHL();
+        if (!cell) return;
+        var col = cell.cellIndex;
+        cell.parentElement.classList.add('hl-row');
+        Array.prototype.forEach.call(table.rows, function (row) {
+          var c = row.cells[col];
+          if (c) c.classList.add('hl-col');
+        });
+        cell.classList.add('hl-cell');
+      }
+      table.addEventListener('mouseover', function (e) {
+        var cell = e.target.closest('td, th');
+        if (cell) setHL(cell);
+      });
+      table.addEventListener('mouseleave', clearHL);
+      table.addEventListener('click', function (e) {
+        var cell = e.target.closest('td, th');
+        if (cell) setHL(cell);
+      });
+
+      /* ===== Calculateur ===== */
+      var unitBtns   = root.querySelectorAll('.msc-unit-btn');
+      var ubInput    = root.querySelector('#msc-underbust');
+      var bustInput  = root.querySelector('#msc-bust');
+      var goBtn      = root.querySelector('.msc-go');
+      var errorMsg   = root.querySelector('.msc-error');
+      var badge      = root.querySelector('.msc-result-badge');
+      var hint       = root.querySelector('.msc-result-hint');
+      var cta        = root.querySelector('.msc-result-cta');
+      var unit       = 'cm';
+
+      unitBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          unit = btn.getAttribute('data-unit');
+          unitBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+          // Placeholders adaptés à l'unité
+          if (unit === 'in') {
+            ubInput.placeholder   = 'Tour de dessous de poitrine (Ex 28)';
+            bustInput.placeholder = 'Tour de poitrine (Ex 33.5)';
+          } else {
+            ubInput.placeholder   = 'Tour de dessous de poitrine (Ex 70)';
+            bustInput.placeholder = 'Tour de poitrine (Ex 85)';
+          }
+        });
+      });
+
+      function center(range) { return (range[0] + range[1]) / 2; }
+
+      // Distance d'une valeur par rapport à une plage (0 si à l'intérieur)
+      function distToRange(v, range) {
+        if (v < range[0]) return range[0] - v;
+        if (v > range[1]) return v - range[1];
+        return 0;
+      }
+
+      function findSize(ubCm, bustCm) {
+        var best = null, bestScore = Infinity;
+        SIZES.forEach(function (s) {
+          var dUb   = distToRange(ubCm, s.ub);
+          var dBust = distToRange(bustCm, s.bust);
+          // On pondère un peu plus le tour sous poitrine (détermine la bande)
+          var inside = (dUb === 0 && dBust === 0) ? 0 : 1;
+          var score = inside * 0 + dUb * 1.4 + dBust * 1.0
+                    + Math.abs(ubCm - center(s.ub)) * 0.01
+                    + Math.abs(bustCm - center(s.bust)) * 0.01;
+          if (score < bestScore) { bestScore = score; best = s; }
+        });
+        return best;
+      }
+
+      function highlightRow(sizeLabel) {
+        Array.prototype.forEach.call(table.tBodies[0].rows, function (row) {
+          var isMatch = row.cells[0].textContent.trim() === sizeLabel;
+          row.classList.toggle('msc-match', isMatch);
+        });
+      }
+
+      function showError() {
+        errorMsg.hidden = false;
+        badge.hidden = true;
+        cta.hidden = true;
+        hint.hidden = false;
+      }
+
+      goBtn.addEventListener('click', function () {
+        var ub   = parseFloat(String(ubInput.value).replace(',', '.'));
+        var bust = parseFloat(String(bustInput.value).replace(',', '.'));
+
+        if (isNaN(ub) || isNaN(bust) || ub <= 0 || bust <= 0) { showError(); return; }
+
+        // Conversion vers cm si saisie en pouces
+        var ubCm   = unit === 'in' ? ub   * 2.54 : ub;
+        var bustCm = unit === 'in' ? bust * 2.54 : bust;
+
+        var match = findSize(ubCm, bustCm);
+        if (!match) { showError(); return; }
+
+        errorMsg.hidden = true;
+        hint.hidden = true;
+        badge.hidden = false;
+        badge.textContent = match.size;
+        cta.hidden = false;
+        cta.setAttribute('href', SHOP_URL);
+
+        highlightRow(match.size);
+      });
+    })();
+  </script>
+</div>
