@@ -106,12 +106,12 @@
     /* Accent color */
     a, a:hover, a:active, a:visited { color: #D1A59E; }
 
-    /* Keep the original accent background on every button by default.
-       Only the "View your order" button is overridden to black via an
-       inline style on its own cell(s), so the Shop tracking button and
-       the "Visit our store" button are left untouched. */
-    .button__cell { background: #D1A59E; }
-    .actions-buttons .button__cell--primary { background-color: #D1A59E; }
+    /* Base button styling (unchanged from the original template). Only the
+       "View your order" button is overridden, via an inline style on its
+       own cell(s), so every other button — including "Track order with
+       Shop" and "Visit our store" — renders exactly as it did initially. */
+    .button__cell { background: {{ shop.email_accent_color }}; }
+    .actions-buttons .button__cell--primary { background-color: {{ shop.email_accent_color }}; }
 
     /* Full-width footer banner image (mobile + desktop) */
     .footer-banner__cell { padding: 0 !important; }
