@@ -53,7 +53,6 @@
             <p class="msc-result-label">Votre taille Eleplus est :</p>
             <div class="msc-result-badge" hidden></div>
             <p class="msc-result-hint">Renseignez vos mesures puis cliquez sur « Obtenez ma taille ».</p>
-            <a href="#" class="msc-result-cta" hidden>Voir le produit</a>
           </div>
         </div>
 
@@ -199,13 +198,8 @@
     .msc-result-badge {
       display: inline-block; background: var(--msc-lime); color: var(--msc-ink);
       font-size: 30px; font-weight: 800; line-height: 1;
-      padding: 16px 26px; border-radius: 999px; margin-bottom: 14px;
+      padding: 16px 26px; border-radius: 999px;
     }
-    .msc-result-cta {
-      margin-top: 4px; font-size: 14px; font-weight: 600; color: var(--msc-ink);
-      text-decoration: underline; text-underline-offset: 3px;
-    }
-    .msc-result-cta:hover { color: var(--msc-rose); }
 
     /* ---------- TABLEAU ---------- */
     .msc-question { margin: 0 0 14px; text-align: center; font-family: inherit; font-size: 15px; font-weight: 600; }
@@ -258,9 +252,6 @@
     (function () {
       var root = document.currentScript.closest('.molde-sizechart');
       if (!root) return;
-
-      /* ---- URL de la collection à acheter (à adapter si besoin) ---- */
-      var SHOP_URL = '/collections/all';
 
       var trigger = root.querySelector('.msc-trigger');
       var overlay = root.querySelector('.msc-overlay');
@@ -328,7 +319,6 @@
       var errorMsg   = root.querySelector('.msc-error');
       var badge      = root.querySelector('.msc-result-badge');
       var hint       = root.querySelector('.msc-result-hint');
-      var cta        = root.querySelector('.msc-result-cta');
       var unit       = 'cm';
 
       unitBtns.forEach(function (btn) {
@@ -380,7 +370,6 @@
       function showError() {
         errorMsg.hidden = false;
         badge.hidden = true;
-        cta.hidden = true;
         hint.hidden = false;
       }
 
@@ -401,8 +390,6 @@
         hint.hidden = true;
         badge.hidden = false;
         badge.textContent = match.size;
-        cta.hidden = false;
-        cta.setAttribute('href', SHOP_URL);
 
         highlightRow(match.size);
       });
