@@ -1,0 +1,508 @@
+<!-- ===== MOLDE Interactive Size Guide (WingsLove Deep V Push Up adaptation) =====
+     Style : original rounded/rose theme, font-family: inherit.
+     Data  : 33 live variants from the WingsLove body-measurement chart (inches).
+     Truth : factory garment dims (exact bust + under bust per size, in inches).
+             Band = under bust. Cup = bust - under bust.
+     Tables are GENERATED from BANDS[] / VARIANTS[] — never hand-edited, both units stay in sync.
+======================================================================= -->
+<div class="molde-sizechart">
+
+  <button type="button" class="msc-trigger" aria-haspopup="dialog" aria-controls="msc-modal">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 8.5l5.5-5.5 12.5 12.5-5.5 5.5L3 8.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M7 7l2 2M9.5 5.5l1.5 1.5M11.5 12.5l1.5 1.5M14 10l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span>What's my size?</span>
+  </button>
+
+  <div class="msc-overlay" id="msc-modal" role="dialog" aria-modal="true" aria-labelledby="msc-title" hidden>
+    <div class="msc-dialog" role="document">
+
+      <button type="button" class="msc-close" aria-label="Close">&times;</button>
+
+      <h2 id="msc-title" class="msc-title">SIZE CHART</h2>
+
+      <!-- ============ CALCULATOR PANEL ============ -->
+      <div class="msc-panel">
+        <div class="msc-calc-left">
+          <div class="msc-calc-intro">
+            <p>Enter your measurements to find your ideal size.</p>
+            <div class="msc-unit" role="group" aria-label="Measurement unit">
+              <button type="button" class="msc-unit-btn is-active" data-unit="in">IN</button>
+              <button type="button" class="msc-unit-btn" data-unit="cm">CM</button>
+            </div>
+          </div>
+
+          <label class="msc-field">
+            <span class="msc-step">Step 1</span>
+            <input type="number" inputmode="decimal" class="msc-input" id="msc-underbust"
+                   placeholder="Under bust (e.g. 31.5)" min="0" step="0.1">
+          </label>
+
+          <label class="msc-field">
+            <span class="msc-step">Step 2</span>
+            <input type="number" inputmode="decimal" class="msc-input" id="msc-bust"
+                   placeholder="Bust (e.g. 36.1)" min="0" step="0.1">
+          </label>
+
+          <button type="button" class="msc-go">GET MY SIZE</button>
+          <p class="msc-error" hidden></p>
+        </div>
+
+        <div class="msc-calc-right">
+          <p class="msc-result-label">Your size is:</p>
+          <div class="msc-result-badge" hidden></div>
+          <p class="msc-result-sub" hidden></p>
+          <p class="msc-result-hint">Enter your measurements, then tap “Get my size”.</p>
+        </div>
+      </div>
+
+      <p class="msc-subline">Not sure about your size? Check our <a href="https://moldeforms.com/pages/size-guide" class="msc-guide-link">size guide</a>!</p>
+
+      <!-- ============ INCHES TABLE ============ -->
+      <h3 class="msc-tablename">Size chart in inches</h3>
+      <div class="msc-table-scroll">
+        <table class="msc-table" data-unit="in"><thead></thead><tbody></tbody></table>
+      </div>
+
+      <!-- ============ CENTIMETERS TABLE ============ -->
+      <h3 class="msc-tablename">Size chart in centimeters</h3>
+      <div class="msc-table-scroll">
+        <table class="msc-table" data-unit="cm"><thead></thead><tbody></tbody></table>
+      </div>
+
+      <!-- ============ HOW CUPS WORK ============ -->
+      <h3 class="msc-tablename">How our cups work</h3>
+      <p class="msc-cuphint">Your cup is the <strong>difference</strong> between your bust and your under bust — not your bust alone.</p>
+      <div class="msc-table-scroll">
+        <table class="msc-table msc-table--slim" id="msc-cup-table"><thead></thead><tbody></tbody></table>
+      </div>
+
+      <p class="msc-note"><strong>Between two sizes?</strong> Go up — our cups sit close together, so the larger one is almost always the better fit.</p>
+      <p class="msc-note"><strong>Wrong size? No problem!</strong> We offer free and hassle-free exchanges for a larger or smaller size.</p>
+
+    </div>
+  </div>
+
+  <style>
+    .molde-sizechart {
+      --msc-rose: #c07b6c;
+      --msc-rose-soft: #e8c0b7;
+      --msc-rose-bg: #fbeae6;
+      --msc-rose-head: #fbeae6;
+      --msc-lime: #cfe84a;
+      --msc-ink: #1a1a1a;
+      --msc-border: #e3e3e3;
+      font-family: inherit;
+      color: var(--msc-ink);
+    }
+    .molde-sizechart *, .molde-sizechart *::before, .molde-sizechart *::after { box-sizing: border-box; }
+
+    .msc-trigger {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: none; border: none; padding: 4px 0; margin: 0;
+      font-family: inherit; font-size: 15px; color: var(--msc-ink);
+      cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+    }
+    .msc-trigger svg { width: 17px; height: 17px; color: var(--msc-rose); flex: 0 0 auto; }
+    .msc-trigger:hover { color: var(--msc-rose); }
+
+    .msc-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(26,26,26,0.45);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 24px 16px;
+    }
+    .msc-overlay[hidden] { display: none; }
+
+    .msc-dialog {
+      position: relative;
+      background: #fff; width: 100%; max-width: 860px;
+      max-height: 90vh; overflow-y: auto;
+      border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      font-family: inherit; padding: 28px 28px 30px;
+    }
+
+    .msc-close {
+      position: absolute; top: 16px; right: 18px;
+      background: none; border: none; font-size: 30px; line-height: 1;
+      color: var(--msc-ink); cursor: pointer; padding: 0 2px; z-index: 3;
+    }
+    .msc-title {
+      margin: 0 0 22px; text-align: center;
+      font-family: inherit; font-size: 32px; font-weight: 600; letter-spacing: 1px;
+    }
+
+    .msc-panel {
+      display: flex; gap: 18px; flex-wrap: wrap;
+      background: var(--msc-rose-bg); border-radius: 16px;
+      padding: 22px; margin-bottom: 22px;
+    }
+    .msc-calc-left { flex: 1 1 360px; min-width: 280px; }
+    .msc-calc-right {
+      flex: 1 1 200px; min-width: 200px;
+      background: #fff; border-radius: 14px; padding: 22px;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    }
+
+    .msc-calc-intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .msc-calc-intro p { margin: 0; font-size: 15px; line-height: 1.4; max-width: 230px; }
+
+    .msc-unit { display: inline-flex; flex: 0 0 auto; background: #fff; border-radius: 999px; padding: 3px; }
+    .msc-unit-btn {
+      border: none; background: none; cursor: pointer;
+      font-family: inherit; font-size: 13px; font-weight: 700; color: var(--msc-ink);
+      padding: 6px 14px; border-radius: 999px; transition: background-color .15s ease, color .15s ease;
+    }
+    .msc-unit-btn.is-active { background: var(--msc-ink); color: #fff; }
+
+    .msc-field { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .msc-step { flex: 0 0 52px; font-size: 15px; font-weight: 600; }
+    .msc-input {
+      flex: 1 1 auto; width: 100%;
+      border: none; border-radius: 10px; background: #fff;
+      padding: 16px 18px; font-family: inherit; font-size: 15px; color: var(--msc-ink);
+      box-shadow: inset 0 0 0 1px transparent;
+    }
+    .msc-input::placeholder { color: #9a9a9a; }
+    .msc-input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--msc-rose); }
+
+    .msc-go {
+      margin-top: 8px; width: 100%; border: none; cursor: pointer;
+      background: #3a3a3a; color: #fff; border-radius: 12px;
+      padding: 18px 24px; font-family: inherit; font-size: 15px; font-weight: 700;
+      letter-spacing: .5px; transition: background-color .15s ease;
+    }
+    .msc-go:hover { background: #1a1a1a; }
+    .msc-error { margin: 10px 0 0; font-size: 13px; color: #b3261e; line-height: 1.45; }
+
+    .msc-result-label { margin: 0 0 14px; font-size: 17px; line-height: 1.35; }
+    .msc-result-hint { margin: 0; font-size: 13px; color: #8a8a8a; line-height: 1.4; }
+    .msc-result-badge {
+      display: inline-block; background: var(--msc-lime); color: var(--msc-ink);
+      font-size: 34px; font-weight: 800; line-height: 1;
+      padding: 18px 30px; border-radius: 999px;
+    }
+    .msc-result-badge.is-oor { background: #f2f2f2; font-size: 16px; font-weight: 700; padding: 15px 20px; border-radius: 12px; }
+    .msc-result-sub { margin: 12px 0 0; font-size: 13px; color: #4a4a4a; line-height: 1.45; }
+
+    .msc-subline { margin: 0 0 22px; text-align: center; font-size: 14px; color: #4a4a4a; }
+    .msc-guide-link {
+      color: var(--msc-rose); font-weight: 600;
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .msc-guide-link:hover { color: var(--msc-ink); }
+
+    .msc-tablename { margin: 22px 0 12px; font-family: inherit; font-size: 18px; font-weight: 700; }
+    .msc-cuphint { margin: -6px 0 12px; font-size: 13px; color: #6a6a6a; line-height: 1.5; }
+
+    .msc-table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .msc-table {
+      width: 100%; min-width: 720px; border-collapse: collapse;
+      font-family: inherit; font-size: 13px; text-align: center; background: #fff;
+    }
+    .msc-table--slim { min-width: 0; }
+    .msc-table th, .msc-table td {
+      border: 1px solid var(--msc-border);
+      padding: 10px 6px; background: #fff; white-space: nowrap;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+    .msc-table thead th { font-weight: 600; background: var(--msc-rose-head); }
+    .msc-table .msc-busthead { font-size: 15px; font-weight: 700; }
+    .msc-table .msc-corner { vertical-align: middle; font-weight: 700; }
+    .msc-table tbody th { font-weight: 600; background: #f6f6f6; }
+    .msc-table tbody td { font-weight: 500; }
+
+    .msc-table .hl-col { background: var(--msc-rose-soft); }
+    .msc-table .hl-row td, .msc-table .hl-row th { background: var(--msc-rose-soft); }
+    .msc-table .hl-cell { background: var(--msc-rose); color: #fff; }
+    .msc-table td.msc-match { background: var(--msc-lime); color: var(--msc-ink); font-weight: 800; }
+
+    .msc-note { margin: 16px 0 0; font-size: 14px; line-height: 1.55; color: var(--msc-ink); }
+    .msc-note strong { font-weight: 700; }
+
+    @media (max-width: 600px) {
+      .msc-dialog { padding: 20px 16px 22px; border-radius: 14px; max-height: 92vh; }
+      .msc-title { font-size: 24px; margin-bottom: 18px; }
+      .msc-panel { padding: 16px; }
+      .msc-calc-right { flex-basis: 100%; }
+      .msc-calc-intro p { max-width: none; }
+      .msc-tablename { font-size: 16px; }
+      .msc-table { font-size: 12px; }
+      .msc-table th, .msc-table td { padding: 8px 4px; }
+      .msc-table th:first-child, .msc-table td:first-child {
+        position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--msc-border);
+      }
+      .msc-note { font-size: 13px; }
+    }
+  </style>
+
+  <script>
+    (function () {
+      var root = (document.currentScript && document.currentScript.closest('.molde-sizechart'))
+              || document.querySelector('.molde-sizechart');
+      if (!root) return;
+
+      /* =============================================================
+         SINGLE SOURCE OF TRUTH — factory garment, in inches.
+         BANDS  : under bust per band (band = under bust).
+         CUPS   : global cup order + the upper bound (in) of each cup's
+                  "bust - under bust" difference. G exists in band 38 only.
+         VARIANTS: the 33 live sizes with their exact bust (in) from the chart.
+         Everything below (both unit tables, cup table, calculator) is derived
+         from these three arrays, so nothing can drift out of sync.
+      ============================================================= */
+      var BANDS = [
+        { label: 32, ub: 27.6 },
+        { label: 34, ub: 29.5 },
+        { label: 36, ub: 31.5 },
+        { label: 38, ub: 33.5 },
+        { label: 40, ub: 35.3 },
+        { label: 42, ub: 37.4 },
+        { label: 44, ub: 39.3 }
+      ];
+      // Cup difference (bust - under bust) upper bounds, in inches. Steps ~1".
+      // DDD -> G jumps ~2" (no E/F), so DDD ends at the DDD/G midpoint (10.6").
+      var CUPS = [
+        { letter: 'A',   hi: 5.1 },
+        { letter: 'B',   hi: 6.1 },
+        { letter: 'C',   hi: 7.1 },
+        { letter: 'D',   hi: 8.1 },
+        { letter: 'DD',  hi: 9.1 },
+        { letter: 'DDD', hi: 10.6 },
+        { letter: 'G',   hi: Infinity }
+      ];
+      var VARIANTS = [
+        { band: 32, cup: 'A',   bust: 32.2 }, { band: 32, cup: 'B',   bust: 33.4 },
+        { band: 32, cup: 'C',   bust: 34.2 }, { band: 32, cup: 'D',   bust: 35.2 },
+        { band: 32, cup: 'DD',  bust: 36.2 }, { band: 32, cup: 'DDD', bust: 37.0 },
+        { band: 34, cup: 'A',   bust: 34.2 }, { band: 34, cup: 'B',   bust: 35.2 },
+        { band: 34, cup: 'C',   bust: 36.2 }, { band: 34, cup: 'D',   bust: 37.1 },
+        { band: 34, cup: 'DD',  bust: 38.1 }, { band: 34, cup: 'DDD', bust: 39.0 },
+        { band: 36, cup: 'A',   bust: 36.1 }, { band: 36, cup: 'B',   bust: 37.1 },
+        { band: 36, cup: 'C',   bust: 38.1 }, { band: 36, cup: 'D',   bust: 39.0 },
+        { band: 36, cup: 'DD',  bust: 40.1 }, { band: 36, cup: 'DDD', bust: 41.1 },
+        { band: 38, cup: 'A',   bust: 38.1 }, { band: 38, cup: 'B',   bust: 39.0 },
+        { band: 38, cup: 'C',   bust: 40.1 }, { band: 38, cup: 'D',   bust: 41.1 },
+        { band: 38, cup: 'DD',  bust: 42.1 }, { band: 38, cup: 'DDD', bust: 43.0 },
+        { band: 38, cup: 'G',   bust: 45.1 },
+        { band: 40, cup: 'C',   bust: 42.1 }, { band: 40, cup: 'D',   bust: 43.0 },
+        { band: 40, cup: 'DD',  bust: 44.0 }, { band: 40, cup: 'DDD', bust: 45.1 },
+        { band: 42, cup: 'C',   bust: 44.0 }, { band: 42, cup: 'D',   bust: 45.1 },
+        { band: 44, cup: 'C',   bust: 46.1 }, { band: 44, cup: 'D',   bust: 47.0 }
+      ];
+
+      /* -------- derive band ranges (midpoints between under busts) -------- */
+      BANDS.forEach(function (b, i) {
+        var prev = BANDS[i - 1], next = BANDS[i + 1];
+        b.lo = prev ? (prev.ub + b.ub) / 2 : b.ub - (BANDS[i + 1].ub - b.ub) / 2;
+        b.hi = next ? (b.ub + next.ub) / 2 : b.ub + (b.ub - BANDS[i - 1].ub) / 2;
+      });
+      var UB_MIN = BANDS[0].lo, UB_MAX = BANDS[BANDS.length - 1].hi;
+
+      /* -------- derive cup ranges + index lookup -------- */
+      CUPS.forEach(function (c, i) { c.lo = i ? CUPS[i - 1].hi : 0; });
+      var CUP_IDX = {}; CUPS.forEach(function (c, i) { CUP_IDX[c.letter] = i; });
+
+      /* -------- derive, per band, which cups actually ship (min/max index) -------- */
+      var byBand = {}, avail = {};
+      BANDS.forEach(function (b) { byBand[b.label] = []; });
+      VARIANTS.forEach(function (v) {
+        byBand[v.band].push(v);
+        var ci = CUP_IDX[v.cup];
+        var a = avail[v.band] || (avail[v.band] = { min: 99, max: -1 });
+        if (ci < a.min) a.min = ci;
+        if (ci > a.max) a.max = ci;
+      });
+
+      /* Bust columns: 1-inch bins from 32" up to the largest bust. */
+      var COL_LO_IN = 32;
+      var COL_N = VARIANTS.reduce(function (m, v) { return Math.max(m, Math.floor(v.bust)); }, 0) - COL_LO_IN + 1;
+      function colIndex(bustIn) { return Math.floor(bustIn) - COL_LO_IN; }
+
+      var CM = function (inch) { return inch * 2.54; };
+      var r1 = function (v) { return (Math.round(v * 10) / 10).toString(); };
+      var r0 = function (v) { return Math.round(v).toString(); };
+
+      /* ---------------- generate the two cross tables ---------------- */
+      function colLabel(i, unit) {
+        var a = COL_LO_IN + i, b = a + 1;
+        return unit === 'in' ? a + '-' + b + '"' : r0(CM(a)) + '-' + r0(CM(b));
+      }
+      function rowLabel(band, unit) {
+        return unit === 'in'
+          ? r1(band.lo) + '-' + r1(band.hi) + '"'
+          : r0(CM(band.lo) + 0.5) + '-' + r0(CM(band.hi) - 0.5);
+      }
+      function buildGrid(table) {
+        var unit = table.getAttribute('data-unit');
+        var head =
+          '<tr><th class="msc-corner" rowspan="2">Under bust</th>' +
+          '<th class="msc-busthead" colspan="' + COL_N + '">Bust</th></tr><tr>';
+        for (var i = 0; i < COL_N; i++) head += '<th>' + colLabel(i, unit) + '</th>';
+        head += '</tr>';
+
+        var body = BANDS.map(function (b) {
+          var cells = new Array(COL_N).fill('<td></td>');
+          byBand[b.label].forEach(function (v) {
+            var idx = colIndex(v.bust);
+            if (idx >= 0 && idx < COL_N) {
+              var code = b.label + v.cup;
+              cells[idx] = '<td data-size="' + code + '">' + code + '</td>';
+            }
+          });
+          return '<tr><th scope="row">' + rowLabel(b, unit) + '</th>' + cells.join('') + '</tr>';
+        }).join('');
+
+        table.querySelector('thead').innerHTML = head;
+        table.querySelector('tbody').innerHTML = body;
+      }
+      root.querySelectorAll('.msc-table[data-unit]').forEach(buildGrid);
+
+      function buildCupTable() {
+        var t = root.querySelector('#msc-cup-table');
+        var head = '<tr><th class="msc-corner">Cup</th>' +
+          CUPS.map(function (c) { return '<th>' + c.letter + '</th>'; }).join('') + '</tr>';
+        function cell(c, i, conv) {
+          if (i === 0) return 'up to ' + r1(conv(c.hi));
+          if (c.hi === Infinity) return r1(conv(c.lo)) + '+';
+          return r1(conv(c.lo)) + '-' + r1(conv(c.hi));
+        }
+        var rowIn = '<tr><th scope="row">Bust − under bust (in)</th>' +
+          CUPS.map(function (c, i) { return '<td>' + cell(c, i, function (v) { return v; }) + '"</td>'; }).join('') + '</tr>';
+        var rowCm = '<tr><th scope="row">Bust − under bust (cm)</th>' +
+          CUPS.map(function (c, i) { return '<td>' + cell(c, i, CM) + '</td>'; }).join('') + '</tr>';
+        t.querySelector('thead').innerHTML = head;
+        t.querySelector('tbody').innerHTML = rowIn + rowCm;
+      }
+      buildCupTable();
+
+      /* ---------------- modal ---------------- */
+      var trigger = root.querySelector('.msc-trigger');
+      var overlay = root.querySelector('.msc-overlay');
+      var closeBt = root.querySelector('.msc-close');
+      function open()  { overlay.hidden = false; document.body.style.overflow = 'hidden'; }
+      function close() { overlay.hidden = true;  document.body.style.overflow = ''; clearHL(); }
+      trigger.addEventListener('click', open);
+      closeBt.addEventListener('click', close);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.hidden) close(); });
+
+      /* ---------------- hover highlight (both cross tables) ---------------- */
+      var gridTables = root.querySelectorAll('.msc-table[data-unit]');
+      function clearHL() {
+        root.querySelectorAll('.hl-col, .hl-row, .hl-cell').forEach(function (el) {
+          el.classList.remove('hl-col', 'hl-row', 'hl-cell');
+        });
+      }
+      function setHL(table, cell) {
+        clearHL();
+        if (!cell) return;
+        var col = cell.cellIndex;
+        cell.parentElement.classList.add('hl-row');
+        Array.prototype.forEach.call(table.rows, function (row) {
+          var c = row.cells[col];
+          if (c) c.classList.add('hl-col');
+        });
+        cell.classList.add('hl-cell');
+      }
+      gridTables.forEach(function (table) {
+        table.addEventListener('mouseover', function (e) {
+          var cell = e.target.closest('td, th');
+          if (cell && cell.cellIndex >= 0) setHL(table, cell);
+        });
+        table.addEventListener('mouseleave', clearHL);
+      });
+
+      /* ---------------- calculator ---------------- */
+      var unitBtns  = root.querySelectorAll('.msc-unit-btn');
+      var ubInput   = root.querySelector('#msc-underbust');
+      var bustInput = root.querySelector('#msc-bust');
+      var goBtn     = root.querySelector('.msc-go');
+      var errorMsg  = root.querySelector('.msc-error');
+      var badge     = root.querySelector('.msc-result-badge');
+      var badgeSub  = root.querySelector('.msc-result-sub');
+      var hint      = root.querySelector('.msc-result-hint');
+      var unit = 'in';
+
+      unitBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          unit = btn.getAttribute('data-unit');
+          unitBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+          if (unit === 'in') {
+            ubInput.placeholder   = 'Under bust (e.g. 31.5)';
+            bustInput.placeholder = 'Bust (e.g. 36.1)';
+          } else {
+            ubInput.placeholder   = 'Under bust (e.g. 80)';
+            bustInput.placeholder = 'Bust (e.g. 92)';
+          }
+          ubInput.value = ''; bustInput.value = ''; reset();
+        });
+      });
+
+      function reset() {
+        errorMsg.hidden = true;
+        badge.hidden = true; badge.classList.remove('is-oor');
+        badgeSub.hidden = true; hint.hidden = false;
+        root.querySelectorAll('td.msc-match').forEach(function (c) { c.classList.remove('msc-match'); });
+      }
+      function fail(msg) {
+        errorMsg.textContent = msg; errorMsg.hidden = false;
+        badge.hidden = true; badgeSub.hidden = true; hint.hidden = false;
+      }
+      function outOfRange(msg) {
+        errorMsg.hidden = true; hint.hidden = true;
+        badge.hidden = false; badge.classList.add('is-oor');
+        badge.textContent = 'Outside our range';
+        badgeSub.hidden = false; badgeSub.textContent = msg;
+      }
+
+      goBtn.addEventListener('click', function () {
+        var ub   = parseFloat(String(ubInput.value).replace(',', '.'));
+        var bust = parseFloat(String(bustInput.value).replace(',', '.'));
+
+        root.querySelectorAll('td.msc-match').forEach(function (c) { c.classList.remove('msc-match'); });
+        badge.classList.remove('is-oor');
+
+        if (isNaN(ub) || isNaN(bust) || ub <= 0 || bust <= 0) return fail('Please enter both measurements.');
+        if (bust <= ub) return fail('Your bust should be larger than your under bust. Check the tape is level.');
+
+        // canonical unit = inches
+        var ubIn   = unit === 'in' ? ub : ub / 2.54;
+        var bustIn = unit === 'in' ? bust : bust / 2.54;
+        var diff   = bustIn - ubIn;
+
+        var band = null;
+        for (var i = 0; i < BANDS.length; i++) {
+          if (ubIn >= BANDS[i].lo && ubIn < BANDS[i].hi) { band = BANDS[i]; break; }
+        }
+        if (!band) {
+          return outOfRange(ubIn < UB_MIN
+            ? 'Your under bust is below our smallest band (32). Email us — we\'ll find your closest fit.'
+            : 'Your under bust is above our largest band (44). We don\'t make this size yet.');
+        }
+
+        var cupIdx = 0;
+        for (var j = 0; j < CUPS.length; j++) { if (diff < CUPS[j].hi) { cupIdx = j; break; } }
+
+        // Snap to a cup this band actually offers.
+        var a = avail[band.label];
+        if (cupIdx < a.min) cupIdx = a.min;
+        else if (cupIdx > a.max) cupIdx = a.max;
+
+        var code = band.label + CUPS[cupIdx].letter;
+        errorMsg.hidden = true; hint.hidden = true;
+        badge.hidden = false; badge.textContent = code;
+
+        badgeSub.textContent = 'Based on your measurements, this is your size.';
+        badgeSub.hidden = false;
+
+        root.querySelectorAll('td[data-size="' + code + '"]').forEach(function (c) { c.classList.add('msc-match'); });
+      });
+
+      [ubInput, bustInput].forEach(function (i) {
+        i.addEventListener('input', function () { if (!errorMsg.hidden) errorMsg.hidden = true; });
+      });
+    })();
+  </script>
+</div>
