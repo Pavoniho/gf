@@ -1,82 +1,19 @@
-<div class="product-fit-guide" style="--active-color: #151515;">
-  <div class="product-fit-guide--heading">Fit guide</div>
-  <div class="product-fit-guide--lines">
-    <div class="product-fit-guide--line"></div>
-    <div class="product-fit-guide--line"></div>
-    <div class="product-fit-guide--line product-fit-guide--line--active"></div>
-    <div class="product-fit-guide--line"></div>
-    <div class="product-fit-guide--line"></div>
+<div class="product-fit-guide" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; width:100%; margin:0; padding:12px 0; box-sizing:border-box;">
+
+  <div class="product-fit-guide--heading" style="text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; color:#1a1a1a; margin:0 0 16px;">Fit guide</div>
+
+  <div class="product-fit-guide--lines" style="display:flex; align-items:center; gap:8px; margin:0 0 10px;">
+    <div style="flex:1 1 0; height:3px; background:#e3e3e3;"></div>
+    <div style="flex:1 1 0; height:3px; background:#e3e3e3;"></div>
+    <div style="flex:1 1 0; height:4px; background:#151515;"></div>
+    <div style="flex:1 1 0; height:3px; background:#e3e3e3;"></div>
+    <div style="flex:1 1 0; height:3px; background:#e3e3e3;"></div>
   </div>
-  <div class="product-fit-guide--labels">
-    <div class="product-fit-guide--label-left">Small</div>
-    <div class="product-fit-guide--label-middle">True to size</div>
-    <div class="product-fit-guide--label-right">Large</div>
+
+  <div class="product-fit-guide--labels" style="display:flex; justify-content:space-between; align-items:baseline; font-size:13px; line-height:1.2;">
+    <div style="color:#c07f45; text-align:left;">Small</div>
+    <div style="color:#c07f45; text-align:center;">True to size</div>
+    <div style="color:#9a9a9a; text-align:right;">Large</div>
   </div>
+
 </div>
-
-<style>
-  .product-fit-guide {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 12px 0;
-  }
-
-  .product-fit-guide--heading {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #151515;
-    margin-bottom: 14px;
-  }
-
-  .product-fit-guide--lines {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-
-  .product-fit-guide--line {
-    flex: 1 1 0;
-    height: 4px;
-    background: #e6e6e6;
-    border-radius: 2px;
-  }
-
-  .product-fit-guide--line--active {
-    height: 6px;
-    border-radius: 3px;
-    background: var(--active-color, #151515);
-  }
-
-  .product-fit-guide--labels {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: 14px;
-  }
-
-  .product-fit-guide--label-left {
-    color: #c07f45;
-    text-align: left;
-  }
-
-  .product-fit-guide--label-middle {
-    color: #b46a2b;
-    font-weight: 500;
-    text-align: center;
-  }
-
-  .product-fit-guide--label-right {
-    color: #9a9a9a;
-    text-align: right;
-  }
-
-  @media (max-width: 767px) {
-    .product-fit-guide--labels {
-      font-size: 13px;
-    }
-  }
-</style>
