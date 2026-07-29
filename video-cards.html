@@ -60,7 +60,7 @@
     width: 100%;
     height: 100vh;
     height: 100dvh;
-    background: #000;
+    background: rgba(0, 0, 0, 0.8);
     z-index: 2147483647;
     overflow: hidden;
     touch-action: none;
@@ -89,10 +89,14 @@
   }
 
   .fullscreen-video video {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
+    max-width: min(430px, 88vw);
+    max-height: 82dvh;
     object-fit: contain;
     background: #000;
+    border-radius: 14px;
+    box-shadow: 0 12px 45px rgba(0, 0, 0, 0.55);
   }
 
   .close-fullscreen {
@@ -286,13 +290,23 @@
       dragging = false;
       const dy = e.changedTouches[0].clientY - startY;
       const dx = e.changedTouches[0].clientX - startX;
+      const moved = Math.max(Math.abs(dy), Math.abs(dx));
       // ignore mostly-horizontal gestures
       if (Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx)) {
         if (dy < 0) goTo(currentIndex + 1); // swipe up -> next
         else goTo(currentIndex - 1);        // swipe down -> prev
+      } else if (moved < 12) {
+        // a tap = close the video
+        closeFullscreen();
       } else {
         applyTransform(true); // snap back
       }
+    });
+
+    // Desktop: click on the dimmed backdrop closes
+    fullscreenContainer.addEventListener('click', () => {
+      if (isMobile()) return;
+      closeFullscreen();
     });
 
     // ---- Desktop wheel navigation ----
