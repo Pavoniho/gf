@@ -1,27 +1,22 @@
-<div class="vc-section">
+<div class="vc-section" data-vc-root>
   <div class="vc-row">
 
     <div class="vc-card" data-video="https://cdn.shopify.com/videos/c/o/v/b1ff84a3bca648adbf38f06de38020ca.mp4">
-      <video src="https://cdn.shopify.com/videos/c/o/v/8a6a16f4d1e94925991d7eafba24132b.mp4" autoplay loop muted playsinline></video>
+      <video src="https://cdn.shopify.com/videos/c/o/v/8a6a16f4d1e94925991d7eafba24132b.mp4" autoplay loop muted playsinline preload="auto"></video>
       <h3>Level Up</h3>
     </div>
 
     <div class="vc-card" data-video="https://cdn.shopify.com/videos/c/o/v/49c0c52f21b54060b1741176ab4634e1.mp4">
-      <video src="https://cdn.shopify.com/videos/c/o/v/751b5138567649cfb9b3fb5f698fe8b5.mp4" autoplay loop muted playsinline></video>
+      <video src="https://cdn.shopify.com/videos/c/o/v/751b5138567649cfb9b3fb5f698fe8b5.mp4" autoplay loop muted playsinline preload="auto"></video>
       <h3>In Action</h3>
     </div>
 
     <div class="vc-card" data-video="https://cdn.shopify.com/videos/c/o/v/df8225d3d8f84b97b96f192f812e3fd4.mp4">
-      <video src="https://cdn.shopify.com/videos/c/o/v/bb9757da0be4469b9a7d436a758225e9.mp4" autoplay loop muted playsinline></video>
+      <video src="https://cdn.shopify.com/videos/c/o/v/bb9757da0be4469b9a7d436a758225e9.mp4" autoplay loop muted playsinline preload="auto"></video>
       <h3>Fix It</h3>
     </div>
 
   </div>
-</div>
-
-<div class="vc-modal" id="vc-modal" aria-hidden="true">
-  <button class="vc-close" id="vc-close" aria-label="Fermer">&times;</button>
-  <video class="vc-modal-video" id="vc-modal-video" loop muted playsinline></video>
 </div>
 
 <style>
@@ -55,23 +50,27 @@
     margin-top: 6px;
   }
 
-  /* ---- Modal (lightbox) ---- */
+  /* ---- Modal (built in JS, attached to <body>) ---- */
   .vc-modal {
     display: none;
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 2147483647;
     background: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
     padding: 24px;
+    box-sizing: border-box;
   }
 
-  .vc-modal.open {
+  .vc-modal.vc-open {
     display: flex;
   }
 
-  .vc-modal-video {
+  .vc-modal video {
     width: auto;
     height: auto;
     max-width: min(420px, 90vw);
@@ -87,14 +86,13 @@
     position: fixed;
     top: 16px;
     right: 16px;
-    z-index: 10;
     width: 44px;
     height: 44px;
     border: none;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.45);
     color: #fff;
-    font-size: 28px;
+    font-size: 26px;
     line-height: 44px;
     text-align: center;
     cursor: pointer;
@@ -117,46 +115,64 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.getElementById('vc-modal');
-    var modalVideo = document.getElementById('vc-modal-video');
-    var closeBtn = document.getElementById('vc-close');
-    var cards = document.querySelectorAll('.vc-card');
+  (function () {
+    function initVideoCards() {
+      // Build ONE shared modal on <body> (so no parent can clip it).
+      var modal = document.getElementById('vc-shared-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'vc-shared-modal';
+        modal.className = 'vc-modal';
+        modal.innerHTML =
+          '<button type="button" class="vc-close" aria-label="Fermer">&times;</button>' +
+          '<video class="vc-modal-video" loop muted playsinline></video>';
+        document.body.appendChild(modal);
 
-    function openModal(url) {
-      modalVideo.src = url;
-      modalVideo.muted = true;
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('vc-no-scroll');
-      var p = modalVideo.play();
-      if (p && p.catch) p.catch(function () {});
+        var mVideo = modal.querySelector('.vc-modal-video');
+        var mClose = modal.querySelector('.vc-close');
+
+        window.__vcOpen = function (url) {
+          mVideo.src = url;
+          mVideo.muted = true;
+          modal.classList.add('vc-open');
+          document.body.classList.add('vc-no-scroll');
+          var p = mVideo.play();
+          if (p && p.catch) { p.catch(function () {}); }
+        };
+
+        window.__vcClose = function () {
+          modal.classList.remove('vc-open');
+          document.body.classList.remove('vc-no-scroll');
+          mVideo.pause();
+          mVideo.removeAttribute('src');
+          mVideo.load();
+        };
+
+        mClose.addEventListener('click', window.__vcClose);
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) { window.__vcClose(); }
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') { window.__vcClose(); }
+        });
+      }
+
+      // Wire every card (guard against double-binding on re-render).
+      var cards = document.querySelectorAll('.vc-card');
+      for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        if (card.getAttribute('data-vc-bound')) { continue; }
+        card.setAttribute('data-vc-bound', '1');
+        card.addEventListener('click', function () {
+          window.__vcOpen(this.getAttribute('data-video'));
+        });
+      }
     }
 
-    function closeModal() {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('vc-no-scroll');
-      modalVideo.pause();
-      modalVideo.removeAttribute('src');
-      modalVideo.load();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideoCards);
+    } else {
+      initVideoCards();
     }
-
-    cards.forEach(function (card) {
-      card.addEventListener('click', function () {
-        openModal(card.getAttribute('data-video'));
-      });
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-
-    // Click / tap on the dark backdrop closes (but not on the video itself)
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-    });
-  });
+  })();
 </script>
