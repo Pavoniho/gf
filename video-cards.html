@@ -1,0 +1,395 @@
+<div class="video-cards-section" style="background-color: #ffffff;">
+  <h2></h2>
+  <div class="video-cards-row">
+
+    <div class="video-card" data-video-url="https://cdn.shopify.com/videos/c/o/v/b1ff84a3bca648adbf38f06de38020ca.mp4" index="0">
+      <video class="video-itself" src="https://cdn.shopify.com/videos/c/o/v/8a6a16f4d1e94925991d7eafba24132b.mp4" type="video/mp4" autoplay loop muted playsinline></video>
+      <h3>Level Up</h3>
+    </div>
+
+    <div class="video-card" data-video-url="https://cdn.shopify.com/videos/c/o/v/49c0c52f21b54060b1741176ab4634e1.mp4" index="1">
+      <video class="video-itself" src="https://cdn.shopify.com/videos/c/o/v/751b5138567649cfb9b3fb5f698fe8b5.mp4" type="video/mp4" autoplay loop muted playsinline></video>
+      <h3>In Action</h3>
+    </div>
+
+    <div class="video-card" data-video-url="https://cdn.shopify.com/videos/c/o/v/df8225d3d8f84b97b96f192f812e3fd4.mp4" index="2">
+      <video class="video-itself" src="https://cdn.shopify.com/videos/c/o/v/bb9757da0be4469b9a7d436a758225e9.mp4" type="video/mp4" autoplay loop muted playsinline></video>
+      <h3>Fix It</h3>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .video-cards-section {
+    padding: 0px 24px;
+    margin: 0 auto;
+    max-width: 1100px;
+    margin-top: -16px;
+    margin-bottom: -18px;
+  }
+
+  .video-cards-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .video-card {
+    width: 30%;
+    cursor: pointer;
+  }
+
+  .video-card video {
+    width: 100%;
+    height: auto;
+  }
+
+  .video-card h3 {
+    font-size: 18px;
+    text-align: left;
+    margin-top: 3px;
+  }
+
+  .fullscreen-container {
+    height: 100vh;
+    flex-direction: column;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2147483647;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .tt-video-wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .fullscreen-video {
+    flex: 1 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .fullscreen-video video {
+    width: 100%;
+    height: auto;
+  }
+
+  .fullscreen-video button {
+    position: absolute;
+    top: 10px;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .close-fullscreen {
+    display: block !important;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1001;
+    top: 10px;
+    opacity: 0.8;
+    right: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3C/svg%3E");
+    background-size: 100%;
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #mute-button {
+    display: block !important;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1001;
+    top: 10px;
+    left: 10px;
+    opacity: 0.8;
+    background-size: 100%;
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .mute-false {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z' stroke='none'/%3E%3Cpath d='M16 8.5a4.5 4.5 0 0 1 0 7' fill='none' stroke-width='2'/%3E%3Cpath d='M19 6a8 8 0 0 1 0 12' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+  }
+
+  .empty-video-overlay {
+    z-index: 100;
+    background: transparent;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    cursor: cell;
+    display: block !important;
+  }
+
+  .mute-true {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' stroke='white'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3z' stroke='none'/%3E%3Cline x1='16' y1='9' x2='22' y2='15' stroke-width='2'/%3E%3Cline x1='22' y1='9' x2='16' y2='15' stroke-width='2'/%3E%3C/svg%3E");
+  }
+
+  .fullscreen-desktop-video {
+    width: auto !important;
+    height: 100vh !important;
+    object-fit: cover !important;
+  }
+
+  @media (max-width: 767px) {
+    .fullscreen-video {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .video-card h3 {
+      font-size: 12px;
+      text-align: left;
+      margin-top: 3px;
+    }
+  }
+
+  body.no-scroll {
+    overflow: hidden;
+  }
+
+  @media (max-width: 767px) {
+    .video-cards-section {
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Everything stays muted: previews and fullscreen playback have no sound.
+    let muted = true;
+    const videoCards = document.querySelectorAll('.video-card');
+    const fullscreenContainer = document.createElement('div');
+    const video_wrapper = document.createElement('div');
+    fullscreenContainer.classList.add('fullscreen-container');
+    video_wrapper.className = 'tt-video-wrapper';
+    fullscreenContainer.appendChild(video_wrapper);
+    document.body.appendChild(fullscreenContainer);
+
+    const mute_button = document.createElement('div');
+    mute_button.className = 'mute-true';
+    mute_button.id = 'mute-button';
+    mute_button.addEventListener('click', toggleMute);
+
+    const close_button = document.createElement('div');
+    close_button.className = 'close-fullscreen';
+    close_button.id = 'close-fullscreen-button';
+    close_button.addEventListener('click', closeFullscreen);
+
+    fullscreenContainer.appendChild(mute_button);
+    fullscreenContainer.appendChild(close_button);
+
+    const videoElements = Array.from(videoCards);
+
+    let startY = 0;
+    let endY = 0;
+    let currentIndex = 0;
+    let swipe_transform = 0;
+
+    if (window.innerWidth <= 767) {
+      // Mobile view
+      close_button.style.cssText = "width: 55px; height: 55px;";
+      mute_button.style.cssText = "width: 55px; height: 55px;";
+      fullscreenMobile(videoElements);
+    } else {
+      // Desktop view
+      createDesktopFullScreen(videoElements);
+    }
+
+    videoElements.forEach(card => {
+      card.addEventListener('click', () => {
+        if (window.innerWidth <= 767) {
+          onVideoClickedMobile(card.getAttribute('index'));
+        } else {
+          onVideoClickedDesktop(card.getAttribute('index'));
+        }
+      });
+    });
+
+    function onVideoClickedDesktop(index) {
+      let currentVideo = video_wrapper.querySelector(`[data-index="${index}"]`);
+      currentVideo.style.display = 'block';
+
+      fullscreenContainer.style.display = 'flex';
+      document.body.classList.add('no-scroll');
+
+      const videoElement = currentVideo.querySelector('video');
+      if (videoElement) {
+        videoElement.muted = true;
+        videoElement.play();
+      }
+      muted = true;
+      mute_button.className = 'mute-true';
+    }
+
+    function onVideoClickedMobile(index) {
+      fullscreenContainer.style.display = 'block';
+      document.body.classList.add('no-scroll');
+
+      const fullscreenVideos = video_wrapper.querySelectorAll('.fullscreen-video');
+      currentIndex = index;
+      fullscreenVideos.forEach(videoDiv => {
+        let video_index = videoDiv.getAttribute('data-index');
+        const videoElement = videoDiv.querySelector('video');
+        if (videoElement) {
+          videoElement.muted = true;
+          if (video_index === index) {
+            videoElement.play();
+          }
+        }
+      });
+      muted = true;
+      mute_button.className = 'mute-true';
+
+      const firstVideo = video_wrapper.querySelector('video');
+      const firstVideoHeight = firstVideo.getBoundingClientRect().height;
+      swipe_transform = firstVideoHeight;
+
+      if (index === "0") {
+        video_wrapper.style.transform = `translate(0, 0)`;
+      } else if (index === "1") {
+        video_wrapper.style.transform = `translate(0, -${swipe_transform}px)`;
+      } else if (index === "2") {
+        video_wrapper.style.transform = `translate(0, -${swipe_transform * 2}px)`;
+      }
+
+      fullscreenContainer.addEventListener('touchstart', handleTouchStart, false);
+      fullscreenContainer.addEventListener('touchend', handleTouchEnd, false);
+    }
+
+    function createDesktopFullScreen(videoCards) {
+      video_wrapper.innerHTML = videoCards.map((card) => `
+        <div style="display: none" class="fullscreen-video" data-index="${card.getAttribute('index')}">
+          <video src="${card.getAttribute('data-video-url')}" loop muted playsinline></video>
+        </div>
+      `).join('');
+    }
+
+    function fullscreenMobile(videoCards) {
+      video_wrapper.innerHTML = videoCards.map((card) => `
+        <div class="fullscreen-video" data-index="${card.getAttribute('index')}">
+          <video src="${card.getAttribute('data-video-url')}" loop muted style="pointer-events: none;" playsinline></video>
+        </div>
+      `).join('');
+    }
+
+    function closeFullscreen() {
+      fullscreenContainer.style.display = 'none';
+      document.body.classList.remove('no-scroll');
+
+      if (window.innerWidth <= 767) {
+        const fullscreenVideos = video_wrapper.querySelectorAll('.fullscreen-video');
+        fullscreenVideos.forEach(videoDiv => {
+          const videoElement = videoDiv.querySelector('video');
+          if (videoElement) {
+            videoElement.pause();
+            videoElement.muted = true;
+          }
+        });
+      } else {
+        const fullscreenVideos = fullscreenContainer.querySelectorAll('.fullscreen-video');
+        fullscreenVideos.forEach(videoDiv => {
+          videoDiv.style.display = 'none';
+          const videoElement = videoDiv.querySelector('video');
+          if (videoElement) {
+            videoElement.pause();
+            videoElement.muted = true;
+          }
+        });
+      }
+    }
+
+    function toggleMute(event) {
+      let button = event.target;
+      muted = !muted;
+      button.className = muted ? 'mute-true' : 'mute-false';
+
+      if (window.innerWidth <= 767) {
+        const fullscreenVideos = video_wrapper.querySelectorAll('.fullscreen-video');
+        fullscreenVideos.forEach(videoDiv => {
+          const videoElement = videoDiv.querySelector('video');
+          if (videoElement) {
+            videoElement.muted = muted;
+          }
+        });
+      } else {
+        const fullscreenVideos = fullscreenContainer.querySelectorAll('.fullscreen-video');
+        fullscreenVideos.forEach(videoDiv => {
+          const videoElement = videoDiv.querySelector('video');
+          if (videoElement) {
+            videoElement.muted = muted;
+          }
+        });
+      }
+    }
+
+    function handleTouchStart(event) {
+      startY = event.touches[0].clientY;
+    }
+
+    function handleTouchEnd(event) {
+      endY = event.changedTouches[0].clientY;
+      handleSwipe();
+    }
+
+    function handleSwipe() {
+      const videos = fullscreenContainer.querySelectorAll('.fullscreen-video');
+      const totalVideos = videos.length;
+
+      if (startY - endY > 50) {
+        // Swipe up
+        currentIndex = (currentIndex + 1) % totalVideos;
+        if (currentIndex > 2) {
+          currentIndex = 2;
+        } else if (currentIndex < 0) {
+          currentIndex = 0;
+        }
+      } else if (endY - startY > 50) {
+        // Swipe down
+        currentIndex = (currentIndex - 1 + totalVideos) % totalVideos;
+        if (currentIndex > 2) {
+          currentIndex = 2;
+        } else if (currentIndex < 0) {
+          currentIndex = 0;
+        }
+      }
+
+      const fullscreenVideos = video_wrapper.querySelectorAll('.fullscreen-video');
+      fullscreenVideos.forEach(videoDiv => {
+        let video_index = videoDiv.getAttribute('data-index');
+        const videoElement = videoDiv.querySelector('video');
+        if (videoElement) {
+          if (video_index == currentIndex) {
+            videoElement.muted = muted;
+            videoElement.play();
+          } else {
+            videoElement.pause();
+          }
+        }
+      });
+
+      video_wrapper.style.transform = `translate(0, -${currentIndex * swipe_transform}px)`;
+    }
+  });
+</script>
