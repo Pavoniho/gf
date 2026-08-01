@@ -1,0 +1,78 @@
+{{ 'size-recommender.css' | asset_url | stylesheet_tag }}
+
+<div class="srz-wrapper">
+  <button class="srz-trigger" type="button" data-size-recommender-trigger>Find Your Size</button>
+</div>
+
+<div class="srz-modal" id="srzModal" role="dialog" aria-modal="true" aria-labelledby="srzModalTitle">
+  <div class="srz-overlay" data-srz-close></div>
+  <div class="srz-content-wrapper">
+    <div class="srz-content">
+      <button class="srz-close" type="button" aria-label="Close" data-srz-close>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <div class="srz-progress">
+        <div class="srz-progress-step srz-is-active" data-step="1">1</div>
+        <div class="srz-progress-line" data-line="1"></div>
+        <div class="srz-progress-step" data-step="2">2</div>
+        <div class="srz-progress-line" data-line="2"></div>
+        <div class="srz-progress-step" data-step="3">3</div>
+      </div>
+
+      <div class="srz-step srz-is-active" data-srz-step="1">
+        <h2 class="srz-question" id="srzModalTitle">What size do you typically wear in non-compression clothing?</h2>
+        <div class="srz-size-buttons">
+          <button class="srz-size-btn" data-size="XS" type="button">XS</button>
+          <button class="srz-size-btn" data-size="S" type="button">S</button>
+          <button class="srz-size-btn" data-size="M" type="button">M</button>
+          <button class="srz-size-btn" data-size="L" type="button">L</button>
+          <button class="srz-size-btn" data-size="XL" type="button">XL</button>
+          <button class="srz-size-btn" data-size="2XL" type="button">2XL</button>
+          <button class="srz-size-btn" data-size="3XL" type="button">3XL</button>
+          <button class="srz-size-btn" data-size="4XL" type="button">4XL</button>
+        </div>
+      </div>
+
+      <div class="srz-step" data-srz-step="2">
+        <h2 class="srz-question">What is your primary goal for wearing InShape compression wear?</h2>
+        <div class="srz-goal-buttons">
+          <button class="srz-goal-btn" data-goal="Flatten the Stomach" type="button">
+            <strong>Flatten the Stomach</strong>
+            <span>Maximum slimming effect with enhanced compression</span>
+          </button>
+          <button class="srz-goal-btn" data-goal="Conceal Chest Insecurities" type="button">
+            <strong>Conceal Chest Insecurities</strong>
+            <span>Discreet and confident fit for chest support</span>
+          </button>
+          <button class="srz-goal-btn" data-goal="Compress Loose Skin" type="button">
+            <strong>Compress Loose Skin</strong>
+            <span>Firms and smooths loose or sagging skin under clothing</span>
+          </button>
+          <button class="srz-goal-btn" data-goal="Back Support" type="button">
+            <strong>Back Support</strong>
+            <span>Targeted support to improve posture and core stability</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="srz-step" data-srz-step="3">
+        <div class="srz-rec-header">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 20px;">
+            <circle cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2"></circle>
+            <path d="M8 12L11 15L16 9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <h2 class="srz-question">Your Perfect InShape Size</h2>
+        </div>
+        <div class="srz-rec-result" data-srz-result>M</div>
+        <div class="srz-rec-details" data-srz-details>Your usual size provides discreet chest compression and helps restore confidence under clothing.</div>
+        <button class="srz-btn-primary" type="button" data-srz-apply>Apply This Size</button>
+        <button class="srz-btn-text" type="button" data-srz-startover>Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ 'size-recommender.js' | asset_url | script_tag }}
