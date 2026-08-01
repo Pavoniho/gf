@@ -142,7 +142,7 @@
 </style>
 
 <div class="srz-wrapper">
-  <button class="srz-trigger srz-trigger--link" type="button" data-size-recommender-trigger>Find Your Size</button>
+  <button class="srz-trigger" type="button" data-size-recommender-trigger>Find Your Size</button>
 </div>
 
 <div class="srz-modal" id="srzModal" role="dialog" aria-modal="true" aria-labelledby="srzModalTitle">
@@ -300,6 +300,11 @@
       this.recommendation = null;
       this.lastTriggerAt = 0;
       this.modal = document.getElementById('srzModal');
+      // Move the modal to <body> so its fixed positioning escapes any product
+      // column that uses overflow:hidden / transform / sticky (which would trap it).
+      if (this.modal && this.modal.parentNode !== document.body) {
+        document.body.appendChild(this.modal);
+      }
       this.bind();
     }
 
@@ -374,8 +379,8 @@
           this.saveProperties();
           this.toast(
             applied
-              ? `✓ Size ${this.recommendation.size} selected on product`
-              : `✓ Saved ${this.recommendation.size} (picker not found)`
+              ? '✓ Size ' + this.recommendation.size + ' selected on product'
+              : '✓ Saved ' + this.recommendation.size + ' (picker not found)'
           );
           this.close();
           return;
@@ -506,7 +511,7 @@
       const add = (name, value) => {
         const i = document.createElement('input');
         i.type = 'hidden';
-        i.name = `properties[${name}]`;
+        i.name = 'properties[' + name + ']';
         i.value = value;
         i.dataset.inshape = 'true';
         form.appendChild(i);
