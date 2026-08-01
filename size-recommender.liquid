@@ -1,0 +1,609 @@
+<style>
+.size-recommender-wrapper { margin: 16px 0; }
+.size-recommender-trigger,
+.size-recommender-inline-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 12px 24px; background: #f3f4f6; border: 2px solid #e5e7eb;
+  border-radius: 8px; color: #1f2937; font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: all 0.2s ease; width: 100%; max-width: 400px;
+  font-family: inherit;
+}
+.size-recommender-inline-link {
+  width: auto; padding: 0; background: none; border: none;
+  color: #1f2937; text-decoration: underline; font-weight: 600;
+}
+.size-recommender-trigger:hover {
+  background: #e5e7eb; border-color: #d1d5db;
+  transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.size-recommender-inline-link:hover { color: #000000; }
+.size-recommender-modal {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 9999; opacity: 0; transition: opacity 0.3s ease;
+}
+.size-recommender-modal.active { display: flex; align-items: center; justify-content: center; }
+.size-recommender-modal.show { opacity: 1; }
+.modal-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
+}
+.modal-content-wrapper {
+  position: relative; z-index: 1; width: 90%; max-width: 650px;
+  max-height: 90vh; margin: 0 auto;
+}
+.modal-content {
+  background: #FFFFFF; color: #1f2937; padding: 48px 40px;
+  border-radius: 16px; overflow-y: auto; max-height: 90vh;
+  position: relative; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.modal-close {
+  position: absolute; top: 20px; right: 20px; background: #f3f4f6;
+  border: none; width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; color: #6b7280; padding: 0; display: flex;
+  align-items: center; justify-content: center; transition: all 0.2s ease; z-index: 10;
+}
+.modal-close:hover { background: #e5e7eb; color: #1f2937; }
+.progress-indicator {
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 40px; gap: 8px;
+}
+.progress-step {
+  width: 36px; height: 36px; border-radius: 50%; background: #e5e7eb;
+  color: #9ca3af; display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 14px; transition: all 0.3s ease;
+}
+.progress-step.active { background: #000000; color: #ffffff; transform: scale(1.1); }
+.progress-step.completed { background: #22c55e; color: #ffffff; }
+.progress-line { width: 40px; height: 2px; background: #e5e7eb; transition: all 0.3s ease; }
+.progress-line.completed { background: #22c55e; }
+.modal-step { display: none; animation: fadeInUp 0.4s ease; }
+.modal-step.active { display: block; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-question {
+  font-size: 24px; font-weight: 700; margin-bottom: 32px;
+  text-align: center; line-height: 1.3; color: #111827; font-style: italic;
+}
+.size-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.size-btn {
+  padding: 20px 12px; background: #FFFFFF; border: 2px solid #e5e7eb;
+  border-radius: 12px; color: #1f2937; cursor: pointer; font-size: 18px;
+  font-weight: 700; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
+}
+.size-btn:hover {
+  background: #000000; color: #FFFFFF; border-color: #000000;
+  transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.goal-buttons { display: flex; flex-direction: column; gap: 16px; }
+.goal-btn {
+  padding: 24px; background: #FFFFFF; border: 2px solid #e5e7eb;
+  border-radius: 12px; color: #1f2937; cursor: pointer; text-align: left;
+  transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
+}
+.goal-btn:hover {
+  background: #f9fafb; border-color: #000000;
+  transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.goal-icon { font-size: 32px; margin-bottom: 12px; }
+.goal-btn strong {
+  display: block; font-size: 17px; margin-bottom: 8px;
+  font-weight: 700; color: #111827;
+}
+.goal-btn span { display: block; font-size: 14px; line-height: 1.5; color: #6b7280; }
+.recommendation-header { text-align: center; margin-bottom: 24px; }
+.recommendation-result {
+  text-align: center; font-size: 80px; font-weight: 900;
+  padding: 24px 0; letter-spacing: 4px; color: #000000;
+  background: linear-gradient(135deg, #000000 0%, #374151 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.recommendation-details {
+  text-align: center; font-size: 15px; line-height: 1.7;
+  color: #6b7280; padding: 0 20px 32px; max-width: 500px; margin: 0 auto;
+}
+.button-primary {
+  display: block; width: 100%; padding: 16px 32px;
+  background: #000000; color: #ffffff; border: none;
+  border-radius: 10px; font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; margin-bottom: 12px;
+  font-family: inherit;
+}
+.button-primary:hover {
+  background: #1f2937; transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.button-text {
+  display: block; width: 100%; padding: 12px; background: none;
+  border: none; color: #6b7280; font-size: 14px; cursor: pointer;
+  transition: color 0.2s ease; font-family: inherit;
+}
+.button-text:hover { color: #1f2937; }
+@keyframes slideIn {
+  from { transform: translateX(400px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(400px); opacity: 0; }
+}
+@media screen and (max-width: 749px) {
+  .modal-content { padding: 36px 24px; }
+  .modal-question { font-size: 20px; margin-bottom: 24px; }
+  .recommendation-result { font-size: 60px; }
+  .size-btn { padding: 16px 10px; font-size: 16px; }
+  .goal-btn { padding: 20px; }
+  .size-recommender-trigger { font-size: 13px; padding: 10px 20px; }
+}
+</style>
+
+<div class="size-recommender-wrapper">
+  <button class="size-recommender-inline-link" type="button" data-size-recommender-trigger>Find Your Size</button>
+</div>
+
+<div class="size-recommender-modal" id="sizeRecommenderModal" role="dialog" aria-modal="true" aria-labelledby="sizeModalTitle">
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal-content-wrapper">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <div class="progress-indicator">
+        <div class="progress-step active" data-step="1">1</div>
+        <div class="progress-line" data-line="1"></div>
+        <div class="progress-step" data-step="2">2</div>
+        <div class="progress-line" data-line="2"></div>
+        <div class="progress-step" data-step="3">3</div>
+      </div>
+
+      <div class="modal-step active" id="step1">
+        <h2 class="modal-question" id="sizeModalTitle">What size do you typically wear in non-compression clothing?</h2>
+        <div class="size-buttons">
+          <button class="size-btn" data-size="XS" type="button">XS</button>
+          <button class="size-btn" data-size="S" type="button">S</button>
+          <button class="size-btn" data-size="M" type="button">M</button>
+          <button class="size-btn" data-size="L" type="button">L</button>
+          <button class="size-btn" data-size="XL" type="button">XL</button>
+          <button class="size-btn" data-size="2XL" type="button">2XL</button>
+          <button class="size-btn" data-size="3XL" type="button">3XL</button>
+          <button class="size-btn" data-size="4XL" type="button">4XL</button>
+        </div>
+      </div>
+
+      <div class="modal-step" id="step2">
+        <h2 class="modal-question">What is your primary goal for wearing InShape compression wear?</h2>
+        <div class="goal-buttons">
+          <button class="goal-btn" data-goal="Flatten the Stomach" type="button">
+            <strong>Flatten the Stomach</strong>
+            <span>Maximum slimming effect with enhanced compression</span>
+          </button>
+          <button class="goal-btn" data-goal="Conceal Chest Insecurities" type="button">
+            <strong>Conceal Chest Insecurities</strong>
+            <span>Discreet and confident fit for chest support</span>
+          </button>
+          <button class="goal-btn" data-goal="Compress Loose Skin" type="button">
+            <strong>Compress Loose Skin</strong>
+            <span>Firms and smooths loose or sagging skin under clothing</span>
+          </button>
+          <button class="goal-btn" data-goal="Back Support" type="button">
+            <strong>Back Support</strong>
+            <span>Targeted support to improve posture and core stability</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-step" id="step3">
+        <div class="recommendation-header">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 20px;">
+            <circle cx="12" cy="12" r="10" stroke="#22c55e" stroke-width="2"></circle>
+            <path d="M8 12L11 15L16 9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <h2 class="modal-question">Your Perfect InShape Size</h2>
+        </div>
+        <div class="recommendation-result" id="recommendationResult">M</div>
+        <div class="recommendation-details" id="recommendationDetails">Your usual size provides discreet chest compression and helps restore confidence under clothing.</div>
+        <button class="button-primary" id="applyRecommendation" type="button">Apply This Size</button>
+        <button class="button-text" id="startOver" type="button">Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  if (window.inshapeSizeRecommenderInitialized) return;
+  window.inshapeSizeRecommenderInitialized = true;
+
+  const SIZE_ORDER = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
+
+  function normalizeSize(size) {
+    if (size === 'XS') return 'S';
+    if (size === '4XL') return '3XL';
+    return size;
+  }
+
+  function getOneSizeDown(size) {
+    const i = SIZE_ORDER.indexOf(size);
+    return i > 0 ? SIZE_ORDER[i - 1] : size;
+  }
+
+  function calculateRecommendedSize(usualSize, goal) {
+    const normalized = normalizeSize(usualSize);
+    let recommendedSize = normalized;
+
+    const isXSNormalized = usualSize === 'XS' && normalized === 'S';
+    const is4xlNormalized = usualSize === '4XL' && normalized === '3XL';
+
+    let reason = '';
+
+    /* ============================
+       FLATTEN THE STOMACH
+       Aggressive compression
+    ============================ */
+    if (goal === 'Flatten the Stomach') {
+      recommendedSize = getOneSizeDown(normalized);
+
+      if (usualSize === 'XS' || normalized === 'S') {
+        recommendedSize = 'S';
+      }
+
+      if (usualSize === '4XL') {
+        recommendedSize = '3XL';
+      }
+
+      reason =
+        'To flatten the stomach and create a slimmer profile, we recommend sizing down for maximum compression.';
+    }
+
+    /* ============================
+       COMPRESS LOOSE SKIN
+       Controlled compression
+    ============================ */
+    else if (goal === 'Compress Loose Skin') {
+      recommendedSize = normalized;
+
+      reason =
+        'For loose or sagging skin, your usual size provides firm support without excessive tightness.';
+    }
+
+    /* ============================
+       CONCEAL CHEST INSECURITIES
+       Neutral sizing
+    ============================ */
+    else if (goal === 'Conceal Chest Insecurities') {
+      recommendedSize = normalized;
+
+      reason =
+        'Your usual size provides discreet chest compression and helps restore confidence under clothing.';
+    }
+
+    /* ============================
+       BACK SUPPORT
+       Neutral sizing
+    ============================ */
+    else if (goal === 'Back Support') {
+      recommendedSize = normalized;
+
+      reason =
+        'Your usual size offers balanced support to improve posture and core stability.';
+    }
+
+    /* ============================
+       XS NORMALIZATION
+    ============================ */
+    if (isXSNormalized) {
+      recommendedSize = 'S';
+      reason =
+        'You selected XS — we don’t offer XS yet. S is our smallest size and provides the best fit available.';
+    }
+
+    /* ============================
+       4XL NORMALIZATION
+    ============================ */
+    if (is4xlNormalized) {
+      recommendedSize = '3XL';
+      reason =
+        'You selected 4XL — we don’t offer 4XL yet. 3XL is our stretchiest fit and comfortably supports many 4XL customers.';
+    }
+
+    /* ============================
+       S + FLATTEN STOMACH GUARD
+    ============================ */
+    if (usualSize === 'S' && goal === 'Flatten the Stomach') {
+      recommendedSize = 'S';
+      reason =
+        'You selected S — this is already a snug fit. We recommend staying with S for strong compression without unnecessary tightness.';
+    }
+
+    return { size: recommendedSize, reason };
+  }
+
+  class SizeRecommender {
+    constructor() {
+      this.activeTrigger = null;
+      this.selectedSize = null;
+      this.selectedGoal = null;
+      this.recommendation = null;
+      this.lastTriggerAt = 0;
+      this.bind();
+    }
+
+    openFromTrigger(trigger, event) {
+      if (!trigger) return;
+
+      const now = Date.now();
+      if (now - this.lastTriggerAt < 500) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return;
+      }
+
+      this.lastTriggerAt = now;
+
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      this.activeTrigger = trigger;
+      this.reset();
+      this.open();
+    }
+
+    bind() {
+      document.addEventListener(
+        'touchend',
+        (event) => {
+          const trigger = event.target.closest('[data-size-recommender-trigger]');
+          if (!trigger) return;
+          this.openFromTrigger(trigger, event);
+        },
+        { capture: true, passive: false }
+      );
+
+      document.addEventListener(
+        'pointerup',
+        (event) => {
+          if (event.pointerType === 'mouse') return;
+          const trigger = event.target.closest('[data-size-recommender-trigger]');
+          if (!trigger) return;
+          this.openFromTrigger(trigger, event);
+        },
+        true
+      );
+
+      document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-size-recommender-trigger]');
+        if (trigger) {
+          this.openFromTrigger(trigger, event);
+          return;
+        }
+
+        if (event.target.closest('#modalClose') || event.target.closest('#modalOverlay')) {
+          event.preventDefault();
+          this.close();
+          return;
+        }
+
+        const sizeBtn = event.target.closest('.size-btn');
+        if (sizeBtn) {
+          event.preventDefault();
+          this.selectedSize = sizeBtn.dataset.size;
+          this.go(2);
+          return;
+        }
+
+        const goalBtn = event.target.closest('.goal-btn');
+        if (goalBtn) {
+          event.preventDefault();
+          this.selectedGoal = goalBtn.dataset.goal;
+          this.recommendation = calculateRecommendedSize(this.selectedSize, this.selectedGoal);
+          this.showResult();
+          this.go(3);
+          return;
+        }
+
+        if (event.target.closest('#applyRecommendation')) {
+          event.preventDefault();
+          if (!this.recommendation) return;
+          const applied = this.applyVariantToThemePicker();
+          this.saveProperties();
+          this.toast(
+            applied
+              ? `✓ Size ${this.recommendation.size} selected on product`
+              : `✓ Saved ${this.recommendation.size} (picker not found)`
+          );
+          this.close();
+          return;
+        }
+
+        if (event.target.closest('#startOver')) {
+          event.preventDefault();
+          this.reset();
+          this.go(1);
+        }
+      });
+
+      document.addEventListener('keydown', e => {
+        const modal = document.getElementById('sizeRecommenderModal');
+        if (e.key === 'Escape' && modal && modal.classList.contains('active')) this.close();
+      });
+    }
+
+    reset() {
+      this.selectedSize = null;
+      this.selectedGoal = null;
+      this.recommendation = null;
+      this.go(1);
+    }
+
+    getScope() {
+      return (
+        this.activeTrigger?.closest('.shopify-section') ||
+        this.activeTrigger?.closest('section') ||
+        document
+      );
+    }
+
+    open() {
+      const modal = document.getElementById('sizeRecommenderModal');
+      if (!modal) return;
+      modal.classList.add('active');
+      setTimeout(() => modal.classList.add('show'), 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+      const modal = document.getElementById('sizeRecommenderModal');
+      if (!modal) return;
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    go(step) {
+      [1, 2, 3].forEach((idx) => {
+        const el = document.getElementById('step' + idx);
+        if (el) el.classList.toggle('active', idx === step);
+      });
+      this.updateProgress(step);
+    }
+
+    updateProgress(step) {
+      const modal = document.getElementById('sizeRecommenderModal');
+      if (!modal) return;
+
+      modal.querySelectorAll('.progress-step').forEach((el) => {
+        const s = parseInt(el.dataset.step, 10);
+        el.classList.remove('active', 'completed');
+        if (s < step) el.classList.add('completed');
+        else if (s === step) el.classList.add('active');
+      });
+
+      modal.querySelectorAll('.progress-line').forEach((el) => {
+        const l = parseInt(el.dataset.line, 10);
+        el.classList.toggle('completed', l < step);
+      });
+    }
+
+    showResult() {
+      const result = document.getElementById('recommendationResult');
+      const details = document.getElementById('recommendationDetails');
+      if (result) result.textContent = this.recommendation.size;
+      if (details) details.textContent = this.recommendation.reason;
+    }
+
+    applyVariantToThemePicker() {
+      const size = this.recommendation?.size;
+      if (!size) return false;
+
+      const scope = this.getScope();
+
+      const fieldsets = Array.from(scope.querySelectorAll('fieldset'));
+      const sizeFieldset = fieldsets.find(fs => {
+        const legend = fs.querySelector('legend');
+        const txt = (
+          legend?.textContent ||
+          fs.getAttribute('data-option-name') ||
+          fs.getAttribute('data-index') ||
+          ''
+        ).toLowerCase();
+        return txt.includes('size');
+      });
+
+      if (sizeFieldset) {
+        const labels = Array.from(sizeFieldset.querySelectorAll('label'));
+        const labelMatch = labels.find(l => (l.textContent || '').trim() === size);
+        if (labelMatch) {
+          labelMatch.click();
+          return true;
+        }
+      }
+
+      const selects = Array.from(scope.querySelectorAll('select'));
+      for (const sel of selects) {
+        const opt = Array.from(sel.options).find(
+          o => o.value === size || (o.text || '').trim() === size
+        );
+        if (opt) {
+          sel.value = opt.value;
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+          sel.dispatchEvent(new Event('input', { bubbles: true }));
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    saveProperties() {
+      const scope = this.getScope();
+      const form =
+        scope.querySelector('form[action*="/cart/add"]') ||
+        document.querySelector('form[action*="/cart/add"]');
+
+      if (!form) return;
+
+      form.querySelectorAll('[data-inshape]').forEach(e => e.remove());
+
+      const add = (name, value) => {
+        const i = document.createElement('input');
+        i.type = 'hidden';
+        i.name = `properties[${name}]`;
+        i.value = value;
+        i.dataset.inshape = 'true';
+        form.appendChild(i);
+      };
+
+      add('_inshape_recommended_size', this.recommendation.size);
+      add(
+        '_inshape_size_recommender_data',
+        JSON.stringify({
+          usual: this.selectedSize,
+          normalized: normalizeSize(this.selectedSize),
+          goal: this.selectedGoal,
+          recommended: this.recommendation.size,
+          time: new Date().toISOString()
+        })
+      );
+    }
+
+    toast(text) {
+      const t = document.createElement('div');
+      t.textContent = text;
+      t.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #22c55e;
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10000;
+        box-shadow: 0 10px 24px rgba(0,0,0,.18);
+        animation: slideIn 0.3s ease;
+      `;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new SizeRecommender());
+  } else {
+    new SizeRecommender();
+  }
+})();
+</script>
