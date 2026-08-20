@@ -1,0 +1,624 @@
+{%- comment -%}
+  ============================================================================
+  ADVERTORIAL — Shaperluv format
+  Paste this whole file into a Shopify **Custom Liquid** section on a new page.
+  Theme editor: Add section > Custom Liquid > paste > Save.
+  ============================================================================
+{%- endcomment -%}
+
+{%- comment -%} ============ EDIT ME ============ {%- endcomment -%}
+{%- assign adv_handle       = 'your-product-handle' -%}
+{%- assign adv_logo         = 'https://cdn.shopify.com/REPLACE/logo.png' -%}
+{%- assign adv_logo_alt     = 'Brand' -%}
+{%- assign adv_review_count = '1349' -%}
+{%- assign adv_deal_label   = 'LIMITED-TIME DEAL' -%}
+{%- assign adv_cta_text     = 'BUY NOW' -%}
+{%- assign adv_hide_chrome  = true -%}
+{%- comment -%} ============ /EDIT ME ============ {%- endcomment -%}
+
+{%- assign adv_product = all_products[adv_handle] -%}
+
+<div class="slv-adv">
+
+  <style>
+    {%- if adv_hide_chrome -%}
+    /* An advertorial has no navigation. One exit: the product block. */
+    #shopify-section-header, .shopify-section--header, store-header, header.header,
+    announcement-bar, .announcement-bar, #shopify-section-announcement-bar,
+    #shopify-section-footer, .shopify-section--footer, footer.footer { display: none !important; }
+    {%- endif -%}
+
+    html, body { overflow-x: hidden; }
+
+    .slv-adv, .slv-adv * { box-sizing: border-box; }
+    .slv-adv {
+      font-family: Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #282828;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+    .slv-adv img { display: block; max-width: 100%; }
+    .slv-adv p { margin: 0; }
+
+    /* ---------- logo bar ---------- */
+    .slv-adv__logobar {
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 1px solid #eee;
+      height: 96px;
+    }
+    .slv-adv__logobar img {
+      width: 250px; max-width: 18vw; height: auto; max-height: 74px; object-fit: contain;
+    }
+
+    /* ---------- hero ---------- */
+    .slv-adv__hero { width: min(100% - 96px, 1120px); margin: 42px auto 30px; }
+    .slv-adv__hero h1 {
+      max-width: 980px; margin: 0 0 14px;
+      font-weight: 700; color: #000;
+      font-size: clamp(28px, 2.2vw, 34px); line-height: 1.14; letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .slv-adv__hero p { max-width: 960px; font-size: 18px; line-height: 1.65; color: #333; }
+
+    /* ---------- reason blocks ---------- */
+    .slv-adv__reason { background: #fff; padding: 34px 0; }
+    .slv-adv__reason[data-i='2'], .slv-adv__reason[data-i='4'],
+    .slv-adv__reason[data-i='6'], .slv-adv__reason[data-i='8'] { background: #f5f5f5; }
+
+    .slv-adv__row {
+      width: min(100% - 96px, 1120px); margin-inline: auto;
+      display: grid;
+      grid-template-columns: minmax(300px, 430px) minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(44px, 6vw, 84px);
+    }
+    /* even reasons: text left, image right */
+    .slv-adv__reason[data-i='2'] .slv-adv__row, .slv-adv__reason[data-i='4'] .slv-adv__row,
+    .slv-adv__reason[data-i='6'] .slv-adv__row, .slv-adv__reason[data-i='8'] .slv-adv__row {
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 430px);
+    }
+    .slv-adv__reason[data-i='2'] .slv-adv__img, .slv-adv__reason[data-i='4'] .slv-adv__img,
+    .slv-adv__reason[data-i='6'] .slv-adv__img, .slv-adv__reason[data-i='8'] .slv-adv__img { grid-column: 2; }
+    .slv-adv__reason[data-i='2'] .slv-adv__copy, .slv-adv__reason[data-i='4'] .slv-adv__copy,
+    .slv-adv__reason[data-i='6'] .slv-adv__copy, .slv-adv__reason[data-i='8'] .slv-adv__copy {
+      grid-column: 1; grid-row: 1;
+    }
+
+    .slv-adv__img {
+      width: 100%; max-width: 430px;
+      height: clamp(360px, 30vw, 430px);
+      aspect-ratio: 1 / 1; object-fit: cover;
+      border-radius: 18px; background: #eee;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .08);
+    }
+    .slv-adv__copy { max-width: 660px; font-size: 18px; line-height: 1.6; color: #2f2f2f; }
+    .slv-adv__title {
+      display: block; max-width: 760px; margin: 0 0 16px;
+      font-weight: 800; color: #000;
+      font-size: clamp(36px, 3.3vw, 52px); line-height: 1.03; letter-spacing: 0;
+      text-wrap: balance;
+    }
+    .slv-adv__reason[data-long='true'] .slv-adv__title { font-size: clamp(31px, 2.7vw, 44px); }
+    .slv-adv__title-m { display: none; }
+
+    /* ---------- scroll anchor (invisible) ---------- */
+    #slv-adv-anchor { display: block; height: 1px; width: 1px; opacity: 0; pointer-events: none; }
+
+    /* ---------- product block ---------- */
+    .slv-adv__product-section { margin: 68px 0 26px; }
+    .slv-adv__product-wrap { width: min(100% - 96px, 1180px); margin-inline: auto; }
+    .slv-adv__product-heading {
+      max-width: 900px; margin: 0 auto 34px; text-align: center;
+      font-weight: 700; color: #000;
+      font-size: clamp(28px, 2.4vw, 38px); line-height: 1.1;
+    }
+    .slv-adv__product {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(44px, 5vw, 76px); align-items: flex-start;
+    }
+    .slv-adv__gallery-main {
+      width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+      border-radius: 12px; background: #f2f2f2;
+    }
+    .slv-adv__thumbs {
+      display: flex; gap: 10px; margin-top: 12px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .slv-adv__thumbs::-webkit-scrollbar { display: none; }
+    .slv-adv__thumb {
+      flex: 0 0 72px; width: 72px; height: 72px; padding: 0;
+      border: 1px solid #dfdfdf; border-radius: 8px; background: #fff;
+      overflow: hidden; cursor: pointer;
+    }
+    .slv-adv__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .slv-adv__thumb[aria-current='true'] { border-color: #000; }
+
+    .slv-adv__info { max-width: 520px; padding: 22px 0 0; }
+    .slv-adv__product-title {
+      margin: 0 0 8px; font-weight: 700; color: #000;
+      font-size: clamp(28px, 2.4vw, 38px); line-height: 1.05;
+    }
+    .slv-adv__rating { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 14px; }
+    .slv-adv__stars { color: #000; letter-spacing: 2px; }
+    .slv-adv__reviews { color: #6b6b6b; text-decoration: underline; }
+    .slv-adv__deal {
+      display: inline-block; margin-bottom: 10px; padding: 5px 12px;
+      background: #000; color: #fff; border-radius: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    }
+    .slv-adv__prices { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+    .slv-adv__price { font-size: 28px; font-weight: 700; color: #000; }
+    .slv-adv__compare { font-size: 18px; color: #8a8a8a; text-decoration: line-through; }
+    .slv-adv__save {
+      font-size: 12px; font-weight: 700; letter-spacing: .08em;
+      color: #fff; background: #de2a2a; border-radius: 5px; padding: 4px 9px;
+    }
+    .slv-adv__desc { font-size: 17px; line-height: 1.55; color: #303030; margin-bottom: 22px; }
+
+    .slv-adv__option { margin-bottom: 18px; }
+    .slv-adv__option-name {
+      display: block; margin-bottom: 8px;
+      font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #000;
+    }
+    .slv-adv__values { display: flex; flex-wrap: wrap; gap: 8px; }
+    .slv-adv__value {
+      min-width: 52px; padding: 10px 14px;
+      border: 1px solid #dfdfdf; border-radius: 8px; background: #fff;
+      font-family: inherit; font-size: 14px; font-weight: 600; color: #282828;
+      cursor: pointer;
+    }
+    .slv-adv__value[aria-pressed='true'] { border-color: #000; background: #000; color: #fff; }
+    .slv-adv__value[data-unavailable='true'] { opacity: .35; text-decoration: line-through; }
+
+    .slv-adv__atc {
+      width: min(100%, 340px); min-height: 58px; padding: 0 42px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 0; border-radius: 11px; background: #282828; color: #fff;
+      font-family: inherit; font-size: 22px; line-height: 1; letter-spacing: .16em; font-weight: 600;
+      cursor: pointer;
+    }
+    .slv-adv__atc[disabled] { background: #9a9a9a; cursor: not-allowed; }
+
+    .slv-adv__missing {
+      width: min(100% - 96px, 1120px); margin: 40px auto;
+      padding: 22px; border: 2px dashed #de2a2a; border-radius: 12px;
+      color: #de2a2a; font-size: 16px; line-height: 1.5;
+    }
+
+    /* ---------- bottom CTA ---------- */
+    .slv-adv__cta-wrap { margin: 22px 0 72px; text-align: center; }
+    .slv-adv__cta {
+      width: min(100%, 340px); min-width: 260px; min-height: 58px; padding: 0 42px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 11px; background: #282828; color: #fff; text-decoration: none;
+      font-size: 22px; line-height: 1; letter-spacing: .16em; font-weight: 600;
+    }
+
+    /* ---------- sticky CTA ---------- */
+    .slv-adv__sticky {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+      z-index: 290000;
+      width: 220px; height: 56px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 11px; background: #000; color: #fff; text-decoration: none;
+      font-size: 16px; line-height: 1; font-weight: 600; letter-spacing: .14em;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .24);
+      transition: opacity 160ms ease, visibility 160ms ease, transform 160ms ease;
+    }
+    .slv-adv__sticky.is-hidden {
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transform: translateX(-50%) translateY(14px);
+    }
+
+    /* ============ MOBILE ============ */
+    @media (max-width: 767px) {
+      .slv-adv__logobar { height: auto; min-height: 56px; border-bottom-color: #ededed; }
+      .slv-adv__logobar img { width: 240px; max-width: 70%; max-height: 52px; }
+
+      .slv-adv__hero { width: auto; margin: 22px 0 18px; padding-inline: 22px; }
+      .slv-adv__hero h1 { margin: 0 0 16px; font-size: 24px; line-height: 1.12; }
+      .slv-adv__hero p { font-size: 16px; line-height: 1.48; color: #303030; }
+
+      .slv-adv__reason { margin: 24px 0; padding: 0; background: #fff !important; }
+      .slv-adv__row {
+        width: min(100% - 40px, 356px);
+        display: flex; flex-direction: column; gap: 0;
+      }
+      .slv-adv__title { display: none; }
+      .slv-adv__title-m {
+        display: block; order: -1; margin: 0 0 12px;
+        font-size: 26px; font-weight: 700; line-height: 1.08; letter-spacing: 0; color: #202020;
+      }
+      .slv-adv__reason[data-long='true'] .slv-adv__title-m { font-size: 22px; }
+      .slv-adv__img { max-width: none; height: auto; border-radius: 18px; box-shadow: none; }
+      .slv-adv__copy { max-width: none; margin-top: 14px; font-size: 16px; line-height: 1.48; color: #303030; }
+
+      .slv-adv__product-section { margin: 34px 0 18px; }
+      .slv-adv__product-wrap { width: min(100% - 40px, 366px); }
+      .slv-adv__product-heading { margin-bottom: 22px; font-size: 26px; line-height: 1.12; }
+      .slv-adv__product { grid-template-columns: 1fr; gap: 24px; }
+      .slv-adv__info { max-width: none; padding: 0 0 4px; }
+      .slv-adv__atc, .slv-adv__cta {
+        width: min(78vw, 300px); min-width: 0; min-height: 52px;
+        padding: 0 28px; border-radius: 10px; font-size: 20px; letter-spacing: .12em;
+      }
+      .slv-adv__cta-wrap { margin: 18px 0 96px; }
+
+      .slv-adv__sticky {
+        width: min(76vw, 300px); height: 52px; padding: 0 24px;
+        bottom: max(14px, env(safe-area-inset-bottom));
+        letter-spacing: .16em; box-shadow: 0 12px 30px rgba(0, 0, 0, .22);
+      }
+    }
+  </style>
+
+  <!-- ===================== LOGO BAR ===================== -->
+  <div class="slv-adv__logobar">
+    <img src="{{ adv_logo }}" alt="{{ adv_logo_alt }}" width="250" height="74" loading="eager" decoding="async">
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <div class="slv-adv__hero">
+    <h1>5 REASONS WHY [PRODUCT] [BIG PROMISE] WITHOUT [THE THING THEY DREAD].</h1>
+    <p>[One-sentence callout of the pain] Keep reading to find out how [PRODUCT] offers [the shortcut] to [the outcome they want].</p>
+  </div>
+
+  <!-- ===================== REASONS =====================
+       Duplicate this block per reason. Set data-i to 1,2,3…
+       Add data-long="true" when the title runs past ~34 characters.
+       Keep the two titles identical in wording.
+  -->
+  <section class="slv-adv__reason" data-i="1">
+    <div class="slv-adv__row">
+      <div class="slv-adv__title-m">1. [REASON TITLE IN CAPS]</div>
+      <img class="slv-adv__img" src="[IMAGE URL]&width=720" alt="[REASON TITLE]"
+           width="720" height="720" loading="lazy" decoding="async">
+      <div class="slv-adv__copy">
+        <span class="slv-adv__title">1. [Reason title]</span>
+        [One to three sentences. Benefit first, mechanism second.]
+      </div>
+    </div>
+  </section>
+
+  <section class="slv-adv__reason" data-i="2">
+    <div class="slv-adv__row">
+      <div class="slv-adv__title-m">2. [REASON TITLE IN CAPS]</div>
+      <img class="slv-adv__img" src="[IMAGE URL]&width=720" alt="[REASON TITLE]"
+           width="720" height="720" loading="lazy" decoding="async">
+      <div class="slv-adv__copy">
+        <span class="slv-adv__title">2. [Reason title]</span>
+        [Copy.]
+      </div>
+    </div>
+  </section>
+
+  <section class="slv-adv__reason" data-i="3">
+    <div class="slv-adv__row">
+      <div class="slv-adv__title-m">3. [REASON TITLE IN CAPS]</div>
+      <img class="slv-adv__img" src="[IMAGE URL]&width=720" alt="[REASON TITLE]"
+           width="720" height="720" loading="lazy" decoding="async">
+      <div class="slv-adv__copy">
+        <span class="slv-adv__title">3. [Reason title]</span>
+        [Copy.]
+      </div>
+    </div>
+  </section>
+
+  <section class="slv-adv__reason" data-i="4" data-long="true">
+    <div class="slv-adv__row">
+      <div class="slv-adv__title-m">4. [LONGER REASON TITLE IN CAPS]</div>
+      <img class="slv-adv__img" src="[IMAGE URL]&width=720" alt="[REASON TITLE]"
+           width="720" height="720" loading="lazy" decoding="async">
+      <div class="slv-adv__copy">
+        <span class="slv-adv__title">4. [Longer reason title]</span>
+        [Copy.]
+      </div>
+    </div>
+  </section>
+
+  <section class="slv-adv__reason" data-i="5">
+    <div class="slv-adv__row">
+      <div class="slv-adv__title-m">5. [REASON TITLE IN CAPS]</div>
+      <img class="slv-adv__img" src="[IMAGE URL]&width=720" alt="[REASON TITLE]"
+           width="720" height="720" loading="lazy" decoding="async">
+      <div class="slv-adv__copy">
+        <span class="slv-adv__title">5. [Reason title]</span>
+        [Social-proof close. Name a number of customers.]
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRODUCT ===================== -->
+  <span id="slv-adv-anchor"></span>
+
+  {%- if adv_product == blank or adv_product.id == blank -%}
+
+    <div class="slv-adv__missing">
+      <strong>Product block not rendering.</strong><br>
+      No product found for handle <code>{{ adv_handle }}</code>. Open the product in Shopify
+      admin, copy the slug from its URL (<code>/products/<em>this-part</em></code>), and set
+      <code>adv_handle</code> at the top of this section. Also confirm the product is
+      published to the Online Store sales channel.
+    </div>
+
+  {%- else -%}
+
+    {%- assign adv_current = adv_product.selected_or_first_available_variant -%}
+
+    <div class="slv-adv__product-section">
+      <div class="slv-adv__product-wrap">
+
+        <h2 class="slv-adv__product-heading">BEST SELLER - [ONE-LINE PRODUCT PROMISE]</h2>
+
+        <div class="slv-adv__product">
+
+          <div class="slv-adv__media">
+            <img class="slv-adv__gallery-main" id="slv-adv-main"
+                 src="{{ adv_product.featured_image | image_url: width: 900 }}"
+                 alt="{{ adv_product.title | escape }}"
+                 width="900" height="900" loading="lazy" decoding="async">
+            {%- if adv_product.images.size > 1 -%}
+              <div class="slv-adv__thumbs">
+                {%- for image in adv_product.images limit: 12 -%}
+                  <button type="button" class="slv-adv__thumb"
+                          aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                          data-full="{{ image | image_url: width: 900 }}">
+                    <img src="{{ image | image_url: width: 160 }}" alt="" width="160" height="160"
+                         loading="lazy" decoding="async">
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="slv-adv__info">
+            <h3 class="slv-adv__product-title">{{ adv_product.title }}</h3>
+
+            <div class="slv-adv__rating">
+              <span class="slv-adv__stars" aria-hidden="true">★★★★★</span>
+              <span class="slv-adv__reviews">{{ adv_review_count }} reviews</span>
+            </div>
+
+            {%- if adv_deal_label != blank -%}
+              <span class="slv-adv__deal">{{ adv_deal_label }}</span>
+            {%- endif -%}
+
+            <div class="slv-adv__prices">
+              <span class="slv-adv__price" data-price>{{ adv_current.price | money }}</span>
+              {%- if adv_current.compare_at_price > adv_current.price -%}
+                <span class="slv-adv__compare" data-compare>{{ adv_current.compare_at_price | money }}</span>
+                {%- assign adv_off = adv_current.compare_at_price | minus: adv_current.price | times: 100.0 | divided_by: adv_current.compare_at_price | round -%}
+                <span class="slv-adv__save" data-save>SAVE {{ adv_off }}%</span>
+              {%- endif -%}
+            </div>
+
+            <div class="slv-adv__desc">
+              Introducing <strong>{{ adv_product.title }}</strong> — [one or two sentences on
+              what it does and who it is for].
+            </div>
+
+            <form method="post" action="/cart/add" id="slv-adv-form"
+                  accept-charset="UTF-8" enctype="multipart/form-data">
+              <input type="hidden" name="form_type" value="product">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="id" id="slv-adv-variant" value="{{ adv_current.id }}">
+
+              {%- unless adv_product.has_only_default_variant -%}
+                {%- for option in adv_product.options_with_values -%}
+                  <div class="slv-adv__option" data-option-index="{{ forloop.index0 }}">
+                    <span class="slv-adv__option-name">{{ option.name }}</span>
+                    <div class="slv-adv__values">
+                      {%- for value in option.values -%}
+                        <button type="button" class="slv-adv__value"
+                                data-value="{{ value | escape }}"
+                                aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}">
+                          {{ value }}
+                        </button>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endunless -%}
+
+              <button type="submit" class="slv-adv__atc" id="slv-adv-atc"
+                      {% unless adv_current.available %}disabled{% endunless %}>
+                {% if adv_current.available %}{{ adv_cta_text }}{% else %}SOLD OUT{% endif %}
+              </button>
+            </form>
+
+            <script type="application/json" id="slv-adv-variants">
+              {{ adv_product.variants | json }}
+            </script>
+            <span id="slv-adv-config"
+                  data-money-format="{{ shop.money_format | escape }}"
+                  data-cta="{{ adv_cta_text | escape }}" hidden></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  {%- endif -%}
+
+  <!-- ===================== BOTTOM CTA ===================== -->
+  <div class="slv-adv__cta-wrap">
+    <a class="slv-adv__cta" href="#slv-adv-anchor">{{ adv_cta_text }}</a>
+  </div>
+
+  <!-- ===================== STICKY CTA ===================== -->
+  <a class="slv-adv__sticky" id="slv-adv-sticky" href="#slv-adv-anchor">{{ adv_cta_text }}</a>
+
+</div>
+
+<script>
+(function () {
+  var root = document.currentScript.previousElementSibling;
+  if (!root || !root.classList.contains('slv-adv')) { root = document.querySelector('.slv-adv'); }
+  if (!root) { return; }
+
+  /* ---------- gallery ---------- */
+  var main = root.querySelector('#slv-adv-main');
+  root.querySelectorAll('.slv-adv__thumb').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      if (main) { main.src = thumb.getAttribute('data-full'); }
+      root.querySelectorAll('.slv-adv__thumb').forEach(function (t) {
+        t.setAttribute('aria-current', t === thumb ? 'true' : 'false');
+      });
+    });
+  });
+
+  /* ---------- variant picker ---------- */
+  var dataEl = root.querySelector('#slv-adv-variants');
+  var idInput = root.querySelector('#slv-adv-variant');
+  var atc = root.querySelector('#slv-adv-atc');
+  var priceEl = root.querySelector('[data-price]');
+  var compareEl = root.querySelector('[data-compare]');
+  var saveEl = root.querySelector('[data-save]');
+  var config = root.querySelector('#slv-adv-config');
+  var ctaLabel = (config && config.getAttribute('data-cta')) || 'BUY NOW';
+  var moneyFormat = (config && config.getAttribute('data-money-format')) || '${{amount}}';
+
+  /* Renders through the store's own money_format so currency, separators, and
+     placement match the rest of the theme. */
+  function money(cents) {
+    if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+      return window.Shopify.formatMoney(cents, moneyFormat);
+    }
+    function group(number, decimals, thousands, decimal) {
+      var parts = (cents / 100).toFixed(decimals).split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+      return decimals ? parts.join(decimal) : parts[0];
+    }
+    return moneyFormat.replace(/\{\{\s*(\w+)\s*\}\}/g, function (match, name) {
+      switch (name) {
+        case 'amount_no_decimals': return group(cents, 0, ',', '.');
+        case 'amount_with_comma_separator': return group(cents, 2, '.', ',');
+        case 'amount_no_decimals_with_comma_separator': return group(cents, 0, '.', ',');
+        case 'amount_with_apostrophe_separator': return group(cents, 2, "'", '.');
+        default: return group(cents, 2, ',', '.');
+      }
+    });
+  }
+
+  if (dataEl && idInput) {
+    var variants = [];
+    try { variants = JSON.parse(dataEl.textContent); } catch (e) { variants = []; }
+
+    var groups = Array.prototype.slice.call(root.querySelectorAll('.slv-adv__option'));
+
+    function selection() {
+      return groups.map(function (group) {
+        var on = group.querySelector('.slv-adv__value[aria-pressed="true"]');
+        return on ? on.getAttribute('data-value') : null;
+      });
+    }
+
+    function match(choice) {
+      return variants.filter(function (variant) {
+        return choice.every(function (value, i) {
+          return value === null || variant.options[i] === value;
+        });
+      })[0];
+    }
+
+    function refresh() {
+      var choice = selection();
+
+      /* grey out combinations that do not exist or are out of stock */
+      groups.forEach(function (group, index) {
+        group.querySelectorAll('.slv-adv__value').forEach(function (button) {
+          var probe = choice.slice();
+          probe[index] = button.getAttribute('data-value');
+          var found = match(probe);
+          button.setAttribute('data-unavailable', found && found.available ? 'false' : 'true');
+        });
+      });
+
+      var variant = match(choice);
+      if (!variant) { return; }
+
+      idInput.value = variant.id;
+      if (priceEl) { priceEl.textContent = money(variant.price); }
+      if (compareEl) {
+        var on_sale = variant.compare_at_price && variant.compare_at_price > variant.price;
+        compareEl.style.display = on_sale ? '' : 'none';
+        if (on_sale) { compareEl.textContent = money(variant.compare_at_price); }
+        if (saveEl) {
+          saveEl.style.display = on_sale ? '' : 'none';
+          if (on_sale) {
+            var off = Math.round((variant.compare_at_price - variant.price) * 100 / variant.compare_at_price);
+            saveEl.textContent = 'SAVE ' + off + '%';
+          }
+        }
+      }
+      if (atc) {
+        atc.disabled = !variant.available;
+        atc.textContent = variant.available ? ctaLabel : 'SOLD OUT';
+      }
+    }
+
+    groups.forEach(function (group, index) {
+      group.querySelectorAll('.slv-adv__value').forEach(function (button) {
+        button.addEventListener('click', function () {
+          group.querySelectorAll('.slv-adv__value').forEach(function (other) {
+            other.setAttribute('aria-pressed', other === button ? 'true' : 'false');
+          });
+          refresh();
+        });
+      });
+    });
+
+    if (groups.length) {
+      groups.forEach(function (group) {
+        if (!group.querySelector('.slv-adv__value[aria-pressed="true"]')) {
+          var first = group.querySelector('.slv-adv__value');
+          if (first) { first.setAttribute('aria-pressed', 'true'); }
+        }
+      });
+      refresh();
+    }
+  }
+
+  /* ---------- sticky CTA ----------
+     Hides once the product block is about to come into view — past that point
+     the real add-to-cart is on screen and the bar is just covering copy. */
+  var sticky = root.querySelector('#slv-adv-sticky');
+  var anchor = root.querySelector('#slv-adv-anchor');
+  var heading = root.querySelector('.slv-adv__product-heading');
+  var trigger = heading || anchor;
+  if (!sticky || !trigger) { return; }
+
+  var dismissed = false;
+  var ticking = false;
+
+  function update() {
+    ticking = false;
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var height = sticky.getBoundingClientRect().height || 52;
+    var clearance = height + Math.min(150, Math.max(96, window.innerHeight * 0.14));
+    var triggerTop = trigger.getBoundingClientRect().top + scrollTop;
+    var hideAt = triggerTop - window.innerHeight + clearance;
+    sticky.classList.toggle('is-hidden', dismissed || scrollTop >= hideAt);
+  }
+
+  function request() {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+  }
+
+  window.addEventListener('scroll', request, { passive: true });
+  window.addEventListener('resize', request);
+
+  sticky.addEventListener('click', function (event) {
+    dismissed = true;
+    sticky.classList.add('is-hidden');
+    if (anchor) {
+      event.preventDefault();
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  update();
+  window.setTimeout(update, 600);
+})();
+</script>
