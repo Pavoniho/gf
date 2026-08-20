@@ -10,7 +10,13 @@
      If you don't have one, uncomment the .slv-lp-hide-chrome rules below and
      add the class slv-lp-hide-chrome to the wrapper div.
   ----------------------------------------------------------------------------
+  The page ends at the featured product block, so your theme's own trust
+  badges / footer take over from there.
+
   Everything is namespaced under .slv-lp so it cannot leak into your theme.
+  Desktop, tablet and mobile layouts are all handled (breakpoints: 1200 / 1099
+  / 999 / 768px). Tune --slv-max in the style block to change how wide the
+  page runs on large screens.
   ============================================================================
 -->
 <div class="slv-lp">
@@ -26,9 +32,11 @@
     --slv-heading: #000000;
     --slv-bg: #ffffff;
     --slv-dark: #000000;
-    --slv-footer: #282828;
     --slv-border: #d9d9d9;
     --slv-star: #000000;
+
+    /* one place to control how wide the page breathes on desktop */
+    --slv-max: 1120px;
 
     font-family: inherit;
     color: var(--slv-text);
@@ -42,7 +50,6 @@
   /* Uncomment together with adding .slv-lp-hide-chrome on the wrapper div
      if you want to hide the theme header / announcement bar / footer,
      exactly like the original page does.
-  .slv-lp-hide-chrome ~ * .footer,
   body:has(.slv-lp-hide-chrome) store-header,
   body:has(.slv-lp-hide-chrome) announcement-bar,
   body:has(.slv-lp-hide-chrome) #shopify-section-footer .footer {
@@ -57,14 +64,14 @@
 
   .slv-lp__container {
     width: 100%;
-    max-width: 1200px;
+    max-width: var(--slv-max);
     margin: 0 auto;
     padding: 0 24px;
   }
 
   /* ---------------------------------------------------------------- LOGO */
   .slv-lp__logo {
-    padding: 24px 24px 6px;
+    padding: 32px 24px 8px;
     text-align: center;
   }
 
@@ -78,12 +85,12 @@
 
   /* ------------------------------------------------------------ HEADLINE */
   .slv-lp__intro {
-    padding: 10px 0 24px;
+    padding: 16px 0 32px;
   }
 
   .slv-lp__intro h1 {
-    font-size: 26px;
-    line-height: 1.3;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.25;
     font-weight: 700;
     color: var(--slv-heading);
     margin: 0 0 14px;
@@ -93,57 +100,64 @@
   }
 
   .slv-lp__intro p {
-    font-size: 15px;
+    font-size: clamp(15px, 1.15vw, 17px);
     line-height: 1.6;
+    max-width: 70ch;
     margin: 0;
   }
 
   /* ------------------------------------------------------------- REASONS */
   .slv-lp__reason {
-    padding: 26px 0;
+    padding: 40px 0;
   }
 
   .slv-lp__reason-inner {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    width: 80vw;
-    max-width: 1100px;
+    align-items: center;
+    gap: 48px;
+    width: min(88vw, var(--slv-max));
     margin: 0 auto;
   }
 
   .slv-lp__reason-img {
-    max-width: 500px;
+    flex: 0 1 500px;
     width: 100%;
+    max-width: 500px;
     border-radius: 20px;
     object-fit: cover;
   }
 
   .slv-lp__reason-copy {
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: clamp(15px, 1.15vw, 17px);
+    line-height: 1.6;
+    max-width: 46ch;
   }
 
   .slv-lp__reason-title {
-    line-height: 1.2;
+    line-height: 1.15;
     text-align: left;
-    font-size: 50px;
+    font-size: clamp(28px, 3.4vw, 50px);
     font-weight: 800;
     color: var(--slv-heading);
-    margin: 0 0 12px;
+    margin: 0 0 14px;
   }
 
-  .slv-lp__reason--small .slv-lp__reason-title { font-size: 40px; }
+  .slv-lp__reason--small .slv-lp__reason-title {
+    font-size: clamp(24px, 2.8vw, 40px);
+  }
 
   .slv-lp__reason-title-mobile { display: none; }
 
   /* ---------------------------------------------------------- CTA BANNER */
   .slv-lp__cta-banner {
     max-width: 360px;
-    margin: 0 auto;
+    margin: 24px auto 0;
     padding: 0 24px;
   }
 
@@ -151,28 +165,35 @@
 
   /* --------------------------------------------------------- PRODUCT ---- */
   .slv-lp__product {
-    padding: 30px 0 40px;
+    padding: 40px 0 120px; /* bottom room so the sticky bar never covers the CTA */
   }
 
   .slv-lp__product-heading {
-    font-size: 27px;
-    line-height: 1.3;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.25;
     font-weight: 700;
     color: var(--slv-heading);
     text-align: center;
-    margin: 0 auto 28px;
-    max-width: 720px;
+    margin: 0 auto 36px;
+    max-width: 34ch;
     text-transform: uppercase;
+    text-wrap: balance;
   }
 
   .slv-lp__product-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 48px;
+    gap: 56px;
     align-items: start;
   }
 
   /* Gallery */
+  .slv-lp__gallery {
+    max-width: 560px;
+    margin-left: auto;
+    width: 100%;
+  }
+
   .slv-lp__gallery-stage {
     position: relative;
     width: 100%;
@@ -210,8 +231,11 @@
     cursor: pointer;
     color: #282828;
     padding: 0;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
   }
 
+  .slv-lp__gallery-arrow:hover { opacity: 1; }
   .slv-lp__gallery-arrow--prev { left: 4px; }
   .slv-lp__gallery-arrow--next { right: 4px; }
 
@@ -246,7 +270,7 @@
 
   .slv-lp__thumb {
     flex: 0 0 auto;
-    width: 60px;
+    width: 62px;
     padding: 0;
     border: 1px solid transparent;
     background: none;
@@ -254,6 +278,8 @@
     opacity: 0.55;
     transition: opacity 0.2s ease, border-color 0.2s ease;
   }
+
+  .slv-lp__thumb:hover { opacity: 0.85; }
 
   .slv-lp__thumb img {
     width: 100%;
@@ -267,8 +293,13 @@
   }
 
   /* Product info */
+  .slv-lp__product-info {
+    max-width: 520px;
+    width: 100%;
+  }
+
   .slv-lp__product-title {
-    font-size: 27px;
+    font-size: clamp(22px, 2.2vw, 28px);
     line-height: 1.25;
     font-weight: 700;
     color: var(--slv-heading);
@@ -284,7 +315,7 @@
     flex-wrap: wrap;
     gap: 8px;
     font-size: 13px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .slv-lp__stars {
@@ -302,7 +333,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
 
   .slv-lp__deal hr {
@@ -314,16 +345,17 @@
   .slv-lp__deal span { display: block; padding: 8px 0; }
 
   .slv-lp__product-copy {
-    font-size: 15px;
+    font-size: clamp(15px, 1.15vw, 17px);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .slv-lp__product-copy strong { font-weight: 700; }
 
   .slv-lp__guarantee {
+    width: 100%;
     max-width: 500px;
-    margin: 0 0 22px;
+    margin: 0 0 24px;
   }
 
   .slv-lp__buy {
@@ -337,7 +369,7 @@
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.14em;
-    padding: 16px 24px;
+    padding: 18px 24px;
     border-radius: 10px;
     transition: opacity 0.2s ease;
   }
@@ -357,7 +389,7 @@
     width: max-content;
     min-width: 200px;
     max-width: 300px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background: var(--slv-dark);
     color: #ffffff;
     border-radius: 10px;
@@ -366,6 +398,7 @@
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
     opacity: 1;
     transition: opacity 0.25s ease, visibility 0.25s ease;
   }
@@ -377,133 +410,70 @@
     pointer-events: none;
   }
 
-  /* ------------------------------------------------------------- TRUST */
-  .slv-lp__trust {
-    background: var(--slv-dark);
-    color: #ffffff;
-    margin-top: 40px;
-    padding: 40px 0;
+  /* -------------------------------------------------- DESKTOP (>=1200px) */
+  @media only screen and (min-width: 1200px) {
+    .slv-lp__reason { padding: 56px 0; }
+    .slv-lp__reason-inner { gap: 64px; }
+    .slv-lp__product { padding-top: 56px; }
   }
 
-  .slv-lp__trust-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
+  /* --------------------------------------------------- TABLET (<=1099px) */
+  @media only screen and (max-width: 1099px) {
+    .slv-lp__reason { padding: 32px 0; }
+
+    .slv-lp__reason-inner {
+      gap: 32px;
+      width: min(92vw, var(--slv-max));
+    }
+
+    .slv-lp__reason-img { flex: 0 1 44%; }
   }
 
-  .slv-lp__trust-item {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .slv-lp__trust-item svg { width: 24px; height: 24px; }
-
-  .slv-lp__trust-item h3 {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin: 0;
-    color: #ffffff;
-  }
-
-  .slv-lp__trust-item p {
-    font-size: 14px;
-    line-height: 1.5;
-    margin: 0;
-    color: #ffffff;
-  }
-
-  .slv-lp__trust-item a { color: #ffffff; }
-
-  /* ------------------------------------------------------------ FOOTER */
-  /* Delete this whole <footer> block if your theme already renders a footer. */
-  .slv-lp__footer {
-    background: var(--slv-footer);
-    color: #ffffff;
-    padding: 48px 0 32px;
-  }
-
-  .slv-lp__footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid #484848;
-  }
-
-  .slv-lp__footer h3 {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin: 0 0 14px;
-    color: #ffffff;
-  }
-
-  .slv-lp__footer p,
-  .slv-lp__footer li,
-  .slv-lp__footer a {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #ffffff;
-  }
-
-  .slv-lp__footer ul { list-style: none; margin: 0; padding: 0; }
-  .slv-lp__footer li { margin-bottom: 8px; }
-  .slv-lp__footer a { text-decoration: none; opacity: 0.85; }
-  .slv-lp__footer a:hover { opacity: 1; text-decoration: underline; }
-
-  .slv-lp__social {
-    display: flex;
-    gap: 14px;
-    margin-top: 14px;
-    list-style: none;
-    padding: 0;
-  }
-
-  .slv-lp__social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .slv-lp__social svg { width: 15px; height: 15px; }
-
-  .slv-lp__footer-bottom {
-    padding-top: 24px;
-    font-size: 12px;
-    opacity: 0.7;
-  }
-
-  /* -------------------------------------------------------- RESPONSIVE */
   @media only screen and (max-width: 999px) {
     .slv-lp__product-grid {
       grid-template-columns: minmax(0, 1fr);
-      gap: 24px;
+      gap: 28px;
+      justify-items: center;
     }
+
+    .slv-lp__gallery { margin: 0 auto; }
+    .slv-lp__product-info { max-width: 560px; }
 
     .slv-lp__thumbs { display: none; }
     .slv-lp__gallery-dots { display: flex; }
   }
 
+  /* --------------------------------------------------- MOBILE (<=768px) */
   @media only screen and (max-width: 768px) {
     .slv-lp { font-size: 15px; }
 
+    .slv-lp__logo { padding-top: 24px; }
     .slv-lp__logo img { width: 70%; }
 
+    .slv-lp__intro { padding: 10px 0 24px; }
     .slv-lp__intro h1 { font-size: 22px; }
+
+    .slv-lp__reason { padding: 26px 0; }
 
     .slv-lp__reason-inner {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
       width: 80vw;
       margin: 0 auto;
       gap: 0;
+    }
+
+    .slv-lp__reason-img {
+      flex: 0 0 auto;
+      max-width: 100%;
+    }
+
+    .slv-lp__reason-copy {
+      max-width: none;
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.5;
     }
 
     .slv-lp__reason-title { display: none; }
@@ -520,22 +490,16 @@
 
     .slv-lp__reason--small .slv-lp__reason-title-mobile { font-size: 25px; }
 
-    .slv-lp__reason-copy { margin-top: 10px; }
-
-    .slv-lp__product-heading { font-size: 22px; }
+    .slv-lp__product { padding: 24px 0 110px; }
+    .slv-lp__product-heading { font-size: 22px; margin-bottom: 24px; }
     .slv-lp__product-title { font-size: 22px; }
+    .slv-lp__product-copy { font-size: 15px; }
 
     .slv-lp__sticky {
       width: 80vw;
       min-width: 200px;
       max-width: 300px;
       min-height: 44px;
-    }
-
-    .slv-lp__trust-grid,
-    .slv-lp__footer-grid {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 26px;
     }
   }
 </style>
@@ -745,106 +709,6 @@
 
   <!-- ================================================ STICKY CTA ====== -->
   <a class="slv-lp__sticky" data-slv-sticky href="#image-to-scroll-to">Buy now</a>
-
-  <!-- ==================================================== TRUST ======= -->
-  <section class="slv-lp__trust">
-    <div class="slv-lp__container">
-      <div class="slv-lp__trust-grid">
-        <div class="slv-lp__trust-item">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5.25463 14C4.15672 12.6304 3.5 10.8919 3.5 9C3.5 4.58172 7.08172 1 11.5 1C15.9183 1 19.5 4.58172 19.5 9C19.5 10.8919 18.8433 12.6304 17.7454 14M5.25463 14L1.5 20L4.5 19L5.5 22L8.5 16.4185M5.25463 14C6.15126 15.1185 7.13226 15.9095 8.5 16.4185M8.5 16.4185C9.36872 16.7418 10.5187 17 11.5 17C12.5609 17 13.5736 16.7935 14.5 16.4185M17.7454 14L21.5 20L18.5 19L17.5 22L14.5 16.4185M17.7454 14C16.8949 15.0609 15.7797 15.9005 14.5 16.4185" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M8 9.72727L10.1473 12L14.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <h3>60 days money back guarantee</h3>
-          <p>If you&rsquo;re not satisfied with the purchase within 60 days, we&rsquo;ll give you a full refund.</p>
-        </div>
-
-        <div class="slv-lp__trust-item">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21.913 2L15.3391 20L11.5826 11.9M21.913 2L3.13043 8.3L11.5826 11.9M21.913 2L11.5826 11.9" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-          <h3>Customer service</h3>
-          <p>We are available from monday to friday to answer your questions.</p>
-        </div>
-
-        <div class="slv-lp__trust-item">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M16 8H21V22H3V8H8M16 8C16 8 16 7.6 16 6C16 4 14.5 2 12 2C9.5 2 8 4 8 6C8 7.6 8 8 8 8M16 8H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <h3>Secure payment</h3>
-          <p>Your payment information is processed securely.</p>
-        </div>
-
-        <div class="slv-lp__trust-item">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M21 8V5H3V8M21 8V19H3V8M21 8L12 12.5L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <h3>Contact us</h3>
-          <p>Need to contact us? Just send us an e-mail at <a href="mailto:support@shaperluv.com">support@shaperluv.com</a></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =================================================== FOOTER ======= -->
-  <!-- Remove this footer if your theme already displays its own footer -->
-  <footer class="slv-lp__footer">
-    <div class="slv-lp__container">
-      <div class="slv-lp__footer-grid">
-        <div>
-          <h3>About our store</h3>
-          <p>We obsess comfort, deliver results and ensure you look as good as you feel.</p>
-        </div>
-
-        <div>
-          <h3>Customer care</h3>
-          <ul>
-            <li><a href="/pages/contact">Contact Us</a></li>
-            <li><a href="/apps/track123">Track My Order</a></li>
-            <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
-            <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-            <li><a href="/pages/return-refund-policy">Return &amp; Refund Policy</a></li>
-            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3>Follow us</h3>
-          <p>Keep up to date with our socials.</p>
-          <ul class="slv-lp__social">
-            <li>
-              <a href="https://www.facebook.com/profile.php?id=61553171930312" target="_blank" rel="noopener" aria-label="Facebook">
-                <svg viewBox="0 0 9 17" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.486 16.2084L2.486 8.81845H0L0 5.93845L2.486 5.93845L2.486 3.81845C2.38483 2.79982 2.73793 1.78841 3.45107 1.05407C4.16421 0.319722 5.16485 -0.0628415 6.186 0.00844868C6.9284 0.00408689 7.67039 0.0441585 8.408 0.128449V2.69845L6.883 2.69845C6.4898 2.61523 6.08104 2.73438 5.79414 3.01585C5.50724 3.29732 5.3803 3.70373 5.456 4.09845L5.456 5.93845H8.308L7.936 8.81845H5.46L5.46 16.2084H2.486Z"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="https://twitter.com/shaperluv_llc" target="_blank" rel="noopener" aria-label="Twitter">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.94 4h2.715l-5.93 6.777L20.7 20h-5.462l-4.278-5.593L6.065 20H3.35l6.342-7.25L3 4h5.6l3.868 5.113L16.94 4Zm-.952 14.375h1.504L7.784 5.54H6.17l9.818 12.836Z"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.instagram.com/shaperluv.store/" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C5.827 0 5.555.01 4.702.048 3.85.087 3.269.222 2.76.42a3.921 3.921 0 00-1.417.923c-.445.444-.719.89-.923 1.417-.198.509-.333 1.09-.372 1.942C.01 5.555 0 5.827 0 8s.01 2.445.048 3.298c.039.852.174 1.433.372 1.942.204.526.478.973.923 1.417.444.445.89.719 1.417.923.509.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.445-.01 3.298-.048c.852-.039 1.433-.174 1.942-.372a3.922 3.922 0 001.417-.923c.445-.444.719-.89.923-1.417.198-.509.333-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.298c-.039-.852-.174-1.433-.372-1.942a3.922 3.922 0 00-.923-1.417A3.921 3.921 0 0013.24.42c-.509-.198-1.09-.333-1.942-.372C10.445.01 10.173 0 8 0zm0 1.441c2.136 0 2.39.009 3.233.047.78.036 1.203.166 1.485.276.374.145.64.318.92.598.28.28.453.546.598.92.11.282.24.705.276 1.485.038.844.047 1.097.047 3.233s-.009 2.39-.047 3.233c-.036.78-.166 1.203-.276 1.485-.145.374-.318.64-.598.92-.28.28-.546.453-.92.598-.282.11-.705.24-1.485.276-.844.038-1.097.047-3.233.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.479 2.479 0 01-.92-.598 2.478 2.478 0 01-.598-.92c-.11-.282-.24-.705-.276-1.485-.038-.844-.047-1.097-.047-3.233s.009-2.39.047-3.233c.036-.78.166-1.203.276-1.485.145-.374.318-.64.598-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.844-.038 1.097-.047 3.233-.047zm0 9.226a2.667 2.667 0 110-5.334 2.667 2.667 0 010 5.334zm0-6.775a4.108 4.108 0 100 8.216 4.108 4.108 0 000-8.216zm5.23-.162a.96.96 0 11-1.92 0 .96.96 0 011.92 0z"/></svg>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.tiktok.com/@shaperluv.store" target="_blank" rel="noopener" aria-label="TikTok">
-                <svg viewBox="0 0 14 16" fill="currentColor" aria-hidden="true"><path d="M13.6893 6.47331C13.5586 6.48602 13.4273 6.49268 13.296 6.49327C11.8552 6.49347 10.5114 5.76723 9.72211 4.56182V11.1389C9.72211 13.8236 7.54571 16 4.86099 16C2.17627 16 -0.00012207 13.8236 -0.00012207 11.1389C-0.00012207 8.45417 2.17627 6.27777 4.86099 6.27777C4.96247 6.27777 5.06166 6.28689 5.16143 6.29317V8.68866C5.06166 8.67669 4.96361 8.65845 4.86099 8.65845C3.49077 8.65845 2.37998 9.76923 2.37998 11.1395C2.37998 12.5097 3.49077 13.6205 4.86099 13.6205C6.23148 13.6205 7.44177 12.5407 7.44177 11.1702L7.46571 0H9.75745C9.97355 2.05512 11.6307 3.66035 13.6916 3.81102V6.47331"/></svg>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3>Get help</h3>
-          <p>Email us:<br><a href="mailto:support@shaperluv.com">support@shaperluv.com</a></p>
-        </div>
-      </div>
-
-      <div class="slv-lp__footer-bottom">SHAPERLUV</div>
-    </div>
-  </footer>
 
 <script>
   (function () {
