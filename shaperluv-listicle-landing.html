@@ -10,13 +10,13 @@
      If you don't have one, uncomment the .slv-lp-hide-chrome rules below and
      add the class slv-lp-hide-chrome to the wrapper div.
   ----------------------------------------------------------------------------
-  The page ends at the featured product block, so your theme's own trust
-  badges / footer take over from there.
+  The page is the five reason rows plus the offer banner, followed by a
+  floating BUY NOW button that links straight to the product page.
 
   Everything is namespaced under .slv-lp so it cannot leak into your theme.
   Desktop, tablet and mobile layouts are all handled (breakpoints: 1200 / 1099
-  / 999 / 768px). Tune --slv-max in the style block to change how wide the
-  page runs on large screens.
+  / 768px). Tune --slv-max in the style block to change how wide the page runs
+  on large screens.
   ============================================================================
 -->
 <div class="slv-lp">
@@ -32,8 +32,6 @@
     --slv-heading: #000000;
     --slv-bg: #ffffff;
     --slv-dark: #000000;
-    --slv-border: #d9d9d9;
-    --slv-star: #000000;
 
     /* one place to control how wide the page breathes on desktop */
     --slv-max: 1120px;
@@ -45,6 +43,8 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    /* room so the floating BUY NOW button never covers the last row */
+    padding-bottom: 130px;
   }
 
   /* Uncomment together with adding .slv-lp-hide-chrome on the wrapper div
@@ -62,53 +62,13 @@
   .slv-lp img { max-width: 100%; height: auto; display: block; }
   .slv-lp a { color: inherit; }
 
-  .slv-lp__container {
-    width: 100%;
-    max-width: var(--slv-max);
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ---------------------------------------------------------------- LOGO */
-  .slv-lp__logo {
-    padding: 32px 24px 8px;
-    text-align: center;
-  }
-
-  .slv-lp__logo img {
-    width: 300px;
-    max-width: 70%;
-    height: auto;
-    margin: 0 auto;
-    object-fit: contain;
-  }
-
-  /* ------------------------------------------------------------ HEADLINE */
-  .slv-lp__intro {
-    padding: 16px 0 32px;
-  }
-
-  .slv-lp__intro h1 {
-    font-size: clamp(22px, 2.4vw, 32px);
-    line-height: 1.25;
-    font-weight: 700;
-    color: var(--slv-heading);
-    margin: 0 0 14px;
-    text-align: left;
-    text-transform: uppercase;
-    letter-spacing: 0;
-  }
-
-  .slv-lp__intro p {
-    font-size: clamp(15px, 1.15vw, 17px);
-    line-height: 1.6;
-    max-width: 70ch;
-    margin: 0;
-  }
-
   /* ------------------------------------------------------------- REASONS */
   .slv-lp__reason {
     padding: 40px 0;
+  }
+
+  .slv-lp__reason:first-of-type {
+    padding-top: 48px;
   }
 
   .slv-lp__reason-inner {
@@ -163,219 +123,6 @@
 
   .slv-lp__cta-banner img { width: 100%; }
 
-  /* --------------------------------------------------------- PRODUCT ---- */
-  .slv-lp__product {
-    padding: 40px 0 120px; /* bottom room so the sticky bar never covers the CTA */
-  }
-
-  .slv-lp__product-heading {
-    font-size: clamp(22px, 2.6vw, 32px);
-    line-height: 1.25;
-    font-weight: 700;
-    color: var(--slv-heading);
-    text-align: center;
-    margin: 0 auto 36px;
-    max-width: 34ch;
-    text-transform: uppercase;
-    text-wrap: balance;
-  }
-
-  .slv-lp__product-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 56px;
-    align-items: start;
-  }
-
-  /* Gallery */
-  .slv-lp__gallery {
-    max-width: 560px;
-    margin-left: auto;
-    width: 100%;
-  }
-
-  .slv-lp__gallery-stage {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .slv-lp__gallery-track {
-    display: flex;
-    transition: transform 0.35s ease;
-    will-change: transform;
-  }
-
-  .slv-lp__gallery-slide {
-    flex: 0 0 100%;
-    min-width: 100%;
-  }
-
-  .slv-lp__gallery-slide img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-
-  .slv-lp__gallery-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: 0;
-    cursor: pointer;
-    color: #282828;
-    padding: 0;
-    opacity: 0.75;
-    transition: opacity 0.2s ease;
-  }
-
-  .slv-lp__gallery-arrow:hover { opacity: 1; }
-  .slv-lp__gallery-arrow--prev { left: 4px; }
-  .slv-lp__gallery-arrow--next { right: 4px; }
-
-  .slv-lp__gallery-dots {
-    display: none;
-    justify-content: center;
-    gap: 8px;
-    padding: 14px 0 2px;
-  }
-
-  .slv-lp__gallery-dots button {
-    width: 7px;
-    height: 7px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: #c9c9c9;
-    cursor: pointer;
-  }
-
-  .slv-lp__gallery-dots button[aria-current="true"] { background: #282828; }
-
-  .slv-lp__thumbs {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .slv-lp__thumbs::-webkit-scrollbar { display: none; }
-
-  .slv-lp__thumb {
-    flex: 0 0 auto;
-    width: 62px;
-    padding: 0;
-    border: 1px solid transparent;
-    background: none;
-    cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 0.2s ease, border-color 0.2s ease;
-  }
-
-  .slv-lp__thumb:hover { opacity: 0.85; }
-
-  .slv-lp__thumb img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-  }
-
-  .slv-lp__thumb[aria-current="true"] {
-    opacity: 1;
-    border-color: #282828;
-  }
-
-  /* Product info */
-  .slv-lp__product-info {
-    max-width: 520px;
-    width: 100%;
-  }
-
-  .slv-lp__product-title {
-    font-size: clamp(22px, 2.2vw, 28px);
-    line-height: 1.25;
-    font-weight: 700;
-    color: var(--slv-heading);
-    margin: 0 0 4px;
-    text-transform: uppercase;
-  }
-
-  .slv-lp__product-title a { text-decoration: none; }
-
-  .slv-lp__reviews {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
-
-  .slv-lp__stars {
-    display: inline-flex;
-    gap: 1px;
-    color: var(--slv-star);
-  }
-
-  .slv-lp__stars svg { width: 15px; height: 15px; display: block; }
-
-  .slv-lp__reviews-count { color: #282828; }
-
-  .slv-lp__deal {
-    text-align: center;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 18px;
-  }
-
-  .slv-lp__deal hr {
-    margin: 0;
-    border: 0;
-    border-top: 1px solid var(--slv-border);
-  }
-
-  .slv-lp__deal span { display: block; padding: 8px 0; }
-
-  .slv-lp__product-copy {
-    font-size: clamp(15px, 1.15vw, 17px);
-    line-height: 1.6;
-    margin-bottom: 24px;
-  }
-
-  .slv-lp__product-copy strong { font-weight: 700; }
-
-  .slv-lp__guarantee {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 0 24px;
-  }
-
-  .slv-lp__buy {
-    display: block;
-    width: 100%;
-    background: var(--slv-dark);
-    color: #ffffff;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    padding: 18px 24px;
-    border-radius: 10px;
-    transition: opacity 0.2s ease;
-  }
-
-  .slv-lp__buy:hover { opacity: 0.85; }
-
   /* --------------------------------------------------------- STICKY CTA */
   .slv-lp__sticky {
     position: fixed;
@@ -399,22 +146,16 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-    opacity: 1;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    transition: opacity 0.2s ease;
   }
 
-  .slv-lp__sticky[hidden] {
-    display: flex;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
+  .slv-lp__sticky:hover { opacity: 0.85; }
 
   /* -------------------------------------------------- DESKTOP (>=1200px) */
   @media only screen and (min-width: 1200px) {
     .slv-lp__reason { padding: 56px 0; }
+    .slv-lp__reason:first-of-type { padding-top: 64px; }
     .slv-lp__reason-inner { gap: 64px; }
-    .slv-lp__product { padding-top: 56px; }
   }
 
   /* --------------------------------------------------- TABLET (<=1099px) */
@@ -429,31 +170,12 @@
     .slv-lp__reason-img { flex: 0 1 44%; }
   }
 
-  @media only screen and (max-width: 999px) {
-    .slv-lp__product-grid {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 28px;
-      justify-items: center;
-    }
-
-    .slv-lp__gallery { margin: 0 auto; }
-    .slv-lp__product-info { max-width: 560px; }
-
-    .slv-lp__thumbs { display: none; }
-    .slv-lp__gallery-dots { display: flex; }
-  }
-
   /* --------------------------------------------------- MOBILE (<=768px) */
   @media only screen and (max-width: 768px) {
-    .slv-lp { font-size: 15px; }
-
-    .slv-lp__logo { padding-top: 24px; }
-    .slv-lp__logo img { width: 70%; }
-
-    .slv-lp__intro { padding: 10px 0 24px; }
-    .slv-lp__intro h1 { font-size: 22px; }
+    .slv-lp { font-size: 15px; padding-bottom: 110px; }
 
     .slv-lp__reason { padding: 26px 0; }
+    .slv-lp__reason:first-of-type { padding-top: 32px; }
 
     .slv-lp__reason-inner {
       display: flex;
@@ -490,11 +212,6 @@
 
     .slv-lp__reason--small .slv-lp__reason-title-mobile { font-size: 25px; }
 
-    .slv-lp__product { padding: 24px 0 110px; }
-    .slv-lp__product-heading { font-size: 22px; margin-bottom: 24px; }
-    .slv-lp__product-title { font-size: 22px; }
-    .slv-lp__product-copy { font-size: 15px; }
-
     .slv-lp__sticky {
       width: 80vw;
       min-width: 200px;
@@ -503,24 +220,6 @@
     }
   }
 </style>
-
-  <!-- ===================================================== LOGO ======= -->
-  <div class="slv-lp__logo">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/SWEETYPOUCH_6_2f4e4473-6de7-4f43-9ba2-7e2f2043f238_4_481x.png?v=1704540294"
-      alt="SHAPERLUV"
-      width="500"
-      height="104"
-      loading="eager">
-  </div>
-
-  <!-- ================================================= HEADLINE ======= -->
-  <section class="slv-lp__intro">
-    <div class="slv-lp__container">
-      <h1>5 reasons why Shaperluv instantly transforms your physique without going to the gym.</h1>
-      <p>Tired of feeling self-conscious about your belly in public? Keep reading to find out how Shaperluv offers an instant, invisible solution to look fit and feel confident.</p>
-    </div>
-  </section>
 
   <!-- ================================================== REASON 1 ====== -->
   <section class="slv-lp__reason">
@@ -618,182 +317,22 @@
   </section>
 
   <!-- ================================================ CTA BANNER ====== -->
-  <div class="slv-lp__cta-banner" id="image-to-scroll-to">
-    <img
-      src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitled_design_-_2024-04-17T115052.653.png?v=1713347462"
-      alt="Limited time offer"
-      loading="lazy"
-      decoding="async">
-  </div>
+  <!--
+    The offer banner is commented out because the image it points at
+    (Untitled_design_-_2024-04-17T115052.653.png) is a blank 40x40 px file on
+    the Shopify CDN, so it renders as an empty 360px block. Re-upload the
+    artwork, drop the new URL into the src below and delete these comment
+    markers to bring it back.
 
-  <!-- ================================================== PRODUCT ======= -->
-  <section class="slv-lp__product">
-    <div class="slv-lp__container">
-      <h2 class="slv-lp__product-heading">Best seller &mdash; perfect appearance in any outfit</h2>
-
-      <div class="slv-lp__product-grid">
-        <!-- GALLERY -->
-        <div class="slv-lp__gallery" data-slv-gallery>
-          <div class="slv-lp__gallery-stage">
-            <div class="slv-lp__gallery-track" data-slv-track>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_40_1_cbf96b9e-f182-4145-811c-6b2822e2a733.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="eager"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_34_e5c07f6f-3b49-48dd-aab9-dbb3fc76d750.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_31_1_1_67b09687-958b-40d8-a544-3ffe1d7f0c64.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_35_51fab23a-5a0e-41d1-a6af-f34e0b810bf5.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitleddesign_70_ac7ded69-e428-4016-9730-8690c02d8032.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_36_f2f8fb39-c8af-48da-afbb-e92288403db9.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitleddesign_72_345c80b1-44f7-4b61-a590-9e0d8b0dda65.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_37_0b17efea-b532-48be-b655-63daae83e3b5.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/8_1_515f4175-514b-4067-b398-2dc49b6ccfee.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/9_1_9fb191b0-fd77-46eb-bc0a-d613691fd81f.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/SFABRIC_1_58f379f1-7a4d-4014-b0e9-c997d0086769.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0 fabric" width="800" height="1000" loading="lazy"></div>
-              <div class="slv-lp__gallery-slide"><img src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/17_1_56870044-fcd2-4b01-a33d-680956aad52c.png?v=1714740055&amp;width=800" alt="SHAPERLUV TANK 2.0" width="800" height="1000" loading="lazy"></div>
-            </div>
-
-            <button type="button" class="slv-lp__gallery-arrow slv-lp__gallery-arrow--prev" data-slv-prev aria-label="Previous image">
-              <svg viewBox="0 0 17 14" width="17" height="14" fill="none" aria-hidden="true"><path d="M17 7H2M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-            <button type="button" class="slv-lp__gallery-arrow slv-lp__gallery-arrow--next" data-slv-next aria-label="Next image">
-              <svg viewBox="0 0 17 14" width="17" height="14" fill="none" aria-hidden="true"><path d="M0 7h15M9 1l6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-          </div>
-
-          <div class="slv-lp__gallery-dots" data-slv-dots></div>
-          <div class="slv-lp__thumbs" data-slv-thumbs></div>
-        </div>
-
-        <!-- INFO -->
-        <div class="slv-lp__product-info">
-          <h3 class="slv-lp__product-title">
-            <a href="https://shaperluv.com/products/shaperluv%E2%84%A2-tank-2-3">SHAPERLUV&trade; TANK 2.0</a>
-          </h3>
-
-          <div class="slv-lp__reviews">
-            <span class="slv-lp__stars" role="img" aria-label="4.6 out of 5 stars">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <defs><linearGradient id="slvHalfStar"><stop offset="60%" stop-color="currentColor"/><stop offset="60%" stop-color="currentColor" stop-opacity="0.35"/></linearGradient></defs>
-                <path fill="url(#slvHalfStar)" d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/>
-              </svg>
-            </span>
-            <span class="slv-lp__reviews-count">1349 reviews</span>
-          </div>
-
-          <div class="slv-lp__deal">
-            <hr>
-            <span>Limited-time deal</span>
-            <hr>
-          </div>
-
-          <div class="slv-lp__product-copy">
-            <p>Introducing <strong>SHAPERLUV&trade;</strong>, an innovative undergarment meticulously crafted to enhance your <strong>chest and mid-section</strong>. This unique product is designed to provide a more comfortable and confident feel while offering support.</p>
-          </div>
-
-          <img
-            class="slv-lp__guarantee"
-            src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitled_design_-_2024-04-17T121447.658.png?v=1713348892&amp;width=2000"
-            alt="60 day money back guarantee"
-            width="2000"
-            height="800"
-            loading="lazy"
-            decoding="async">
-
-          <a class="slv-lp__buy" data-slv-buy href="https://shaperluv.com/products/shaperluv%E2%84%A2-tank-2-3">Buy now</a>
-        </div>
-      </div>
+    <div class="slv-lp__cta-banner" id="image-to-scroll-to">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitled_design_-_2024-04-17T115052.653.png?v=1713347462"
+        alt="Limited time offer"
+        loading="lazy"
+        decoding="async">
     </div>
-  </section>
+  -->
 
   <!-- ================================================ STICKY CTA ====== -->
-  <a class="slv-lp__sticky" data-slv-sticky href="#image-to-scroll-to">Buy now</a>
-
-<script>
-  (function () {
-    var root = document.currentScript ? document.currentScript.closest('.slv-lp') : document.querySelector('.slv-lp');
-    if (!root) return;
-
-    /* ---------------------------------------------------------- GALLERY */
-    var gallery = root.querySelector('[data-slv-gallery]');
-    if (gallery) {
-      var track = gallery.querySelector('[data-slv-track]');
-      var slides = Array.prototype.slice.call(gallery.querySelectorAll('.slv-lp__gallery-slide'));
-      var thumbsWrap = gallery.querySelector('[data-slv-thumbs]');
-      var dotsWrap = gallery.querySelector('[data-slv-dots]');
-      var index = 0;
-
-      slides.forEach(function (slide, i) {
-        var src = slide.querySelector('img').getAttribute('src');
-
-        var thumb = document.createElement('button');
-        thumb.type = 'button';
-        thumb.className = 'slv-lp__thumb';
-        thumb.setAttribute('aria-label', 'Go to image ' + (i + 1));
-        thumb.innerHTML = '<img src="' + src + '" alt="" loading="lazy">';
-        thumb.addEventListener('click', function () { goTo(i); });
-        thumbsWrap.appendChild(thumb);
-
-        var dot = document.createElement('button');
-        dot.type = 'button';
-        dot.setAttribute('aria-label', 'Go to image ' + (i + 1));
-        dot.addEventListener('click', function () { goTo(i); });
-        dotsWrap.appendChild(dot);
-      });
-
-      var thumbs = Array.prototype.slice.call(thumbsWrap.children);
-      var dots = Array.prototype.slice.call(dotsWrap.children);
-
-      function goTo(i) {
-        index = (i + slides.length) % slides.length;
-        track.style.transform = 'translateX(-' + (index * 100) + '%)';
-        thumbs.forEach(function (t, n) { t.setAttribute('aria-current', n === index ? 'true' : 'false'); });
-        dots.forEach(function (d, n) { d.setAttribute('aria-current', n === index ? 'true' : 'false'); });
-      }
-
-      gallery.querySelector('[data-slv-prev]').addEventListener('click', function () { goTo(index - 1); });
-      gallery.querySelector('[data-slv-next]').addEventListener('click', function () { goTo(index + 1); });
-
-      /* swipe */
-      var startX = null;
-      var stage = gallery.querySelector('.slv-lp__gallery-stage');
-      stage.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
-      stage.addEventListener('touchend', function (e) {
-        if (startX === null) return;
-        var delta = e.changedTouches[0].clientX - startX;
-        if (Math.abs(delta) > 40) goTo(index + (delta < 0 ? 1 : -1));
-        startX = null;
-      }, { passive: true });
-
-      goTo(0);
-    }
-
-    /* ------------------------------------------------------- STICKY CTA */
-    var sticky = root.querySelector('[data-slv-sticky]');
-    var buy = root.querySelector('[data-slv-buy]');
-
-    if (sticky && buy && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            sticky.setAttribute('hidden', '');
-          } else {
-            sticky.removeAttribute('hidden');
-          }
-        });
-      }, { rootMargin: '0px 0px -10% 0px' }).observe(buy);
-    }
-
-    /* smooth scroll for the sticky CTA */
-    if (sticky) {
-      sticky.addEventListener('click', function (e) {
-        var target = root.querySelector('#image-to-scroll-to');
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-  })();
-</script>
+  <a class="slv-lp__sticky" href="https://shaperluv.com/products/shaperluv%E2%84%A2-tank-2-3">Buy now</a>
 </div>
