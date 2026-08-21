@@ -1,22 +1,70 @@
 <!--
   ============================================================================
   SHAPERLUV — "5 REASONS" LISTICLE LANDING PAGE
-  ----------------------------------------------------------------------------
-  HOW TO USE
+  ============================================================================
+
+  INSTALL
   1. Shopify admin > Online Store > Pages > Add page
   2. In the content editor click the "<>" (Show HTML) button
-  3. Paste this ENTIRE file (style block included) and save
-  4. Optional: set the page template to a "no header / no footer" template.
-     If you don't have one, uncomment the .slv-lp-hide-chrome rules below and
-     add the class slv-lp-hide-chrome to the wrapper div.
-  ----------------------------------------------------------------------------
-  The page is the five reason rows plus the offer banner, followed by a
-  floating BUY NOW button that links straight to the product page.
+  3. Paste this ENTIRE file (style + script included) and save
 
-  Everything is namespaced under .slv-lp so it cannot leak into your theme.
-  Desktop, tablet and mobile layouts are all handled (breakpoints: 1200 / 1099
-  / 768px). Tune --slv-max in the style block to change how wide the page runs
-  on large screens.
+  ----------------------------------------------------------------------------
+  PLUG IN YOUR OWN SHOPIFY PRODUCT  <<< READ THIS
+  ----------------------------------------------------------------------------
+  Find the featured product block further down. It starts with:
+
+      <section class="slv-lp__product"
+               data-slv-product
+               data-product-handle="shaperluv-tank-2-3"
+               data-buy-action="link">
+
+  Change data-product-handle to YOUR product handle. The handle is the last
+  part of the product URL, nothing else:
+
+      https://yourstore.com/products/my-super-product
+                                     ^^^^^^^^^^^^^^^^  <- this is the handle
+
+  On page load the block calls Shopify's public product endpoint
+  (/products/<handle>.js) and fills in automatically:
+      - the product title (and links it to the product page)
+      - ALL the product images -> main gallery + thumbnail strip
+      - the price / compare-at price (hidden by default, see PRICE below)
+      - the BUY NOW destination
+
+  So you never copy image URLs by hand: change the handle, done. If you edit
+  the product images in Shopify, the page follows.
+
+  data-buy-action:
+      "link" (default) -> BUY NOW opens the product page
+      "cart"           -> BUY NOW adds the first available variant to the cart
+                          and goes to /cart. Use this only for products with a
+                          single variant, otherwise the customer cannot pick a
+                          size.
+
+  PRICE: hidden by default (the original page hides it too). To show it, delete
+  the "hidden" attribute on the <div class="slv-lp__price" hidden ...> element.
+
+  STATIC BITS you edit directly in the HTML: the section heading, the star
+  rating + review count, the LIMITED-TIME DEAL label, the description
+  paragraph and the guarantee image.
+
+  NOTE: the .js endpoint only answers on your live storefront. Opening this
+  file straight from your computer leaves the built-in fallback content in
+  place — that is normal.
+
+  ----------------------------------------------------------------------------
+  NOTES
+  ----------------------------------------------------------------------------
+  - Everything is namespaced under .slv-lp, nothing leaks into your theme.
+  - All layout widths are container-relative (percent / max-width), so the block
+    adapts to whatever width your theme gives it instead of overflowing it. The
+    only viewport units left are the grey band paint and the floating button,
+    neither of which can push the page sideways.
+  - The big page title you may see above this block is your THEME rendering the
+    Shopify page title, it does not come from this file. Rename the page or use
+    a "no title" page template to remove it.
+  - Rows 2 and 4 get a full-width grey band. If your theme clips it, the band
+    simply stops at your container edge, nothing breaks.
   ============================================================================
 -->
 <div class="slv-lp">
@@ -32,9 +80,10 @@
     --slv-heading: #000000;
     --slv-bg: #ffffff;
     --slv-dark: #000000;
+    --slv-band: #f5f5f5;
 
-    /* one place to control how wide the page breathes on desktop */
-    --slv-max: 1120px;
+    /* width of the content column on desktop */
+    --slv-max: 1000px;
 
     font-family: inherit;
     color: var(--slv-text);
@@ -42,33 +91,33 @@
     font-size: 15px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
     /* room so the floating BUY NOW button never covers the last row */
     padding-bottom: 130px;
   }
-
-  /* Uncomment together with adding .slv-lp-hide-chrome on the wrapper div
-     if you want to hide the theme header / announcement bar / footer,
-     exactly like the original page does.
-  body:has(.slv-lp-hide-chrome) store-header,
-  body:has(.slv-lp-hide-chrome) announcement-bar,
-  body:has(.slv-lp-hide-chrome) #shopify-section-footer .footer {
-    display: none !important;
-  }
-  */
 
   .slv-lp p { margin: 0 0 1em; }
   .slv-lp p:last-child { margin-bottom: 0; }
   .slv-lp img { max-width: 100%; height: auto; display: block; }
   .slv-lp a { color: inherit; }
 
-  /* ------------------------------------------------------------- REASONS */
-  .slv-lp__reason {
-    padding: 40px 0;
+  .slv-lp__inner {
+    width: 100%;
+    max-width: var(--slv-max);
+    margin: 0 auto;
+    padding: 0 24px;
   }
 
-  .slv-lp__reason:first-of-type {
-    padding-top: 48px;
+  /* ------------------------------------------------------------- REASONS */
+  .slv-lp__reason {
+    padding: 52px 0;
+  }
+
+  /* full-width grey band, painted with a shadow so it can never create a
+     horizontal scrollbar */
+  .slv-lp__reason--band {
+    background: var(--slv-band);
+    box-shadow: 0 0 0 100vmax var(--slv-band);
+    clip-path: inset(0 -100vmax);
   }
 
   .slv-lp__reason-inner {
@@ -76,40 +125,43 @@
     flex-direction: row;
     align-items: center;
     gap: 48px;
-    width: min(88vw, var(--slv-max));
-    margin: 0 auto;
   }
 
-  .slv-lp__reason-img {
-    flex: 0 1 500px;
-    width: 100%;
-    max-width: 500px;
-    border-radius: 20px;
+  /* even rows put the image on the right */
+  .slv-lp__reason--band .slv-lp__reason-inner {
+    flex-direction: row-reverse;
+  }
+
+  /* the img type selector is needed so this beats the generic .slv-lp img
+     rule above; min-width:0 stops the image intrinsic size from refusing to
+     shrink and crushing the text column */
+  .slv-lp img.slv-lp__reason-img {
+    flex: 0 0 38%;
+    min-width: 0;
+    width: 38%;
+    max-width: 340px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
   }
 
   .slv-lp__reason-copy {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: clamp(15px, 1.15vw, 17px);
+    font-size: 15px;
     line-height: 1.6;
-    max-width: 46ch;
   }
 
   .slv-lp__reason-title {
+    overflow-wrap: break-word;
     line-height: 1.15;
     text-align: left;
-    font-size: clamp(28px, 3.4vw, 50px);
+    font-size: 30px;
     font-weight: 800;
+    text-transform: uppercase;
     color: var(--slv-heading);
-    margin: 0 0 14px;
-  }
-
-  .slv-lp__reason--small .slv-lp__reason-title {
-    font-size: clamp(24px, 2.8vw, 40px);
+    margin: 0 0 12px;
   }
 
   .slv-lp__reason-title-mobile { display: none; }
@@ -122,6 +174,200 @@
   }
 
   .slv-lp__cta-banner img { width: 100%; }
+
+  /* ------------------------------------------------------------- PRODUCT */
+  .slv-lp__product {
+    padding: 56px 0 0;
+  }
+
+  .slv-lp__product-heading {
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--slv-heading);
+    text-align: center;
+    margin: 0 auto 30px;
+    max-width: 620px;
+  }
+
+  .slv-lp__product-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* gallery */
+  .slv-lp__stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .slv-lp__track {
+    display: flex;
+    transition: transform 0.35s ease;
+    will-change: transform;
+  }
+
+  .slv-lp__slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+
+  .slv-lp__slide img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .slv-lp__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: #282828;
+    cursor: pointer;
+  }
+
+  .slv-lp__arrow--prev { left: 8px; }
+  .slv-lp__arrow--next { right: 8px; }
+
+  .slv-lp__thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .slv-lp__thumbs::-webkit-scrollbar { display: none; }
+
+  .slv-lp__thumb {
+    flex: 0 0 auto;
+    width: 58px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    overflow: hidden;
+    background: none;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+  }
+
+  .slv-lp__thumb img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .slv-lp__thumb[aria-current="true"] {
+    opacity: 1;
+    border-color: #282828;
+  }
+
+  /* product info */
+  .slv-lp__product-title {
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--slv-heading);
+    margin: 0 0 6px;
+  }
+
+  .slv-lp__product-title a { text-decoration: none; }
+
+  .slv-lp__reviews {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+    padding-bottom: 12px;
+  }
+
+  .slv-lp__stars {
+    display: inline-flex;
+    gap: 1px;
+    color: var(--slv-heading);
+  }
+
+  .slv-lp__stars svg { width: 14px; height: 14px; display: block; }
+
+  .slv-lp__price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .slv-lp__price [data-slv-compare] {
+    font-size: 15px;
+    font-weight: 400;
+    text-decoration: line-through;
+    opacity: 0.55;
+  }
+
+  .slv-lp__price[hidden] { display: none; }
+
+  .slv-lp__deal {
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+  }
+
+  .slv-lp__deal hr {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #d9d9d9;
+  }
+
+  .slv-lp__deal span { display: block; padding: 7px 0; }
+
+  .slv-lp__product-copy {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .slv-lp__guarantee { margin: 0 0 20px; }
+
+  .slv-lp__buy {
+    display: block;
+    width: 100%;
+    background: var(--slv-dark);
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    padding: 15px 24px;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.2s ease;
+  }
+
+  .slv-lp__buy:hover { opacity: 0.85; }
 
   /* --------------------------------------------------------- STICKY CTA */
   .slv-lp__sticky {
@@ -146,71 +392,67 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-    transition: opacity 0.2s ease;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
   }
 
   .slv-lp__sticky:hover { opacity: 0.85; }
 
-  /* -------------------------------------------------- DESKTOP (>=1200px) */
-  @media only screen and (min-width: 1200px) {
-    .slv-lp__reason { padding: 56px 0; }
-    .slv-lp__reason:first-of-type { padding-top: 64px; }
-    .slv-lp__reason-inner { gap: 64px; }
+  .slv-lp__sticky[hidden] {
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
-  /* --------------------------------------------------- TABLET (<=1099px) */
-  @media only screen and (max-width: 1099px) {
-    .slv-lp__reason { padding: 32px 0; }
-
-    .slv-lp__reason-inner {
-      gap: 32px;
-      width: min(92vw, var(--slv-max));
-    }
-
-    .slv-lp__reason-img { flex: 0 1 44%; }
+  /* --------------------------------------------------- TABLET (<=1024px) */
+  @media only screen and (max-width: 1024px) {
+    .slv-lp__reason { padding: 40px 0; }
+    .slv-lp__reason-inner { gap: 32px; }
+    .slv-lp__reason-title { font-size: 26px; }
+    .slv-lp__product-grid { gap: 28px; }
   }
 
   /* --------------------------------------------------- MOBILE (<=768px) */
   @media only screen and (max-width: 768px) {
-    .slv-lp { font-size: 15px; padding-bottom: 110px; }
+    .slv-lp { padding-bottom: 110px; }
 
-    .slv-lp__reason { padding: 26px 0; }
-    .slv-lp__reason:first-of-type { padding-top: 32px; }
+    .slv-lp__inner { padding: 0 20px; }
 
-    .slv-lp__reason-inner {
-      display: flex;
+    .slv-lp__reason { padding: 32px 0; }
+
+    .slv-lp__reason-inner,
+    .slv-lp__reason--band .slv-lp__reason-inner {
       flex-direction: column;
       align-items: stretch;
-      width: 80vw;
-      margin: 0 auto;
       gap: 0;
     }
 
-    .slv-lp__reason-img {
+    .slv-lp img.slv-lp__reason-img {
       flex: 0 0 auto;
+      width: 100%;
       max-width: 100%;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
     }
 
-    .slv-lp__reason-copy {
-      max-width: none;
-      margin-top: 10px;
-      font-size: 15px;
-      line-height: 1.5;
-    }
+    .slv-lp__reason-copy { margin-top: 14px; }
 
     .slv-lp__reason-title { display: none; }
 
     .slv-lp__reason-title-mobile {
       display: block;
       line-height: 1.2;
-      font-size: 30px;
-      font-weight: 700;
-      color: var(--slv-heading);
+      font-size: 26px;
+      font-weight: 800;
       text-transform: uppercase;
+      color: var(--slv-heading);
       margin: 0 0 12px;
     }
 
-    .slv-lp__reason--small .slv-lp__reason-title-mobile { font-size: 25px; }
+    .slv-lp__product { padding-top: 40px; }
+    .slv-lp__product-heading { font-size: 21px; }
+    .slv-lp__product-grid { grid-template-columns: minmax(0, 1fr); }
+    .slv-lp__product-title { font-size: 21px; }
+    .slv-lp__thumbs { margin-top: 8px; }
 
     .slv-lp__sticky {
       width: 80vw;
@@ -223,14 +465,14 @@
 
   <!-- ================================================== REASON 1 ====== -->
   <section class="slv-lp__reason">
-    <div class="slv-lp__reason-inner">
+    <div class="slv-lp__inner slv-lp__reason-inner">
       <div class="slv-lp__reason-title-mobile">1. Go from fat to fit instantly</div>
       <img
         class="slv-lp__reason-img"
-        src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/ezgif.com-optimize_48_0675e509-ee73-4cc2-8793-f23670e79cbd.gif?v=1707475605&amp;width=480"
+        src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/ezgif.com-optimize_48_0675e509-ee73-4cc2-8793-f23670e79cbd.gif?v=1707475605&amp;width=720"
         alt="Go from fat to fit instantly"
-        width="480"
-        height="480"
+        width="720"
+        height="720"
         loading="lazy"
         decoding="async">
       <div class="slv-lp__reason-copy">
@@ -241,8 +483,8 @@
   </section>
 
   <!-- ================================================== REASON 2 ====== -->
-  <section class="slv-lp__reason">
-    <div class="slv-lp__reason-inner">
+  <section class="slv-lp__reason slv-lp__reason--band">
+    <div class="slv-lp__inner slv-lp__reason-inner">
       <div class="slv-lp__reason-title-mobile">2. Invisible under your clothing</div>
       <img
         class="slv-lp__reason-img"
@@ -261,7 +503,7 @@
 
   <!-- ================================================== REASON 3 ====== -->
   <section class="slv-lp__reason">
-    <div class="slv-lp__reason-inner">
+    <div class="slv-lp__inner slv-lp__reason-inner">
       <div class="slv-lp__reason-title-mobile">3. Feel sculpted, not squeezed</div>
       <img
         class="slv-lp__reason-img"
@@ -279,8 +521,8 @@
   </section>
 
   <!-- ================================================== REASON 4 ====== -->
-  <section class="slv-lp__reason slv-lp__reason--small">
-    <div class="slv-lp__reason-inner">
+  <section class="slv-lp__reason slv-lp__reason--band">
+    <div class="slv-lp__inner slv-lp__reason-inner">
       <div class="slv-lp__reason-title-mobile">4. It won&rsquo;t stretch out and it&rsquo;s made to last</div>
       <img
         class="slv-lp__reason-img"
@@ -299,7 +541,7 @@
 
   <!-- ================================================== REASON 5 ====== -->
   <section class="slv-lp__reason">
-    <div class="slv-lp__reason-inner">
+    <div class="slv-lp__inner slv-lp__reason-inner">
       <div class="slv-lp__reason-title-mobile">5. Join the legion of confident men</div>
       <img
         class="slv-lp__reason-img"
@@ -324,7 +566,7 @@
     artwork, drop the new URL into the src below and delete these comment
     markers to bring it back.
 
-    <div class="slv-lp__cta-banner" id="image-to-scroll-to">
+    <div class="slv-lp__cta-banner">
       <img
         src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitled_design_-_2024-04-17T115052.653.png?v=1713347462"
         alt="Limited time offer"
@@ -333,6 +575,266 @@
     </div>
   -->
 
+  <!-- ================================================== PRODUCT ======= -->
+  <!-- >>> CHANGE data-product-handle TO YOUR OWN PRODUCT HANDLE <<< -->
+  <section
+    class="slv-lp__product"
+    id="slv-product"
+    data-slv-product
+    data-product-handle="shaperluv-tank-2-3"
+    data-buy-action="link">
+    <div class="slv-lp__inner">
+
+      <!-- edit this heading freely -->
+      <h2 class="slv-lp__product-heading">Best seller &mdash; perfect appearance in any outfit</h2>
+
+      <div class="slv-lp__product-grid">
+        <!-- GALLERY (filled from your product) -->
+        <div class="slv-lp__gallery" data-slv-gallery>
+          <div class="slv-lp__stage">
+            <div class="slv-lp__track" data-slv-track>
+              <!-- fallback slide, replaced by your product images -->
+              <div class="slv-lp__slide">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/BEFORE_40_1_cbf96b9e-f182-4145-811c-6b2822e2a733.png?v=1714740055&amp;width=800"
+                  alt=""
+                  width="800"
+                  height="1000"
+                  loading="lazy">
+              </div>
+            </div>
+
+            <button type="button" class="slv-lp__arrow slv-lp__arrow--prev" data-slv-prev aria-label="Previous image">
+              <svg viewBox="0 0 17 14" width="17" height="14" fill="none" aria-hidden="true"><path d="M17 7H2M8 1L2 7l6 6" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <button type="button" class="slv-lp__arrow slv-lp__arrow--next" data-slv-next aria-label="Next image">
+              <svg viewBox="0 0 17 14" width="17" height="14" fill="none" aria-hidden="true"><path d="M0 7h15M9 1l6 6-6 6" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+          </div>
+
+          <div class="slv-lp__thumbs" data-slv-thumbs></div>
+        </div>
+
+        <!-- INFO -->
+        <div class="slv-lp__product-info">
+          <!-- title + link filled from your product -->
+          <h3 class="slv-lp__product-title">
+            <a data-slv-title href="#">SHAPERLUV&trade; TANK 2.0</a>
+          </h3>
+
+          <!-- static: edit the rating and the review count by hand -->
+          <div class="slv-lp__reviews">
+            <span class="slv-lp__stars" role="img" aria-label="4.6 out of 5 stars">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <defs><linearGradient id="slvHalfStar"><stop offset="60%" stop-color="currentColor"/><stop offset="60%" stop-color="currentColor" stop-opacity="0.35"/></linearGradient></defs>
+                <path fill="url(#slvHalfStar)" d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8L12 2z"/>
+              </svg>
+            </span>
+            <span>1349 reviews</span>
+          </div>
+
+          <!-- price: remove the "hidden" attribute below to display it -->
+          <div class="slv-lp__price" hidden data-slv-price-wrap>
+            <span data-slv-price></span>
+            <span data-slv-compare></span>
+          </div>
+
+          <div class="slv-lp__deal">
+            <hr>
+            <span>Limited-time deal</span>
+            <hr>
+          </div>
+
+          <!-- static: your selling paragraph -->
+          <div class="slv-lp__product-copy">
+            <p>Introducing <strong>SHAPERLUV&trade;</strong>, an innovative undergarment meticulously crafted to enhance your <strong>chest and mid-section</strong>. This unique product is designed to provide a more comfortable and confident feel while offering support.</p>
+          </div>
+
+          <!-- static: guarantee / trust image -->
+          <img
+            class="slv-lp__guarantee"
+            src="https://cdn.shopify.com/s/files/1/0763/8643/5419/files/Untitled_design_-_2024-04-17T121447.658.png?v=1713348892&amp;width=1000"
+            alt="100% satisfaction guarantee, free and easy size exchanges, money back"
+            width="1000"
+            height="400"
+            loading="lazy"
+            decoding="async">
+
+          <a class="slv-lp__buy" data-slv-buy href="#">Buy now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================================================ STICKY CTA ====== -->
-  <a class="slv-lp__sticky" href="https://shaperluv.com/products/shaperluv%E2%84%A2-tank-2-3">Buy now</a>
+  <a class="slv-lp__sticky" data-slv-sticky href="#slv-product">Buy now</a>
+
+<script>
+  (function () {
+    var root = document.currentScript ? document.currentScript.closest('.slv-lp') : document.querySelector('.slv-lp');
+    if (!root) return;
+
+    var block = root.querySelector('[data-slv-product]');
+    var routeRoot = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+
+    /* ------------------------------------------------------------ GALLERY */
+    var gallery = root.querySelector('[data-slv-gallery]');
+    var track = gallery && gallery.querySelector('[data-slv-track]');
+    var thumbsWrap = gallery && gallery.querySelector('[data-slv-thumbs]');
+    var index = 0;
+    var count = 1;
+
+    function goTo(i) {
+      count = track.children.length;
+      index = (i + count) % count;
+      track.style.transform = 'translateX(-' + (index * 100) + '%)';
+      Array.prototype.forEach.call(thumbsWrap.children, function (t, n) {
+        t.setAttribute('aria-current', n === index ? 'true' : 'false');
+      });
+    }
+
+    function buildGallery(images, alt) {
+      track.innerHTML = '';
+      thumbsWrap.innerHTML = '';
+
+      images.forEach(function (url, i) {
+        var slide = document.createElement('div');
+        slide.className = 'slv-lp__slide';
+        slide.innerHTML = '<img src="' + sized(url, 900) + '" alt="' + alt + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '">';
+        track.appendChild(slide);
+
+        var thumb = document.createElement('button');
+        thumb.type = 'button';
+        thumb.className = 'slv-lp__thumb';
+        thumb.setAttribute('aria-label', 'Image ' + (i + 1));
+        thumb.innerHTML = '<img src="' + sized(url, 160) + '" alt="" loading="lazy">';
+        thumb.addEventListener('click', function () { goTo(i); });
+        thumbsWrap.appendChild(thumb);
+      });
+
+      goTo(0);
+    }
+
+    /* ask the Shopify CDN for a right-sized image */
+    function sized(url, width) {
+      if (url.indexOf('cdn.shopify.com') === -1 && url.indexOf('/cdn/shop/') === -1) return url;
+      return url + (url.indexOf('?') === -1 ? '?' : '&') + 'width=' + width;
+    }
+
+    if (gallery) {
+      gallery.querySelector('[data-slv-prev]').addEventListener('click', function () { goTo(index - 1); });
+      gallery.querySelector('[data-slv-next]').addEventListener('click', function () { goTo(index + 1); });
+
+      var startX = null;
+      var stage = gallery.querySelector('.slv-lp__stage');
+      stage.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener('touchend', function (e) {
+        if (startX === null) return;
+        var delta = e.changedTouches[0].clientX - startX;
+        if (Math.abs(delta) > 40) goTo(index + (delta < 0 ? 1 : -1));
+        startX = null;
+      }, { passive: true });
+    }
+
+    /* ------------------------------------------------------------- PRICE */
+    function money(cents) {
+      var currency = (window.Shopify && window.Shopify.currency && window.Shopify.currency.active) || 'EUR';
+      try {
+        return new Intl.NumberFormat(document.documentElement.lang || 'en', {
+          style: 'currency',
+          currency: currency
+        }).format(cents / 100);
+      } catch (e) {
+        return (cents / 100).toFixed(2) + ' ' + currency;
+      }
+    }
+
+    /* --------------------------------------------- LOAD THE SHOPIFY PRODUCT */
+    var handle = block && block.getAttribute('data-product-handle');
+    var buy = root.querySelector('[data-slv-buy]');
+
+    if (block && handle) {
+      fetch(routeRoot.replace(/\/$/, '') + '/products/' + handle + '.js', {
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('product ' + handle + ' not found (' + r.status + ')');
+          return r.json();
+        })
+        .then(function (product) {
+          var url = routeRoot.replace(/\/$/, '') + '/products/' + product.handle;
+
+          var titleEl = block.querySelector('[data-slv-title]');
+          if (titleEl) {
+            titleEl.textContent = product.title;
+            titleEl.setAttribute('href', url);
+          }
+
+          if (product.images && product.images.length) {
+            buildGallery(product.images, product.title);
+          }
+
+          var priceEl = block.querySelector('[data-slv-price]');
+          var compareEl = block.querySelector('[data-slv-compare]');
+          if (priceEl) priceEl.textContent = money(product.price);
+          if (compareEl) {
+            compareEl.textContent = product.compare_at_price > product.price ? money(product.compare_at_price) : '';
+          }
+
+          if (buy) {
+            if (block.getAttribute('data-buy-action') === 'cart') {
+              var variant = (product.variants || []).filter(function (v) { return v.available; })[0] || product.variants[0];
+              buy.setAttribute('href', url);
+              buy.addEventListener('click', function (e) {
+                if (!variant) return;
+                e.preventDefault();
+                buy.textContent = 'Adding...';
+                fetch(routeRoot.replace(/\/$/, '') + '/cart/add.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] })
+                })
+                  .then(function () { window.location.href = routeRoot.replace(/\/$/, '') + '/cart'; })
+                  .catch(function () { window.location.href = url; });
+              });
+            } else {
+              buy.setAttribute('href', url);
+            }
+          }
+        })
+        .catch(function (err) {
+          /* keep the static fallback content in place */
+          if (window.console) console.warn('[slv-lp]', err.message);
+        });
+    }
+
+    /* --------------------------------------------------------- STICKY CTA */
+    var sticky = root.querySelector('[data-slv-sticky]');
+
+    if (sticky && buy && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            sticky.setAttribute('hidden', '');
+          } else {
+            sticky.removeAttribute('hidden');
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px' }).observe(buy);
+    }
+
+    if (sticky) {
+      sticky.addEventListener('click', function (e) {
+        var target = root.querySelector('#slv-product');
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  })();
+</script>
 </div>
