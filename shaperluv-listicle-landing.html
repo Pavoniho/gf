@@ -397,6 +397,14 @@
 
   .slv-lp__sticky:hover { opacity: 0.85; }
 
+  /* white CTA text: the type selector is needed so this beats the generic
+     .slv-lp a { color: inherit } rule, which otherwise wins on specificity
+     and leaves dark grey text on the black buttons */
+  .slv-lp a.slv-lp__sticky,
+  .slv-lp a.slv-lp__buy {
+    color: #ffffff;
+  }
+
   .slv-lp__sticky[hidden] {
     display: flex;
     opacity: 0;
