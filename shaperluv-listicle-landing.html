@@ -107,6 +107,20 @@
     padding: 0 24px;
   }
 
+  /* ------------------------------------------- HIDE THE THEME PAGE TITLE */
+  /* Your theme prints the Shopify page title ("clad") above this block, which
+     would duplicate the headline below. These selectors cover the usual
+     Shopify markups: the title inside the same section as the page content,
+     and the title as a sibling of a wrapper around it. If your theme uses
+     something else, inspect the title and add its class here. Delete this
+     whole rule to bring the theme title back. */
+  .shopify-section:has(.slv-lp) .section__header,
+  .shopify-section:has(.slv-lp) .page-title,
+  :has(> * > .slv-lp) > h1,
+  :has(> * > * > .slv-lp) > h1 {
+    display: none !important;
+  }
+
   /* ---------------------------------------------------------- PAGE TITLE */
   .slv-lp__title {
     max-width: 780px;
