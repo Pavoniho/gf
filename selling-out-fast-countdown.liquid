@@ -1,115 +1,30 @@
-<!-- Bloc "Selling out fast" + barre + timer (reproduction smooche.com/products/ccf2) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
-
-<style>
-  .smo-sof {
-    width: 100%;
-    font-family: futura-pt, "Jost", sans-serif;
-    color: #000000;
-    line-height: 1.5625;
-    -webkit-font-smoothing: antialiased;
-  }
-  .smo-sof__text p {
-    font-size: 16px;
-    margin: 0;
-    color: #000000;
-    font-weight: 400;
-  }
-  .smo-sof__text strong {
-    font-weight: 500;
-  }
-  .smo-sof__timer {
-    width: 100%;
-    padding-top: 6px !important;
-    padding-bottom: 20px !important;
-  }
-  .smo-sof__bar {
-    width: 100%;
-    height: 10px;
-    background-color: #f7f7f7;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 7px;
-  }
-  .smo-sof__progress {
-    height: 100%;
-    background-color: #df8096;
-    width: 89%;
-    transition: width 0.3s ease;
-    border-radius: 0px;
-  }
-  .smo-sof__info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .smo-sof__prefix {
-    color: #000000;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .smo-sof__end {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #df8096;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .smo-sof__time {
-    color: #df8096;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-  }
-</style>
-
-<div class="smo-sof">
-  <div class="smo-sof__text">
-    <p><strong>Selling out fast<br></strong>Due to high demand, quantities are limited.</p>
-  </div>
-
-  <div class="smo-sof__timer">
-    <div class="smo-sof__bar">
-      <div class="smo-sof__progress"></div>
+<div class="smo-sof" style="width:100%;margin:0;padding:0;">
+  <p class="smo-sof-txt" style="margin:0;padding:0;font-size:16px;line-height:1.5625;color:#000;font-weight:400;"><strong style="font-weight:500;">Selling out fast</strong><br>Due to high demand, quantities are limited.</p>
+  <div style="width:100%;padding-top:6px;padding-bottom:20px;">
+    <div style="width:100%;height:10px;background-color:#f7f7f7;border-radius:4px;overflow:hidden;margin:0 0 7px 0;padding:0;">
+      <div style="height:100%;width:89%;background-color:#df8096;margin:0;padding:0;"></div>
     </div>
-    <div class="smo-sof__info">
-      <span class="smo-sof__prefix">89% sold</span>
-      <div class="smo-sof__end">
-        <span>Ends in</span>
-        <span class="smo-sof__time" data-smo-countdown>00:00:00</span>
-      </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:0;padding:0;">
+      <span style="color:#000;font-size:16px;font-weight:500;line-height:1.5625;">89% sold</span>
+      <span style="color:#df8096;font-size:16px;font-weight:500;line-height:1.5625;">Ends in&nbsp;<span class="smo-sof-time" style="font-variant-numeric:tabular-nums;">00:00:00</span></span>
     </div>
   </div>
 </div>
-
 <script>
-  (function () {
-    // Tous les timers de la page (fonctionne même si le bloc est ajouté plusieurs fois)
-    var displays = document.querySelectorAll('[data-smo-countdown]:not([data-smo-init])');
-    if (!displays.length) return;
-    displays.forEach(function (el) { el.setAttribute('data-smo-init', '1'); });
-
-    function pad(n) { return String(n).padStart(2, '0'); }
-
-    function tick() {
-      // new Date() = heure locale du navigateur => fuseau horaire du visiteur
-      var now = new Date();
-      var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
-      var diff = Math.max(0, midnight - now);
-
-      var h = Math.floor(diff / 3600000);
-      var m = Math.floor((diff % 3600000) / 60000);
-      var s = Math.floor((diff % 60000) / 1000);
-      var txt = pad(h) + ':' + pad(m) + ':' + pad(s);
-
-      displays.forEach(function (el) { el.textContent = txt; });
-    }
-
-    tick();
-    setInterval(tick, 1000);
-  })();
+(function () {
+  if (window.smoSofTimer) return;
+  window.smoSofTimer = true;
+  function p(n) { return (n < 10 ? '0' : '') + n; }
+  function tick() {
+    var now = new Date();
+    var end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+    var d = end.getTime() - now.getTime();
+    if (d < 0) d = 0;
+    var t = p(Math.floor(d / 3600000)) + ':' + p(Math.floor((d % 3600000) / 60000)) + ':' + p(Math.floor((d % 60000) / 1000));
+    var els = document.getElementsByClassName('smo-sof-time');
+    for (var i = 0; i < els.length; i++) els[i].textContent = t;
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
 </script>
